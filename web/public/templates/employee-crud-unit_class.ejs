@@ -132,12 +132,17 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-lg px-5 text-white mt-1" style="background: rgb(121, 250, 164);">Xác nhận</button>
+                    <div class="position-absolute bottom-0 end-0 d-flex">
+                        <button id="action_update" class="mx-1">Sửa</button>
+                        <button id="action_delete" class="mx-1">Xoá</button>
+                    </div>
                 </form>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead class="table-secondary text-nowrap">
                             <tr>
                                 <th>STT</th>
+                                <th>Chọn</th>
                                 <th>Mã lớp HP</th>
                                 <th>Hạn nộp học phí</th>
                                 <th>Ngày bắt đầu</th>
@@ -149,13 +154,15 @@
                                 <th>Mã giáo viên</th>
                                 <th>Mã môn học</th>
                                 <th>Mã khóa học</th>
-                                <th>Chọn</th>
                             </tr>
                         </thead>
                         <form id="myForm" method="post" enctype="multipart/form-data">
                         <% for(let i=0; i<LIST_UNIT_CLASS.length ;i++) { %>
                             <tr class="small">
                                 <td><%= i + 1 %></td>
+                                <td>
+                                    <input type="checkbox" name="<%= LIST_UNIT_CLASS[i].ma_lop_hoc_phan %>" id="<%= LIST_UNIT_CLASS[i].ma_lop_hoc_phan %>" class="myCheckBoxClass">
+                                </td>
                                 <td><%= LIST_UNIT_CLASS[i].ma_lop_hoc_phan %></td>
                                 <td><%= LIST_UNIT_CLASS[i].han_nop_hoc_phi %></td>
                                 <td><%= LIST_UNIT_CLASS[i].ngay_bat_dau %></td>
@@ -167,9 +174,6 @@
                                 <td><%= LIST_UNIT_CLASS[i].ma_giao_vien %></td>
                                 <td><%= LIST_UNIT_CLASS[i].ma_mon_hoc %></td>
                                 <td><%= LIST_UNIT_CLASS[i].ma_khoa_hoc %></td>
-                                <td>
-                                    <input type="checkbox" name="<%= LIST_UNIT_CLASS[i].ma_lop_hoc_phan %>" id="<%= LIST_UNIT_CLASS[i].ma_lop_hoc_phan %>" class="myCheckBoxClass">
-                                </td>
                             </tr>
                         <% } %>
                         </form>

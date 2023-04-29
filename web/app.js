@@ -1678,8 +1678,8 @@ const options = {
     key: fs.readFileSync('./ssl/privkey.pem'),
     cert: fs.readFileSync('./ssl/fullchain.pem'),
 };
-const server = https.createServer(options, app);
-server.listen(4000, () => {
+// const server = https.createServer(options, app);
+const server = app.listen(4000, () => {
     console.log('Server is running in 4000....');
 });
 const io = socket(server);
