@@ -124,9 +124,13 @@ const Homepage = ({ navigation }) => {
       // . Fetch init data
       const javaIp = await publicIP();
       const response2 = await axios.get(LOCAL_JAVA_API_URL+"/api/pattern/getSoTinChiDoneByStudentId/" + currentUser.maSinhVien, {headers: {"Authorization": token}});//Sử lý số tín chỉ đã đạt của sv
+      if(response2.data) {
+        setCurrentTinChi(response2.data);
+      } else console.log('getSoTinChiDoneByStudentId failded!');
       const response3 = await axios.get(LOCAL_JAVA_API_URL+"/api/semester/getTongSoTinChiByMaNganh/" + currentUser.lopHocDanhNghia.nganh.maNganh, {headers: {"Authorization": token}});//Sử lý tổng tín chỉ của sv
-      setCurrentTinChi(response2.data);
-      setRequiredTinChi(response3.data);
+      if(response3.data) {
+        setRequiredTinChi(response3.data);
+      } else console.log('getTongSoTinChiByMaNganh failed!');
     }
     getInitials();
   },[]);

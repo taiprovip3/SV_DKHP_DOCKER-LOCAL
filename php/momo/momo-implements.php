@@ -92,8 +92,8 @@ if(!isset($_POST['lengthDebt'])) {
     $orderInfo = "Thanh toán qua MoMo QR (Quét mã app momo)";
     $amount = $total;
     $orderId = time() ."";
-    $redirectUrl = "https://erukalearn.ddns.net:4000/student/payment/callback";
-    $ipnUrl = "http://php:80/momo/momo-ipn.php";
+    $redirectUrl = "https://erukalearn.ddns.net/student/payment/callback";
+    $ipnUrl = "http://php:8000/momo/momo-ipn.php";
     $extraData = $output;
 
     $requestId = time() . "";

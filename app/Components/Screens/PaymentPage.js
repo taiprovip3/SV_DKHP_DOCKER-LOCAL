@@ -3,7 +3,7 @@ import { Box, Button, NativeBaseProvider, Text } from 'native-base';
 import { WebView } from 'react-native-webview';
 import { Modal } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { LOCAL_EJS_API_URL } from '@env';
+import { LOCAL_EJS_API_URL, LOCAL_PHP_API_URL } from '@env';
 
 
 const PaymentPage = ({ navigation, route }) => {
@@ -17,9 +17,9 @@ const PaymentPage = ({ navigation, route }) => {
     url = LOCAL_EJS_API_URL+"/paypal/payment/confirm";
   else {
     if(debtData.service === "MOMO_QR" || debtData.service === "MOMO_ATM")
-      url = "http://erukalearn.ddns.net:80/sv_dkhp_php/momo/momo-mobile-implements.php";
+      url = LOCAL_PHP_API_URL+"/momo/momo-mobile-implements.php";
     if(debtData.service === "VNPAY")
-      url = "http://erukalearn.ddns.net:80/sv_dkhp_php/vnpay/vnpay-mobile.php";
+      url = LOCAL_PHP_API_URL+"/vnpay/vnpay-mobile.php";
     if(debtData.service === "STUDENT_WALLET")
       url = LOCAL_EJS_API_URL+"/wallet/payment";
   }

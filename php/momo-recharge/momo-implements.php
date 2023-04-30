@@ -1,17 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- Import thư viện jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Import thư viện toastr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-</head>
-<body>
 <?php
     ob_start();
     header('Content-type: text/html; charset=utf-8');
@@ -82,8 +68,8 @@
     $orderInfo = "Thanh toán qua MoMo QR (Quét mã app momo)";
     $amount = $total;
     $orderId = time() ."";
-    $redirectUrl = "https://erukalearn.ddns.net:4000/student/payment/callback";
-    $ipnUrl = "http://php:80/momo/momo-ipn.php";
+    $redirectUrl = "https://erukalearn.ddns.net/student/payment/callback";
+    $ipnUrl = "http://php:8000/momo/momo-ipn.php";
     $extraData = $output;
 
     $requestId = time() . "";
@@ -105,15 +91,6 @@
         'signature' => $signature);
     $result = execPostRequest($endpoint, json_encode($data));
     $jsonResult = json_decode($result, true);  // decode json
-    if($jsonResult['resultCode'] == 22) {
-        echo '<script>
-            toastr.error("Đã xảy ra lỗi khi xử lý.", "Giao dịch thất bại!");
-        </script>';
-        echo "Giao dịch thất bại. \\\<br>".$jsonResult['message'];
-    } else {
-        header('Location: ' . $jsonResult['payUrl']);
-        ob_end_flush();
-    }
+    header('Location: ' . $jsonResult['payUrl']);
+    ob_end_flush();
 ?>
-</body>
-</html>

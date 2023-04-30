@@ -66,7 +66,7 @@
                 $amount = $soTienCongNo;
                 $orderId = time() ."";
                 $redirectUrl = "https://erukalearn.ddns.net/student/payment/callback";
-                $ipnUrl = "http://php:80/momo/momo-ipn.php";
+                $ipnUrl = "http://php:8000/momo/momo-ipn.php";
                 $extraData = $maThanhToanGiaoDich;
 
                 $requestId = time() . "";

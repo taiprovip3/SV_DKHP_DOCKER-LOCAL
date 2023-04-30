@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, NativeBaseProvider } from 'native-base';
 import { WebView } from 'react-native-webview';
 import Toast from 'react-native-toast-message';
-import { LOCAL_EJS_API_URL } from '@env';
+import { LOCAL_EJS_API_URL, LOCAL_PHP_API_URL } from '@env';
 
 
 const TopupPage = ({ navigation, route }) => {
@@ -14,10 +14,10 @@ const TopupPage = ({ navigation, route }) => {
       url = LOCAL_EJS_API_URL+"/paypal/topup";   
       break;
     case "MOMO - WALLET":
-      url = "http://erukalearn.ddns.net:80/sv_dkhp_php/momo-recharge/momo-mobile-implements.php"; 
+      url = LOCAL_PHP_API_URL+"/momo-recharge/momo-mobile-implements.php"; 
       break;
     case "VNPAY - WALLET":
-      url = "http://erukalearn.ddns.net:80/sv_dkhp_php/vnpay-recharge/vnpay-mobile.php"; 
+      url = LOCAL_PHP_API_URL+"/vnpay-recharge/vnpay-mobile.php"; 
       break;
     default:
       break;
