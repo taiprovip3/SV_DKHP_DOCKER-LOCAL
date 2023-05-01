@@ -259,22 +259,22 @@
         <div class="py-1">
             <label for="oldPasswrod" class="form-label">Mật khẩu cũ: <span class="text-danger">(*)</span></label>
             <div class="input-group">
-                <input type="password" class="form-control" placeholder="Nhập mật khẩu cũ" id="oldPassword" name="oldPassword" minlength="8" maxlength="255" required />
-                <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
+                <input type="password" class="form-control password-input" placeholder="Nhập mật khẩu cũ" id="oldPassword" name="oldPassword" minlength="8" maxlength="255" required />
+                <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
             </div>
         </div>
         <div class="py-1">
             <label for="newPasswrod" class="form-label">Mật khẩu mới: <span class="text-danger">(*)</span></label>
             <div class="input-group">
-                <input type="password" class="form-control" placeholder="Nhập mật khẩu mới" id="newPassword" name="newPassword" minlength="8" maxlength="255" required />
-                <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
+                <input type="password" class="form-control password-input" placeholder="Nhập mật khẩu mới" id="newPassword" name="newPassword" minlength="8" maxlength="255" required />
+                <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
             </div>
         </div>
         <div class="py-1">
             <label for="reNewPasswrod" class="form-label">Mật khẩu mới: <span class="text-danger">(*)</span></label>
             <div class="input-group">
-                <input type="password" class="form-control" placeholder="Nhập lại mật khẩu mới" id="reNewPasswrod" name="reNewPassword" minlength="8" maxlength="255" required />
-                <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
+                <input type="password" class="form-control password-input" placeholder="Nhập lại mật khẩu mới" id="reNewPasswrod" name="reNewPassword" minlength="8" maxlength="255" required />
+                <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
             </div>
         </div>
         <div class="text-end py-2">
@@ -570,6 +570,12 @@
             contentType: 'application/json',
         })
         .then(counter => counter);
+    }
+    function showPassword() {
+        $('.password-input').attr('type', 'text');
+    }
+    function hidePassword() {
+        $('.password-input').attr('type', 'password');
     }
 </script>
 </body>
