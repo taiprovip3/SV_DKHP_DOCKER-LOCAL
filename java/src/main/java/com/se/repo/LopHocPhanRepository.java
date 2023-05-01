@@ -3,9 +3,11 @@ package com.se.repo;
 import java.util.List;
 
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.se.entity.LopHocPhan;
 
@@ -17,4 +19,8 @@ public interface LopHocPhanRepository extends CrudRepository<LopHocPhan, Long> {
 	public List<LopHocPhan> getUnitClassesStudentRegisterByStudentIdAndMaKhoaHoc(long id, long maKhoaHoc);
 	@Query(value = "SELECT * FROM sinh_vien_lop_hoc_phan svlhp JOIN lop_hoc_phan lhp ON svlhp.ma_lop_hoc_phan = lhp.ma_lop_hoc_phan WHERE lhp.ma_mon_hoc = ?1 AND lhp.ma_khoa_hoc = ?2 AND svlhp.ma_sinh_vien = ?3", nativeQuery = true)
 	public LopHocPhan getUnitClassBySubjectIdAndCourseId(long subjectId, long courseId, long studentId);
+	@Transactional
+    @Modifying
+    @Query("DELETE FROM LopHocPhan lhp WHERE lhp.maLopHocPhan IN ?1")
+	int deleteAllById(List<Long> unitClassIds);
 }

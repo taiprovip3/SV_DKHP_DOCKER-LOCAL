@@ -16,6 +16,26 @@
     <link rel="stylesheet" href="../css/button.css" type="text/css">
 </head>
 <body>
+    <% if(signal) { %>
+        <% if(signal == "INSERT_SUCCESS") { %>
+            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"});</script>
+        <% } else {
+            if(signal == "INTERNAL_SERVER_ERROR") { %>
+                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
+            <% }
+            if(signal == "FOREIGN_KEY_CONSTRAIN") { %>
+                <script>swal({title: "Không thể xóa",text: "Thời khóa biểu đã có sinh viên đăng ký!", icon: "warning", dangerMode: true});</script>
+            <% }
+            if(signal == "DELETE_SUCCESS") { %>
+                <script>
+                    swal({title: "Goob jobs!", text: "Xóa dữ liệu thành công", icon: "success"})
+                    .then((value) => {
+                        window.location.href = "./employee-crud-time_table";
+                    });
+                </script>
+            <% }
+        }
+    } %>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-2">
@@ -54,133 +74,132 @@
                 </a>
             </div>
             <div class="col-lg-10 position-relative overflow-auto" style="max-height: 100vh;">
-                <div>
-                    <% if(signal) { %>
-                        <% if(signal == "INSERT_SUCCESS") { %>
-                            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
-                        <% } else {
-                            if(signal == "INTERNAL_SERVER_ERROR") { %>
-                                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
-                            <% }
-                        }
-                    } %>
-                </div>
                 <p class="fw-bold"><a href="/employee">Home</a> / <a href="javascript:void(0)">Manage time table</a></p>
-                <p class="fw-bold">Thêm TKB mới cho lớp học phần:</p>
-                <form action="/employee-crud-add-time_table" method="post" enctype="multipart/form-data" class="border p-3 position-relative">
-                    <div class="position-absolute top-0 end-0 p-3">
-                        <label for="excel_file" class="text-white crs import-button">Import excel <i class="fas fa-cloud-upload"></i></label>
-                        <input type="file" name="excel_file" id="excel_file" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                        <div>&emsp;</div>
-                        <button class="d-none import-button" id="btn-import" type="submit">Import <i class="fas fa-cloud-upload"></i></button>
-                        <button class="import-button" type="button" id="btn-export-excel">Export excel <i class="fas fa-cloud-download"></i></button>
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="maLopHocPhan" class="input-group-text">Mã LHP:</label>
-                        <input type="text" name="maLopHocPhan" id="maLopHocPhan" placeholder="Nhập mã lớp học phần" class="form-control">
-                    </div>
-                    <div class="input-group w-50 mw-50">
+                <p class="fw-bold">Thêm TKB mới cho lớp học phần: <span data-bs-toggle="tooltip" data-bs-placement="top" title="Đối với thời khóa biểu thực hành thì vui lòng thêm trường (cột) `chung_with_ma_thoi_khoa_bieu` và nhập 'mã thời khóa biểu lý thuyết' mà thời khóa biểu này sẽ thuộc về trong file excel import!"><i class="far fa-question-circle"></i></span></p>
+                <div class="border p-3 position-relative">
+                    <form action="./employee-crud-import?entityName=time_table" enctype="multipart/form-data" method="POST">
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <label for="excel_file" class="text-white crs import-button">Import excel <i class="fas fa-cloud-upload"></i></label>
+                            <input type="file" name="excel_file" id="excel_file" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                            <div>&emsp;</div>
+                            <button class="d-none import-button" id="btn-import" type="submit">Import <i class="fas fa-cloud-upload"></i></button>
+                            <button class="import-button" type="button" id="btn-export-excel">Export excel <i class="fas fa-cloud-download"></i></button>
+                        </div>
+                    </form>
+                    <form action="./employee-crud-add-time_table" method="post" enctype="multipart/form-data">
+                        
                         <div class="input-group w-50 mw-50">
-                            <label for="tuTietHoc" class="input-group-text">Từ tiết học</label>
-                            <select name="tuTietHoc" id="tuTietHoc" class="form-select">
-                                <option value="T1">Tiết 1</option>
-                                <option value="T2">Tiết 2</option>
-                                <option value="T3">Tiết 3</option>
-                                <option value="T4">Tiết 4</option>
-                                <option value="T5">Tiết 5</option>
-                                <option value="T6">Tiết 6</option>
-                                <option value="T7">Tiết 7</option>
-                                <option value="T8">Tiết 8</option>
-                                <option value="T9">Tiết 9</option>
-                                <option value="T10">Tiết 10</option>
-                                <option value="T11">Tiết 11</option>
-                                <option value="T12">Tiết 12</option>
-                                <option value="T13">Tiết 13</option>
-                                <option value="T14">Tiết 14</option>
-                                <option value="T15">Tiết 15</option>    
+                            <label for="maLopHocPhan" class="input-group-text">Mã LHP:</label>
+                            <input type="text" name="maLopHocPhan" id="maLopHocPhan" placeholder="Nhập mã lớp học phần" class="form-control" required>
+                        </div>
+                        <div class="input-group w-50 mw-50">
+                            <div class="input-group w-50 mw-50">
+                                <label for="tuTietHoc" class="input-group-text">Từ tiết học</label>
+                                <select name="tuTietHoc" id="tuTietHoc" class="form-select">
+                                    <option value="T1">Tiết 1</option>
+                                    <option value="T2">Tiết 2</option>
+                                    <option value="T3">Tiết 3</option>
+                                    <option value="T4">Tiết 4</option>
+                                    <option value="T5">Tiết 5</option>
+                                    <option value="T6">Tiết 6</option>
+                                    <option value="T7">Tiết 7</option>
+                                    <option value="T8">Tiết 8</option>
+                                    <option value="T9">Tiết 9</option>
+                                    <option value="T10">Tiết 10</option>
+                                    <option value="T11">Tiết 11</option>
+                                    <option value="T12">Tiết 12</option>
+                                    <option value="T13">Tiết 13</option>
+                                    <option value="T14">Tiết 14</option>
+                                    <option value="T15">Tiết 15</option>    
+                                </select>
+                            </div>
+                            <div class="input-group w-50 mw-50">
+                                <label for="denTietHoc" class="input-group-text">Đến tiết học</label>
+                                <select name="denTietHoc" id="denTietHoc" class="form-select">
+                                    <option value="T1">Tiết 1</option>
+                                    <option value="T2">Tiết 2</option>
+                                    <option value="T3">Tiết 3</option>
+                                    <option value="T4">Tiết 4</option>
+                                    <option value="T5">Tiết 5</option>
+                                    <option value="T6">Tiết 6</option>
+                                    <option value="T7">Tiết 7</option>
+                                    <option value="T8">Tiết 8</option>
+                                    <option value="T9">Tiết 9</option>
+                                    <option value="T10">Tiết 10</option>
+                                    <option value="T11">Tiết 11</option>
+                                    <option value="T12">Tiết 12</option>
+                                    <option value="T13">Tiết 13</option>
+                                    <option value="T14">Tiết 14</option>
+                                    <option value="T15">Tiết 15</option>    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group w-50 mw-50">
+                            <label for="phongHoc" class="input-group-text">Phòng học</label>
+                            <input type="text" name="phongHoc" id="phongHoc" placeholder="Nhập phòng học / dãy nhà / tầng học.." class="form-control" required>
+                        </div>
+                        <div class="input-group w-50 mw-50">
+                            <label for="thuHoc" class="input-group-text">Thứ học</label>
+                            <select name="thuHoc" id="thuHoc" class="form-select">
+                                <option value="T2">Thứ 2</option>
+                                <option value="T3">Thứ 3</option>
+                                <option value="T4">Thứ 4</option>
+                                <option value="T5">Thứ 5</option>
+                                <option value="T6">Thứ 6</option>
+                                <option value="T7">Thứ 7</option>
+                                <option value="CN">Chủ nhật</option>    
+                            </select>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="thi" id="thi">
+                            <label class="form-check-label">Là lịch Thi</label>
+                        </div>
+                        <div class="input-group w-50 mw-50">
+                            <label for="ghiChu" class="input-group-text">Comments:</label>
+                            <textarea name="ghiChu" id="ghiChu" rows="4" placeholder="Thêm ghi chú, nhắc nhở sinh viên có lịch học" class="w-100 form-control"></textarea>
+                        </div>
+                        <div class="input-group w-50 mw-50">
+                            <label for="loaiBuoiHoc" class="input-group-text">Buổi TH/LT:</label>
+                            <select name="loaiBuoiHoc" id="loaiBuoiHoc" class="form-select">
+                                <option value="LT">Lý thuyết</option>
+                                <option value="TH">Thực hành</option>    
                             </select>
                         </div>
                         <div class="input-group w-50 mw-50">
-                            <label for="denTietHoc" class="input-group-text">Đến tiết học</label>
-                            <select name="denTietHoc" id="denTietHoc" class="form-select">
-                                <option value="T1">Tiết 1</option>
-                                <option value="T2">Tiết 2</option>
-                                <option value="T3">Tiết 3</option>
-                                <option value="T4">Tiết 4</option>
-                                <option value="T5">Tiết 5</option>
-                                <option value="T6">Tiết 6</option>
-                                <option value="T7">Tiết 7</option>
-                                <option value="T8">Tiết 8</option>
-                                <option value="T9">Tiết 9</option>
-                                <option value="T10">Tiết 10</option>
-                                <option value="T11">Tiết 11</option>
-                                <option value="T12">Tiết 12</option>
-                                <option value="T13">Tiết 13</option>
-                                <option value="T14">Tiết 14</option>
-                                <option value="T15">Tiết 15</option>    
-                            </select>
-                        </div>
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="phongHoc" class="input-group-text">Phòng học</label>
-                        <input type="text" name="phongHoc" id="phongHoc" placeholder="Nhập phòng học / dãy nhà / tầng học.." class="form-control">
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="thuHoc" class="input-group-text">Thứ học</label>
-                        <select name="thuHoc" id="thuHoc" class="form-select">
-                            <option value="T2">Thứ 2</option>
-                            <option value="T3">Thứ 3</option>
-                            <option value="T4">Thứ 4</option>
-                            <option value="T5">Thứ 5</option>
-                            <option value="T6">Thứ 6</option>
-                            <option value="T7">Thứ 7</option>
-                            <option value="CN">Chủ nhật</option>    
-                        </select>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="thi" id="thi">
-                        <label class="form-check-label">Là lịch Thi</label>
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="ghiChu" class="input-group-text">Comments:</label>
-                        <textarea name="ghiChu" id="ghiChu" rows="4" placeholder="Thêm ghi chú, nhắc nhở sinh viên có lịch học" class="w-100 form-control"></textarea>
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="loaiBuoiHoc" class="input-group-text">Buổi TH/LT:</label>
-                        <select name="loaiBuoiHoc" id="loaiBuoiHoc" class="form-select">
-                            <option value="LT">Lý thuyết</option>
-                            <option value="TH">Thực hành</option>    
-                        </select>
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="nhomHoc" class="input-group-text">Phân nhóm:</label>
-                        <input type="number" name="nhomHoc" id="nhomHoc" placeholder="Nhập nhóm là một con số (0/1/2..)" value="0" class="form-control">
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="chungWithMaThoiKhoaBieu" class="input-group-text">Kim với mã TKB:</label>
-                        <input type="number" name="chungWithMaThoiKhoaBieu" id="chungWithMaThoiKhoaBieu" value="0" placeholder="0 Nghĩa là TKB độc lập chỉ có LT ko có TH" class="form-control">
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <label for="maGiaoVien" class="input-group-text">Mã giáo viên:</label>
-                        <input type="number" name="maGiaoVien" id="maGiaoVien" placeholder="Nhập mã giáo viên phân vào lịch" value="0" class="form-control">
-                    </div>
-                    <div class="input-group w-50 mw-50">
-                        <div class="input-group w-50 mw-50">
-                            <label for="ngayBatDau" class="input-group-text">ngayBatDau</label>
-                            <input type="date" name="ngayBatDau" id="ngayBatDau" class="form-control">
+                            <label for="nhomHoc" class="input-group-text">Phân nhóm:</label>
+                            <input type="number" name="nhomHoc" id="nhomHoc" placeholder="Nhập nhóm là một con số (0/1/2..)" value="0" class="form-control" required>
                         </div>
                         <div class="input-group w-50 mw-50">
-                            <label for="ngayKetThuc" class="input-group-text">ngayKetThuc</label>
-                            <input type="date" name="ngayKetThuc" id="ngayKetThuc" class="form-control">
+                            <label for="chungWithMaThoiKhoaBieu" class="input-group-text">Kim với mã TKB:</label>
+                            <input type="number" name="chungWithMaThoiKhoaBieu" id="chungWithMaThoiKhoaBieu" value="0" placeholder="0 Nghĩa là TKB độc lập chỉ có LT ko có TH" class="form-control" required>
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-lg px-5 my-1 text-white" style="background: rgb(121, 250, 164);">Xác nhận</button>
-                </form>
+                        <div class="input-group w-50 mw-50">
+                            <label for="maGiaoVien" class="input-group-text">Mã giáo viên:</label>
+                            <input type="number" name="maGiaoVien" id="maGiaoVien" placeholder="Nhập mã giáo viên phân vào lịch" value="0" class="form-control" required>
+                        </div>
+                        <div class="input-group w-50 mw-50">
+                            <div class="input-group w-50 mw-50">
+                                <label for="ngayBatDau" class="input-group-text">ngayBatDau</label>
+                                <input type="date" name="ngayBatDau" id="ngayBatDau" class="form-control">
+                            </div>
+                            <div class="input-group w-50 mw-50">
+                                <label for="ngayKetThuc" class="input-group-text">ngayKetThuc</label>
+                                <input type="date" name="ngayKetThuc" id="ngayKetThuc" class="form-control">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-lg px-5 my-1 text-white" style="background: rgb(121, 250, 164);">Xác nhận</button>
+                        <div class="position-absolute bottom-0 end-0 d-flex">
+                            <button type="button" id="action_update" class="mx-1 btn-secondary btn-xs px-1">Sửa</button>
+                            <button type="button" id="action_delete" class="mx-1 btn-secondary btn-xs px-1 text-warning">Xoá</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead class="table-secondary text-nowrap">
                             <tr>
                                 <th>STT</th>
+                                <th>Chọn</th>
                                 <th>Mã TKB LT/TH</th>
                                 <th>Mã LHP</th>
                                 <th>Học từ tiết</th>
@@ -195,13 +214,15 @@
                                 <th>Ngày bắt đầu</th>
                                 <th>Ngày kết thúc</th>
                                 <th>Giảng viên</th>
-                                <th>Chọn</th>
                             </tr>
                         </thead>
                         <form id="myForm" method="post" enctype="multipart/form-data">
                         <% for(let i=0; i<LIST_TIME_TABLE.length ;i++) { %>
                             <tr class="small">
                                 <td><%= i + 1 %></td>
+                                <td>
+                                    <input type="checkbox" name="<%= LIST_TIME_TABLE[i].ma_thoi_khoa_bieu %>" id="<%= LIST_TIME_TABLE[i].ma_thoi_khoa_bieu %>" class="myCheckBoxClass" onchange="onCheckBox('<%= JSON.stringify(LIST_TIME_TABLE[i]) %>', this);">
+                                </td>
                                 <td><%= (LIST_TIME_TABLE[i].ma_thoi_khoa_bieu_con) ? LIST_TIME_TABLE[i].ma_thoi_khoa_bieu_con : LIST_TIME_TABLE[i].ma_thoi_khoa_bieu %></td>
                                 <td><%= LIST_TIME_TABLE[i].ma_lop_hoc_phan %></td>
                                 <td><%= LIST_TIME_TABLE[i].tu_tiet_hoc %></td>
@@ -216,9 +237,6 @@
                                 <td class="text-truncate"><%= LIST_TIME_TABLE[i].ngay_bat_dau %></td>
                                 <td class="text-truncate"><%= LIST_TIME_TABLE[i].ngay_ket_thuc %></td>
                                 <td><%= LIST_TIME_TABLE[i].ma_giao_vien %></td>
-                                <td>
-                                    <input type="checkbox" name="<%= LIST_TIME_TABLE[i].ma_thoi_khoa_bieu %>" id="<%= LIST_TIME_TABLE[i].ma_thoi_khoa_bieu %>" class="myCheckBoxClass">
-                                </td>
                             </tr>
                         <% } %>
                         </form>
@@ -232,6 +250,8 @@
     </div>
 </body>
 <script>
+    let listTKB = [];
+    let listTKBCon = [];
     const pathNodejs = '<%= process.env.EJS_API_URL %>';
     $(document).ready(function() {
         $("#excel_file").on("change", function(){
@@ -240,6 +260,80 @@
         $("#btn-export-excel").click(function() {
             window.location.href = pathNodejs+"/employee-crud-export?entityName=time_table";
         });
+
+        $("#action_update").click(function() {
+            if(listTKB.length <= 0 && listTKBCon.length <= 0) return;
+            let urlBuilder = '<%= process.env.EJS_API_URL %>/employee-crud-update-time_table?';
+            if(listTKB.length > 0 && listTKBCon.length > 0) {
+                const listTKBString = listTKB.toString();
+                urlBuilder += `listTKB=${listTKBString}`;
+                const listTKBConString = listTKBCon.toString();
+                urlBuilder += `&listTKBCon=${listTKBConString}`;
+            } else {
+                if(listTKB.length <= 0) {
+                    const listTKBConString = listTKBCon.toString();
+                    urlBuilder += `listTKBCon=${listTKBConString}`;
+                } else {
+                    const listTKBString = listTKB.toString();
+                    urlBuilder += `listTKB=${listTKBString}`;
+                }
+            }
+            window.location.href = urlBuilder;
+        });
+        $("#action_delete").click(function() {
+            if(listTKB.length <= 0 && listTKBCon.length <= 0) return;
+            let urlBuilder = '<%= process.env.EJS_API_URL %>/employee-crud-delete-time_table?';
+            if(listTKB.length > 0 && listTKBCon.length > 0) {
+                const listTKBString = listTKB.toString();
+                urlBuilder += `listTKB=${listTKBString}`;
+                const listTKBConString = listTKBCon.toString();
+                urlBuilder += `&listTKBCon=${listTKBConString}`;
+            } else {
+                if(listTKB.length <= 0) {
+                    const listTKBConString = listTKBCon.toString();
+                    urlBuilder += `listTKBCon=${listTKBConString}`;
+                } else {
+                    const listTKBString = listTKB.toString();
+                    urlBuilder += `listTKB=${listTKBString}`;
+                }
+            }
+            window.location.href = urlBuilder;
+        });
+    });
+
+    function onCheckBox(data, element) {
+        const tkb = JSON.parse(data);
+        if(tkb.loai_buoi_hoc === "LT") {
+            const maThoiKhoaBieu = tkb.ma_thoi_khoa_bieu;
+            if(element.checked) {// Nếu checked
+                listTKB.push(maThoiKhoaBieu);
+            } else {
+                for (let i=0; i<listTKB.length; i++) {
+                    if (listTKB[i] === maThoiKhoaBieu) {
+                        listTKB.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+        } else {
+            const maThoiKhoaBieu = tkb.ma_thoi_khoa_bieu_con;
+            if(element.checked) {
+                listTKBCon.push(maThoiKhoaBieu);
+            } else {
+                for (let i=0; i<listTKBCon.length; i++) {
+                    if (listTKBCon[i] === maThoiKhoaBieu) {
+                        listTKBCon.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 </script>
 </html>

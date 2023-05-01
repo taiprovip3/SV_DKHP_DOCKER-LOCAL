@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class LopHocPhanDTO {
+	private long maLopHocPhan;
 	private String hanNopHocPhi;
 	private String ngayBatDau;
 	private String ngayKetThuc;

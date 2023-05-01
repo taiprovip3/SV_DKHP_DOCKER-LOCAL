@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.se.dto.ThoiKhoaBieu2DTO;
 import com.se.dto.ThoiKhoaBieuDTO;
 import com.se.entity.ThoiKhoaBieu;
+import com.se.entity.ThoiKhoaBieuCon;
 import com.se.service.ThoiKhoaBieuService;
 
 @RestController
@@ -59,5 +60,23 @@ public class ThoiKhoaBieuController {
 	@GetMapping("/time_table/getStudentTimeTableByDay/{maSinhVien}/{theDate}")
 	public List<ThoiKhoaBieu> getStudentTimeTableByDay(@PathVariable long maSinhVien, @PathVariable String theDate) {
 		return thoiKhoaBieuService.getStudentTimeTableByDay(maSinhVien, theDate);
+	}
+	@PostMapping("/time_table/getTimeTables")
+	public List<ThoiKhoaBieu> getTimeTables(@RequestBody List<Long> listTKBArray) {
+		return thoiKhoaBieuService.getTimeTables(listTKBArray);
+	}
+	@PostMapping("/time_table/getTimeTableCons")
+	public List<ThoiKhoaBieuCon> getTimeTableCons(@RequestBody List<Long> listTKBConArray) {
+		return thoiKhoaBieuService.getTimeTableCons(listTKBConArray);
+	}
+	
+	@PostMapping("/time_table/deleteTimeTables")
+	public int deleteTimeTables(@RequestBody List<Long> listTKBArray) {
+		return thoiKhoaBieuService.deleteTimeTables(listTKBArray);
+	}
+	
+	@PostMapping("/time_table/deleteTimeTableCons")
+	public int deleteTimeTableCons(@RequestBody List<Long> listTKBConArray) {
+		return thoiKhoaBieuService.deleteTimeTableCons(listTKBConArray);
 	}
 }

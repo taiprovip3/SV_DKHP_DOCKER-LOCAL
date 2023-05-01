@@ -3,6 +3,8 @@ package com.se.dao;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,7 @@ public class LopHocPhanImpl implements LopHocPhanService {
 			KhoaHoc khoaHoc = khoaHocRepository.findById(lopHocPhanDTO.getMaKhoaHoc()).orElse(null);
 			LopHocPhan lopHocPhan = LopHocPhan
 					.builder()
+					.maLopHocPhan(lopHocPhanDTO.getMaLopHocPhan())
 					.tenLopHocPhan(lopHocPhanDTO.getTenLopHocPhan())
 					.soLuong(0)
 					.soLuongMax(lopHocPhanDTO.getSoLuongMax())
@@ -80,6 +83,24 @@ public class LopHocPhanImpl implements LopHocPhanService {
 	@Override
 	public LopHocPhan getUnitClassById(long id) {
 		return lopHocPhanRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<LopHocPhan> getUnitClasses(List<Long> unitClassIds) {
+		Iterable<LopHocPhan> source = lopHocPhanRepository.findAllById(unitClassIds);
+		List<LopHocPhan> target = new ArrayList<>();
+		source.forEach(target::add);
+		return target;
+	}
+
+	@Override
+	public int deleteUnitClassess(List<Long> unitClassIds) {
+		try {
+			return lopHocPhanRepository.deleteAllById(unitClassIds);
+		} catch (Exception e) {
+			System.out.println("Error -> " + e.getMessage());
+			return 0;
+		}
 	}
 
 }

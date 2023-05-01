@@ -1,7 +1,6 @@
 package com.se.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.se.dto.ThoiKhoaBieu2DTO;
 import com.se.dto.ThoiKhoaBieuDTO;
@@ -17,4 +16,8 @@ public interface ThoiKhoaBieuService {
 	public List<ThoiKhoaBieu> getTimeTablesBy7Days(ThoiKhoaBieu2DTO thoiKhoaBieu2DTO);
 	public List<ThoiKhoaBieu> getTeacherTimeTableByDay(long maGiaoVien, String theDate);
 	public List<ThoiKhoaBieu> getStudentTimeTableByDay(long maSinhVien, String theDate);
+	public List<ThoiKhoaBieu> getTimeTables(List<Long> listTKBArray);
+	public List<ThoiKhoaBieuCon> getTimeTableCons(List<Long> listTKBConArray);
+	public int deleteTimeTables(List<Long> listTKBArray);
+	public int deleteTimeTableCons(List<Long> listTKBConArray);
 }

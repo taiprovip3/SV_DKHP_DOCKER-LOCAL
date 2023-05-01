@@ -67,7 +67,6 @@ public class ThoiKhoaBieu implements Serializable{//TKB là TKB Lý thuyết
 	@JsonIgnoreProperties("thoiKhoaBieus")
 	private LopHocPhan lopHocPhan;
 
-	@JsonManagedReference
     @OneToMany(mappedBy = "thoiKhoaBieu")
     private List<ThoiKhoaBieuCon> thoiKhoaBieuCons;
 	

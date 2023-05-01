@@ -61,6 +61,7 @@ public class ThoiKhoaBieuImpl implements ThoiKhoaBieuService {
 		GiaoVien gv = giaoVienRepository.findById(thoiKhoaBieuDTO.getMaGiaoVien()).orElse(null);
 		ThoiKhoaBieu tkb = ThoiKhoaBieu
 				.builder()
+				.maThoiKhoaBieu(thoiKhoaBieuDTO.getMaThoiKhoaBieu())
 				.lopHocPhan(lhp)
 				.tuTietHoc(TietHoc.valueOf(thoiKhoaBieuDTO.getTuTietHoc()))
 				.denTietHoc(TietHoc.valueOf(thoiKhoaBieuDTO.getDenTietHoc()))
@@ -101,6 +102,7 @@ public class ThoiKhoaBieuImpl implements ThoiKhoaBieuService {
 		ThoiKhoaBieu tkbCha = thoiKhoaBieuRepository.findById(thoiKhoaBieuDTO.getChungWithMaThoiKhoaBieu()).orElse(null);
 		ThoiKhoaBieuCon tkbCon = ThoiKhoaBieuCon
 				.builder()
+				.maThoiKhoaBieuCon(thoiKhoaBieuDTO.getMaThoiKhoaBieuCon())
 				.tuTietHoc(TietHoc.valueOf(thoiKhoaBieuDTO.getTuTietHoc()))
 				.denTietHoc(TietHoc.valueOf(thoiKhoaBieuDTO.getDenTietHoc()))
 				.phongHoc(thoiKhoaBieuDTO.getPhongHoc())
@@ -234,5 +236,41 @@ public class ThoiKhoaBieuImpl implements ThoiKhoaBieuService {
 		}
 		Collections.sort(ls, new ThoiKhoaBieuComparator());
 		return ls;
+	}
+
+	@Override
+	public List<ThoiKhoaBieu> getTimeTables(List<Long> listTKBArray) {
+		Iterable<ThoiKhoaBieu> source = thoiKhoaBieuRepository.findAllById(listTKBArray);
+		List<ThoiKhoaBieu> target = new ArrayList<>();
+		source.forEach(target::add);
+		return target;
+	}
+
+	@Override
+	public List<ThoiKhoaBieuCon> getTimeTableCons(List<Long> listTKBConArray) {
+		Iterable<ThoiKhoaBieuCon> source = thoiKhoaBieuConRepository.findAllById(listTKBConArray);
+		List<ThoiKhoaBieuCon> target = new ArrayList<>();
+		source.forEach(target::add);
+		return target;
+	}
+
+	@Override
+	public int deleteTimeTables(List<Long> listTKBArray) {
+		try {
+			return thoiKhoaBieuRepository.deleteAllById(listTKBArray);
+		} catch (Exception e) {
+			System.out.println("Error -> " + e.getMessage());
+			return 0;
+		}
+	}
+
+	@Override
+	public int deleteTimeTableCons(List<Long> listTKBConArray) {
+		try {
+			return thoiKhoaBieuConRepository.deleteAllById(listTKBConArray);
+		} catch (Exception e) {
+			System.out.println("Error -> " + e.getMessage());
+			return 0;
+		}
 	}
 }

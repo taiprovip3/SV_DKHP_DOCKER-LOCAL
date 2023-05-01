@@ -2,9 +2,11 @@ package com.se.repo;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.se.entity.ThoiKhoaBieu;
 
@@ -34,5 +36,10 @@ public interface ThoiKhoaBieuRepository extends CrudRepository<ThoiKhoaBieu, Lon
 	public List<ThoiKhoaBieu> getTeacherTimeTableByDay(long maGiaoVien, String theDate);
 	@Query(value = "SELECT tkb.* FROM thoi_khoa_bieu tkb JOIN sinh_vien_lop_hoc_phan svlhp ON tkb.ma_thoi_khoa_bieu = svlhp.ma_thoi_khoa_bieu WHERE (?2 BETWEEN tkb.ngay_bat_dau AND tkb.ngay_ket_thuc) AND svlhp.ma_sinh_vien = ?1 AND tkb.thu_hoc = ?3", nativeQuery = true)
 	public List<ThoiKhoaBieu> getStudentTimeTableByDay(long maSinhVien, String theDate, String dayOfWeek);
+	
+	@Transactional
+    @Modifying
+    @Query("DELETE FROM ThoiKhoaBieu tkb WHERE tkb.maThoiKhoaBieu IN ?1")
+	int deleteAllById(List<Long> listTKBArray);
 }
 

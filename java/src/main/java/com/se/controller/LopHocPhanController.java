@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,5 +39,15 @@ public class LopHocPhanController {
 	@GetMapping("/unit_class/getUnitClassesById/{id}")
 	public LopHocPhan getUnitClassesById(@PathVariable long id) {
 		return lopHocPhanService.getUnitClassById(id);
+	}
+	
+	@PostMapping("/unit_class/getUnitClasses")
+	public List<LopHocPhan> getUnitClasses(@RequestBody List<Long> unitClassIds) {
+		return lopHocPhanService.getUnitClasses(unitClassIds);
+	}
+	
+	@PostMapping("/unit_class/deleteUnitClassess")
+	public int deleteUnitClassess(@RequestBody List<Long> unitClassIds) {
+		return lopHocPhanService.deleteUnitClassess(unitClassIds);
 	}
 }

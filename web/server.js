@@ -51,9 +51,9 @@ const con = mysql.createConnection({
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
-    connectTimeout: 45000, // tăng thời gian timeout lên 30 giây
-    acquireTimeout: 30000,
-    timeout: 30000,
+    connectTimeout: 60000, // tăng thời gian timeout lên 30 giây
+    acquireTimeout: 60000,
+    timeout: 60000,
 });
 con.connect(function(err) {
     if (err) {

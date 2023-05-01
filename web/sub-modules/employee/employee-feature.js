@@ -266,6 +266,47 @@ employeeFeatureRouter.post("/employee-crud-add-unit_class", upload.fields([]), a
     }
     return res.redirect("/employee");
 });
+employeeFeatureRouter.get("/employee-crud-update-unit_class", async (req, res) => {
+    try {
+        if(req.session.employee) {
+            const arraysString = req.query.arrays;
+            if(!arraysString || arraysString.length <= 0) {
+                throw new Error('Cheating arrays url!');
+            }
+            const listCheckBox = arraysString.split(",");
+            const response = await axios.post(javaUrl+"/api/unit_class/getUnitClasses", listCheckBox, {headers: {"Authorization": req.session.employee_token}});
+            return res.render("employee-crud-unit_class_u", { LIST_CHECKBOX: response.data, signal: null });
+        }
+        throw new Error('No token found!');
+    } catch (error) {
+        const routerName = req.baseUrl+req.route.path;
+        console.log(`error ${routerName}: ${error.message}`);
+        return res.redirect("/employee-crud-unit_class");
+    }
+});
+employeeFeatureRouter.get("/employee-crud-delete-unit_class", async (req, res) => {
+    const LIST_UNIT_CLASS = await getListUnitClass();
+    try {
+        if(req.session.employee) {
+            const arraysString = req.query.arrays;
+            if(!arraysString || arraysString.length <= 0) {
+                throw new Error('Cheating arrays url!');
+            }
+            const listCheckBox = arraysString.split(",");
+            const response = await axios.post(javaUrl+"/api/unit_class/deleteUnitClassess", listCheckBox, {headers: {"Authorization": req.session.employee_token}});
+            if(response.data) {
+                console.log(`Deleted total ${response.data} records!`);
+                return res.render('employee-crud-unit_class', {LIST_UNIT_CLASS, signal: "DELETE_SUCCESS"});
+            }
+            throw new Error('Internal server error');
+        }
+        throw new Error('No token found!');
+    } catch (error) {
+        const routerName = req.baseUrl+req.route.path;
+        console.log(`error -> ${routerName} -> ${error}`);
+        return res.render('employee-crud-unit_class', {LIST_UNIT_CLASS, signal: "FOREIGN_KEY_CONSTRAIN"});
+    }
+});
     //----- timetable routers -----\\
 employeeFeatureRouter.get("/employee-crud-time_table", async (req, res) => {
     if(req.session.employee) {
@@ -288,6 +329,89 @@ employeeFeatureRouter.post("/employee-crud-add-time_table", upload.fields([]), a
         return res.render("employee-crud-time_table", {LIST_TIME_TABLE, signal: "INTERNAL_SERVER_ERROR"});
     }
     return res.redirect("/employee");
+});
+employeeFeatureRouter.get("/employee-crud-update-time_table", async (req, res) => {
+    try {
+        if(req.session.employee) {
+            const { listTKB, listTKBCon } = req.query;
+            if(!listTKB && !listTKBCon) {
+                throw new Error('Cheating arrays url!');
+            }
+            let listTKBArray = [];
+            let listTKBConArray = [];
+            if(listTKB) {
+                listTKBArray = listTKB.split(",");
+            }
+            if(listTKBCon) {
+                listTKBConArray = listTKBCon.split(",");
+            }
+            const arrayTKBResponse = [];
+            const arrayTKBConResponse = [];
+            if(listTKBArray.length > 0) {
+                const response = await axios.post(javaUrl+"/api/time_table/getTimeTables", listTKBArray, {headers: {"Authorization": req.session.employee_token}});
+                if(response.data.length > 0) {
+                    arrayTKBResponse.push(...response.data);
+                }
+            }
+            if(listTKBConArray.length > 0) {
+                const response = await axios.post(javaUrl+"/api/time_table/getTimeTableCons", listTKBConArray, {headers: {"Authorization": req.session.employee_token}});
+                if(response.data.length > 0) {
+                    arrayTKBConResponse.push(...response.data);
+                }
+            }
+            return res.render("employee-crud-time_table_u", { LIST_TIME_TABLE_LT: arrayTKBResponse, LIST_TIME_TABLE_TH: arrayTKBConResponse, signal: null });
+        }
+        throw new Error('No token found!');
+    } catch (error) {
+        const routerName = req.baseUrl+req.route.path;
+        console.log(`error ${routerName}: ${error.message}`);
+        return res.redirect("/employee-crud-time_table");
+    }
+});
+employeeFeatureRouter.get("/employee-crud-delete-time_table", async (req, res) => {
+    const LIST_TIME_TABLE_LT = await getListTimeTable();
+    const LIST_TIME_TABLE_TH = await getListTimeTableCon();
+    const LIST_TIME_TABLE = LIST_TIME_TABLE_LT.concat(LIST_TIME_TABLE_TH);
+    try {
+        if(req.session.employee) {
+            const { listTKB, listTKBCon } = req.query;
+            if(!listTKB && !listTKBCon) {
+                throw new Error('Cheating arrays url!');
+            }
+            let listTKBArray = [];
+            let listTKBConArray = [];
+            if(listTKB) {
+                listTKBArray = listTKB.split(",");
+            }
+            if(listTKBCon) {
+                listTKBConArray = listTKBCon.split(",");
+            }
+            let totalDeletedRecords = 0;
+            if(listTKBArray.length > 0) {
+                const response = await axios.post(javaUrl+"/api/time_table/deleteTimeTables", listTKBArray, {headers: {"Authorization": req.session.employee_token}});
+                if(response.data) {
+                    console.log(`Deleted total ${response.data} records!`);
+                    totalDeletedRecords += response.data;
+                }
+            }
+            if(listTKBConArray.length > 0) {
+                const response = await axios.post(javaUrl+"/api/time_table/deleteTimeTableCons", listTKBConArray, {headers: {"Authorization": req.session.employee_token}});
+                if(response.data) {
+                    console.log(`Deleted total ${response.data} records!`);
+                    totalDeletedRecords += response.data;
+                }
+            }
+            if(totalDeletedRecords <= 0) {
+                throw new Error('Internal server error');
+            }
+            return res.render('employee-crud-time_table', {LIST_TIME_TABLE, signal: "DELETE_SUCCESS"});
+        }
+        throw new Error('No token found!');
+    } catch (error) {
+        const routerName = req.baseUrl+req.route.path;
+        console.log(`error -> ${routerName} -> ${error}`);
+        return res.render('employee-crud-time_table', {LIST_TIME_TABLE, signal: "FOREIGN_KEY_CONSTRAIN"});
+    }
 });
     //----- debt routers -----\\
 employeeFeatureRouter.get("/employee-crud-debt", async (req, res) => {
@@ -323,6 +447,11 @@ employeeFeatureRouter.post("/employee-crud-update-order-detail", upload.fields([
 });
 
     //----- common routers -----\\
+    function convertDateExcel (excelDate) {
+        // Get the number of milliseconds from Unix epoch.
+        const unixTime = (excelDate - 25569) * 86400 * 1000;
+        return new Date(unixTime);
+    }
 employeeFeatureRouter.get("/employee-crud-export", async (req, res) => {
     const entityName = req.query.entityName;
     let data = [];
@@ -332,24 +461,34 @@ employeeFeatureRouter.get("/employee-crud-export", async (req, res) => {
             break;
         case "class":
             data = await getListClass();
+            break;
         case "teacher":
             data = await getListTeacher();
+            break;
         case "course":
             data = await getListCourse();
+            break;
         case "department":
             data = await getListDepartment();
+            break;
         case "major":
             data = await getListMajors();
+            break;
         case "department_announcement":
             data = await getListAnnouncement();
+            break;
         case "unit_class":
             data = await getListUnitClass();
+            break;
         case "time_table":
             data = await getListTimeTable();
+            break;
         case "debt":
             data = await getListDebt();
+            break;
         case "order_detail":
             data = await getListOrderDetail();
+            break;
         default:
             break;
     }
@@ -383,32 +522,38 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
     if(req.session.employee) {
         try {
             let path = req.file.path;
-            var workbook = XLSX.readFile(path);
-            var sheet_name_list = workbook.SheetNames;
-            await Promise.all(sheet_name_list.map(async function (y) {
-                var worksheet = workbook.Sheets[y];
-                var headers = {};
-                var data = [];
+            let workbook = XLSX.readFile(path);
+            let sheet_name_list = workbook.SheetNames;
+            for(const y of sheet_name_list) {
+                let worksheet = workbook.Sheets[y];
+                let headers = {};
+                let data = [];
                 for (z in worksheet) {
-                if (z[0] === "!") continue;
-                var col = z.substring(0, 1);
-                var row = parseInt(z.substring(1));
-                var value = worksheet[z].v;
-                if (row == 1) {
-                    headers[col] = value;
-                    continue;
-                }
-                if (!data[row]) data[row] = {};
+                    if (z[0] === "!") continue;
+                    let col = z.substring(0, 1);
+                    let row = parseInt(z.substring(1));
+                    let value = worksheet[z].v;
+                    if (row == 1) {
+                        headers[col] = value;
+                        continue;
+                    }
+                    if (!data[row]) data[row] = {};
                     data[row][headers[col]] = value;
                 }
                 data.shift();
                 data.shift();
-                const emtityName = req.query.entityName;
-                switch (emtityName) {
+                const entityName = req.query.entityName;
+                switch (entityName) {
                     case "class":
                         for(let i=0;i<data.length;i++) {
                             const classData = data[i];
-                            const myClass = {tenLop: classData.ten_lop, soLuong: classData.so_luong, maGiaoVien:classData.ma_giao_vien, maKhoaHoc: classData.ma_khoa_hoc, maNganh: classData.ma_nganh};
+                            const myClass = {
+                                tenLop: classData.ten_lop,
+                                soLuong: classData.so_luong,
+                                maGiaoVien:classData.ma_giao_vien, 
+                                maKhoaHoc: classData.ma_khoa_hoc, 
+                                maNganh: classData.ma_nganh
+                            };
                             const response = await axios.post(javaUrl+"/api/class/add", myClass, {headers: {"Authorization": req.session.employee_token}});
                             if(!response.data) {
                                 throw new Error();
@@ -416,18 +561,17 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                         }
                         const LIST_CLASS = await getListClass();
                         return res.render("employee-crud-class", {LIST_CLASS, signal: "INSERT_SUCCESS"});
-                        break;
                     case "student":
                         for(let i=0;i<data.length;i++) {
                             const studentData = data[i];
                             const myStudent = {
                                 hoTen: studentData.ho_ten,
                                 gioiTinh: studentData.gioi_tinh,
-                                ngaySinh: studentData.ngay_sinh,
+                                ngaySinh: convertDateExcel(studentData.ngay_sinh).toISOString(),
                                 sdt: studentData.sdt,
                                 diaChi: studentData.dia_chi,
                                 cccd: studentData.cccd,
-                                ngayVaoTruong: studentData.ngay_vao_truong,
+                                ngayVaoTruong: convertDateExcel(studentData.ngay_vao_truong).toISOString(),
                                 totNghiep: studentData.tot_nghiep,
                                 maLopDanhNghia: studentData.ma_lop_danh_nghia,
                                 avatar: studentData.avatar,
@@ -454,7 +598,7 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                                 diaChi:teacherData.dia_chi,
                                 gioiTinh:teacherData.gioi_tinh,
                                 loaiGiaoVien:teacherData.loai_giao_vien,
-                                ngaySinh:teacherData.ngay_sinh,
+                                ngaySinh:teacherData.convertDateExcel(teacherData.ngay_sinh).toISOString(),
                                 sdt:teacherData.sdt,
                                 password:hash
                             };
@@ -486,16 +630,17 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                         for(let i=0;i<data.length;i++) {
                             const unitClassData = data[i];
                             const myUnitClass = {
-                                hanNopHocPhi: unitClassData.hanNopHocPhi,
-                                ngayBatDau: unitClassData.ngayBatDau,
-                                ngayKetThuc: unitClassData.ngayKetThuc,
-                                tenLopHocPhan: unitClassData.tenLopHocPhan,
-                                loaiHoc: unitClassData.loaiHoc,
-                                maGiaoVien: unitClassData.maGiaoVien,
-                                maMonHoc: unitClassData.maMonHoc,
-                                maKhoaHoc: unitClassData.maKhoaHoc,
-                                soLuongMax: unitClassData.soLuongMax,
-                                trangThai: unitClassData.trangThai,
+                                maLopHocPhan: unitClassData.ma_lop_hoc_phan,
+                                hanNopHocPhi: convertDateExcel(unitClassData.han_nop_hoc_phi).toISOString(),
+                                ngayBatDau: convertDateExcel(unitClassData.ngay_bat_dau).toISOString(),
+                                ngayKetThuc: convertDateExcel(unitClassData.ngay_ket_thuc).toISOString(),
+                                tenLopHocPhan: unitClassData.ten_lop_hoc_phan,
+                                loaiHoc: unitClassData.loai_hoc,
+                                maGiaoVien: unitClassData.ma_giao_vien,
+                                maMonHoc: unitClassData.ma_mon_hoc,
+                                maKhoaHoc: unitClassData.ma_khoa_hoc,
+                                soLuongMax: unitClassData.so_luong_max,
+                                trangThai: unitClassData.trang_thai,
                             };
                             const response = await axios.post(javaUrl+"/api/unit_class/add", myUnitClass, {headers: {"Authorization": req.session.employee_token}});
                             if(!response.data) {
@@ -507,20 +652,22 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                     case "time_table":
                         for(let i=0;i<data.length;i++) {
                             const timeTableData = data[i];
+                            let chungWithMaThoiKhoaBieu = timeTableData.chung_with_ma_thoi_khoa_bieu ? timeTableData.chung_with_ma_thoi_khoa_bieu : 0;
+                            const maLopHocPhan = chungWithMaThoiKhoaBieu ? timeTableData.ma_lop_hoc_phan_con : timeTableData.ma_lop_hoc_phan;
                             const myTimeTable = {
-                                maLopHocPhan: timeTableData.maLopHocPhan, 
-                                tuTietHoc: timeTableData.tuTietHoc,
-                                denTietHoc: timeTableData.denTietHoc,
-                                phongHoc: timeTableData.phongHoc,
-                                thuHoc: timeTableData.thuHoc,
+                                maLopHocPhan: maLopHocPhan, 
+                                tuTietHoc: timeTableData.tu_tiet_hoc,
+                                denTietHoc: timeTableData.den_tiet_hoc,
+                                phongHoc: timeTableData.phong_hoc,
+                                thuHoc: timeTableData.thu_hoc,
                                 thi: timeTableData.thi,
-                                ghiChu: timeTableData.ghiChu,
-                                loaiBuoiHoc: timeTableData.loaiBuoiHoc,
-                                nhomHoc: timeTableData.nhomHoc,
-                                chungWithMaThoiKhoaBieu: timeTableData.chungWithMaThoiKhoaBieu,
-                                ngayBatDau: timeTableData.ngayBatDau,
-                                ngayKetThuc: timeTableData.ngayKetThuc,
-                                maGiaoVien: timeTableData.maGiaoVien,
+                                ghiChu: timeTableData.ghi_chu,
+                                loaiBuoiHoc: timeTableData.loai_buoi_hoc,
+                                nhomHoc: timeTableData.nhom_hoc,
+                                chungWithMaThoiKhoaBieu: chungWithMaThoiKhoaBieu,
+                                ngayBatDau: convertDateExcel(timeTableData.ngay_bat_dau).toISOString(),
+                                ngayKetThuc: convertDateExcel(timeTableData.ngay_ket_thuc).toISOString(),
+                                maGiaoVien: timeTableData.ma_giao_vien,
                             };
                             const response = await axios.post(javaUrl+"/api/time_table/add", myTimeTable, {headers: {"Authorization": req.session.employee_token}});
                             if(!response.data) {
@@ -534,7 +681,7 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                     default:
                         break;
                 }
-            }));
+            }
         } catch (err) {
             // return res.status(500).json({ success: false, message: err.message });
             console.error(err);
@@ -575,6 +722,7 @@ employeeFeatureRouter.get('/employee-backup-sql', (req, res) => {
     }
 });
 
+// Chart datas
 employeeFeatureRouter.get('/employee-getCourses', async (req, res) => {
     if(!req.session.employee) {
         return res.redirect("/employee");

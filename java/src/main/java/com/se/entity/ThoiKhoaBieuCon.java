@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.se.enums.LoaiBuoiHoc;
 import com.se.enums.ThuHoc;
 import com.se.enums.TietHoc;
@@ -45,9 +46,9 @@ public class ThoiKhoaBieuCon implements Serializable {//TKBCon là TKB Thực H�
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long maThoiKhoaBieuCon;
 	
-	@JsonBackReference
 	@ManyToOne
     @JoinColumn(name = "maThoiKhoaBieu")
+	@JsonIgnoreProperties("thoiKhoaBieuCons")
     private ThoiKhoaBieu thoiKhoaBieu;
 	
 	@ManyToOne

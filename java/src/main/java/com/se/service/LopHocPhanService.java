@@ -10,4 +10,6 @@ public interface LopHocPhanService {
 	public List<LopHocPhan> getUnitClassesBySubjectIdAndLoaiHocAndMaKhoaHoc(long maMonHoc, String loaiHoc, long maKhoaHoc);
 	public List<LopHocPhan> getUnitClassesStudentRegisterByStudentIdAndMaKhoaHoc(long id, long maKhoaHoc);
 	public LopHocPhan getUnitClassById(long id);
+	public List<LopHocPhan> getUnitClasses(List<Long> unitClassIds);
+	public int deleteUnitClassess(List<Long> unitClassIds);
 }
