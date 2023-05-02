@@ -16,9 +16,18 @@
     <link rel="stylesheet" href="../css/button.css" type="text/css">
 </head>
 <body>
+    <% if(signal) { %>
+        <% if(signal == "INSERT_SUCCESS") { %>
+            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
+        <% } else {
+            if(signal == "INTERNAL_SERVER_ERROR") { %>
+                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
+            <% }
+        }
+    } %>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-2 border-end">
                 <a href="/employee" class="text-decoration-none">
                 <div class="py-3 px-1 navigation-item text-wrap"><i class="fas fa-fire"></i>&ensp;Trang chủ</div>
                 </a>
@@ -54,29 +63,18 @@
                 </a>
             </div>
             <div class="col-lg-10 position-relative overflow-auto" style="max-height: 100vh;">
-                <div>
-                    <% if(signal) { %>
-                        <% if(signal == "INSERT_SUCCESS") { %>
-                            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
-                        <% } else {
-                            if(signal == "INTERNAL_SERVER_ERROR") { %>
-                                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
-                            <% }
-                        }
-                    } %>
-                </div>
-                <p class="fw-bold"><a href="/employee">Home</a> / <a href="javascript:void(0)">Manage class</a></p>
+                <p class="fw-bold"><a href="./employee">Home</a> / <a href="javascript:void(0)">Manage class</a></p>
                 <div class="d-flex">
-                    <form action="/employee-crud-class-excel-import" enctype="multipart/form-data" method="POST">
-                    <div id="left_action"  class="d-flex align-items-center">
-                        <button type="button" class="import-button" data-bs-toggle="modal" data-bs-target="#addModal">Thêm lớp mới <i class="fas fa-pen-square text-warning"></i></button>
-                        <div>&emsp;</div>
-                        <button class="import-button" type="button"><label for="excel_file" class="crs">Nhập từ file excel</label> <i class="text-success fas fa-file-excel text-success"></i></button>
-                        <input type="file" name="excel_file" id="excel_file" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                        <div>&emsp;</div>
-                        <button class="d-none import-button" id="btn-import" type="submit">Import <i class="fas fa-cloud-upload"></i></button>
-                        <button class="import-button" type="button" id="btn-export-excel">Xuất bảng excel <i class="fas fa-file-export text-white"></i></button>
-                    </div>
+                    <form action="./employee-crud-import?entityName=class" enctype="multipart/form-data" method="POST">
+                        <div id="left_action"  class="d-flex align-items-center">
+                            <button type="button" class="import-button" data-bs-toggle="modal" data-bs-target="#addModal">Thêm lớp mới <i class="fas fa-pen-square text-warning"></i></button>
+                            <div>&emsp;</div>
+                            <button class="import-button" type="button"><label for="excel_file" class="crs">Nhập từ file excel</label> <i class="text-success fas fa-file-excel text-success"></i></button>
+                            <input type="file" name="excel_file" id="excel_file" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                            <div>&emsp;</div>
+                            <button class="d-none import-button" id="btn-import" type="submit">Import <i class="fas fa-cloud-upload"></i></button>
+                            <button class="import-button" type="button" id="btn-export-excel">Xuất bảng excel <i class="fas fa-file-export text-white"></i></button>
+                        </div>
                     </form>
                     <div id="right_action" style="position: absolute;">
                         <button id="action_delete">Xoá</button>

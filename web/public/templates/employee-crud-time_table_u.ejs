@@ -27,7 +27,7 @@
     } %>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-2 border-end">
                 <a href="/employee" class="text-decoration-none">
                 <div class="py-3 px-1 navigation-item text-wrap"><i class="fas fa-fire"></i>&ensp;Trang chủ</div>
                 </a>
@@ -67,7 +67,7 @@
                 <p class="fw-bold">Thêm TKB mới cho lớp học phần:</p>
 
                 <% for(let i=0;i<LIST_TIME_TABLE_LT.length;i++) { %>
-                    <form action="/employee-crud-add-time_table" method="post" enctype="multipart/form-data" class="border p-3 position-relative">
+                    <form action="./employee-crud-add-time_table" method="post" enctype="multipart/form-data" class="border p-3 position-relative">
                         <div class="w-50 mw-50">
                             <label for="maThoiKhoaBieuCon" class="form-label">Mã TKB Lý Thuyết:</label>
                             <input type="text" name="maThoiKhoaBieuCon" id="maThoiKhoaBieuCon" value="<%= LIST_TIME_TABLE_LT[i].maThoiKhoaBieu %>" class="form-control" readonly>
@@ -176,7 +176,7 @@
                 <% } %>
                         
                 <% for(let i=0;i<LIST_TIME_TABLE_TH.length;i++) { %>
-                    <form action="/employee-crud-add-time_table" method="post" enctype="multipart/form-data" class="border p-3 position-relative">
+                    <form action="./employee-crud-add-time_table" method="post" enctype="multipart/form-data" class="border p-3 position-relative">
                         <div class="w-50 mw-50">
                             <label for="maThoiKhoaBieuCon" class="form-label">Mã TKB Thực Hành:</label>
                             <input type="text" name="maThoiKhoaBieuCon" id="maThoiKhoaBieuCon" value="<%= LIST_TIME_TABLE_TH[i].maThoiKhoaBieuCon %>" class="form-control" readonly>

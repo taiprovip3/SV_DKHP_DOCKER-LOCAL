@@ -38,7 +38,7 @@
     } %>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-2 border-end">
                 <a href="/employee" class="text-decoration-none">
                 <div class="py-3 px-1 navigation-item text-wrap"><i class="fas fa-fire"></i>&ensp;Trang chủ</div>
                 </a>
@@ -74,7 +74,7 @@
                 </a>
             </div>
             <div class="col-lg-10 position-relative overflow-auto" style="max-height: 100vh;">
-                <p class="fw-bold"><a href="/employee">Home</a> / <a href="javascript:void(0)">Manage time table</a></p>
+                <p class="fw-bold"><a href="./employee">Home</a> / <a href="javascript:void(0)">Manage time table</a></p>
                 <p class="fw-bold">Thêm TKB mới cho lớp học phần: <span data-bs-toggle="tooltip" data-bs-placement="top" title="Đối với thời khóa biểu thực hành thì vui lòng thêm trường (cột) `chung_with_ma_thoi_khoa_bieu` và nhập 'mã thời khóa biểu lý thuyết' mà thời khóa biểu này sẽ thuộc về trong file excel import!"><i class="far fa-question-circle"></i></span></p>
                 <div class="border p-3 position-relative">
                     <form action="./employee-crud-import?entityName=time_table" enctype="multipart/form-data" method="POST">
@@ -190,7 +190,7 @@
                         <button type="submit" class="btn btn-lg px-5 my-1 text-white" style="background: rgb(121, 250, 164);">Xác nhận</button>
                         <div class="position-absolute bottom-0 end-0 d-flex">
                             <button type="button" id="action_update" class="mx-1 btn-secondary btn-xs px-1">Sửa</button>
-                            <button type="button" id="action_delete" class="mx-1 btn-secondary btn-xs px-1 text-warning">Xoá</button>
+                            <button type="button" id="action_delete" class="mx-1 btn-secondary btn-xs px-1">Xoá</button>
                         </div>
                     </form>
                 </div>

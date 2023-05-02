@@ -44,5 +44,4 @@ public class ThongBaoKhoa implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maKhoa", nullable = false)
 	private Khoa khoa;
-	
 }

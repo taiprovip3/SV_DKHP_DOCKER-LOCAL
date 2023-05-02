@@ -452,6 +452,12 @@ employeeFeatureRouter.post("/employee-crud-update-order-detail", upload.fields([
         const unixTime = (excelDate - 25569) * 86400 * 1000;
         return new Date(unixTime);
     }
+    function parseBuffer(buffer) {
+        const encodedJsonObject = Buffer.from(JSON.stringify(buffer)).toString('base64');
+        const decodedJsonObject = Buffer.from(encodedJsonObject, 'base64').toString('ascii');
+        return JSON.parse(decodedJsonObject).data == 1 ? true : false;
+    }
+      
 employeeFeatureRouter.get("/employee-crud-export", async (req, res) => {
     const entityName = req.query.entityName;
     let data = [];
@@ -564,22 +570,26 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                     case "student":
                         for(let i=0;i<data.length;i++) {
                             const studentData = data[i];
+                            const matKhau = studentData.mat_khau ? studentData.mat_khau : '<%= process.env.DEFAULT_HASH_GENERATE_PASSWORD %>';
+                            const salt = bcrypt.genSaltSync(10);
+                            const hash = bcrypt.hashSync(matKhau, salt);
                             const myStudent = {
                                 hoTen: studentData.ho_ten,
                                 gioiTinh: studentData.gioi_tinh,
                                 ngaySinh: convertDateExcel(studentData.ngay_sinh).toISOString(),
+                                noiSinh: studentData.noi_sinh,
                                 sdt: studentData.sdt,
                                 diaChi: studentData.dia_chi,
                                 cccd: studentData.cccd,
                                 ngayVaoTruong: convertDateExcel(studentData.ngay_vao_truong).toISOString(),
-                                totNghiep: studentData.tot_nghiep,
+                                totNghiep: parseBuffer(studentData.tot_nghiep),
                                 maLopDanhNghia: studentData.ma_lop_danh_nghia,
                                 avatar: studentData.avatar,
-                                matKhau: bcrypt.hashSync(studentData.mat_khau, 10),
+                                matKhau: hash,
                                 bacDaoTao: studentData.bac_dao_tao,
                                 loaiHinhDaoTao: studentData.loai_hinh_dao_tao,
                                 coSo: studentData.co_so,
-                                email: studentData.email,
+                                email: studentData.email ? studentData.email : '',
                             };
                             const response = await axios.post(javaUrl+"/api/student/add", myStudent, {headers: {"Authorization": req.session.employee_token}});
                             if(!response.data) {
@@ -591,8 +601,9 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                     case "teacher":
                         for(let i=0;i<data.length;i++) {
                             const teacherData = data[i];
+                            const matKhau = teacherData.mat_khau ? teacherData.mat_khau : '<%= process.env.DEFAULT_HASH_GENERATE_PASSWORD %>'
                             const salt = bcrypt.genSaltSync(10);
-                            const hash = bcrypt.hashSync(teacherData.mat_khau, salt);
+                            const hash = bcrypt.hashSync(matKhau, salt);
                             const myTeacher = {
                                 tenGiaoVien:teacherData.ten_giao_vien,
                                 diaChi:teacherData.dia_chi,
@@ -679,6 +690,7 @@ employeeFeatureRouter.post("/employee-crud-import", upload.single("excel_file"),
                         const LIST_TIME_TABLE = LIST_TIME_TABLE_LT.concat(LIST_TIME_TABLE_TH);
                         return res.render("employee-crud-time_table", {LIST_TIME_TABLE, signal: "INSERT_SUCCESS"});
                     default:
+                        console.log('Error cheating url found!');
                         break;
                 }
             }

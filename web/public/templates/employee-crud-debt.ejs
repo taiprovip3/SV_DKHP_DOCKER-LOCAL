@@ -17,9 +17,18 @@
     <link rel="stylesheet" href="../css/button.css" type="text/css">
 </head>
 <body>
+    <% if(signal) { %>
+        <% if(signal == "INSERT_SUCCESS") { %>
+            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
+        <% } else {
+            if(signal == "INTERNAL_SERVER_ERROR") { %>
+                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
+            <% }
+        }
+    } %>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-2 border-end">
                 <a href="/employee" class="text-decoration-none">
                 <div class="py-3 px-1 navigation-item text-wrap"><i class="fas fa-fire"></i>&ensp;Trang chủ</div>
                 </a>
@@ -55,17 +64,6 @@
                 <!-- </a> -->
             </div>
             <div class="col-lg-10 position-relative overflow-auto" style="height: 100vh;">
-                <div>
-                    <% if(signal) { %>
-                        <% if(signal == "INSERT_SUCCESS") { %>
-                            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
-                        <% } else {
-                            if(signal == "INTERNAL_SERVER_ERROR") { %>
-                                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
-                            <% }
-                        }
-                    } %>
-                </div>
                 <div class="d-flex">
                     <div class="border-end me-1 pe-1" style="max-width: 50%;">
                         <span class="fs-5">Danh sách công nợ:</span>

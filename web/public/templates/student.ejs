@@ -188,16 +188,26 @@
                 <div class="position-absolute end-0 top-0 d-flex">
                     <div class="me-3 position-relative" onclick="audio.play();">
                         <i class="far fa-bell pt-1 dropdown-toggle crs" data-bs-toggle="dropdown" style="font-size: larger; font-weight: 900;"></i>
-                        <ul class="dropdown-menu mw-100 text-truncate">
-                            <% for(let i=0; i<LIST_NOTIFICATION.length; i++) { %>
-                                <li onclick="audio.play();">
-                                    <a class="dropdown-item" href="javascript:void(0);" id="<%= LIST_NOTIFICATION[i].maThongBao %>" onclick="ShowDetailsNotification(this.id);"><%= LIST_NOTIFICATION[i].tieuDe %></a>
-                                </li>
-                            <% } %>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="bg-light"><a class="dropdown-item text-danger" href="/student/clear-notifications">Xoá tất cả</a></li>
-                        </ul>
-                        <div class="position-absolute fw-bold end-0 small"><%= LIST_NOTIFICATION.length %></div>
+                        <div class="dropdown-menu mw-100 text-truncate">
+                            <ul class="list-unstyled" style="max-height: 50vh;">
+                                <li class="bg-light"><a class="dropdown-item disabled" href="javascript:void(0);">Thông báo cá nhân:</a></li>
+                                <% for(let i=0; i<LIST_ANNOUNCEMENT.length; i++) { %>
+                                    <li onclick="audio.play();">
+                                        <a class="dropdown-item border-bottom" href="javascript:void(0);" id="<%= LIST_ANNOUNCEMENT[i].id %>" onclick="ShowDetailSelfNotification(this.id);"><%= LIST_ANNOUNCEMENT[i].id %>. <%= LIST_ANNOUNCEMENT[i].title %></a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                            <ul class="list-unstyled" style="max-height: 50vh;">
+                                <li class="bg-light"><a class="dropdown-item disabled" href="javascript:void(0);">Thông báo khoa:</a></li>
+                                <% for(let i=0; i<LIST_DEPARTMENT_ANNOUNCEMENT.length; i++) { %>
+                                    <li onclick="audio.play();">
+                                        <a class="dropdown-item border-bottom" href="javascript:void(0);" id="<%= LIST_DEPARTMENT_ANNOUNCEMENT[i].maThongBao %>" onclick="ShowDetailDepartmentNotification(this.id);"><%= LIST_ANNOUNCEMENT[i].maThongBao %>. <%= LIST_DEPARTMENT_ANNOUNCEMENT[i].tieuDe %></a>
+                                    </li>
+                                <% } %>
+                                <li class="bg-light"><a class="dropdown-item text-danger" href="/student/clear-notifications">Xoá tất cả</a></li>
+                            </ul>
+                        </div>
+                        <div class="position-absolute fw-bold end-0 small"><%= LIST_DEPARTMENT_ANNOUNCEMENT.length %></div>
                     </div>
                     <div class="px-2" onclick="audio.play();">
                         <div class="d-flex align-items-center crs" data-bs-toggle="dropdown">
@@ -317,8 +327,8 @@
     </div>
 </div>
 <!-- The Modal -->
-<div class="modal" id="ChangePasswordModal">
-    <div class="modal-dialog">
+<div class="modal fade" id="ChangePasswordModal">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <!-- Modal body -->
@@ -499,10 +509,10 @@ $(document).ready(function(){
     });
 
 });
-function ShowDetailsNotification(notificationId) {
+function ShowDetailDepartmentNotification(notificationId) {
     $.ajax({
         type: "POST",
-        url: pathNodejs+"/student/getNotificationById",
+        url: pathNodejs+"/student/getDepartmentNotificationById",
         data: JSON.stringify({maThongBao: notificationId}),
         contentType: 'application/json',
         success: function(data) {
@@ -514,6 +524,26 @@ function ShowDetailsNotification(notificationId) {
             if(result < 10)
                 result = "0" + result;
             $("#DetailsNotificationSpanContent").text(data.noiDung);
+            $("#DetailsNotificationSpanDaysAgo").text("(" + result + " ngày trước)");
+            $("#DetailsNotificationModal").modal('toggle');     
+        }
+    });
+}
+function ShowDetailSelfNotification(notificationId) {
+    $.ajax({
+        type: "POST",
+        url: pathNodejs+"/student/getSelfNotificationById",
+        data: JSON.stringify({id: notificationId}),
+        contentType: 'application/json',
+        success: function(data) {
+            const d = new Date(data.createAt);
+            const d2 = new Date();
+            const diff = Math.abs(d2 - d);
+            const one_day=1000*60*60*24;
+            let result = Math.round(diff/one_day);
+            if(result < 10)
+                result = "0" + result;
+            $("#DetailsNotificationSpanContent").text(data.message);
             $("#DetailsNotificationSpanDaysAgo").text("(" + result + " ngày trước)");
             $("#DetailsNotificationModal").modal('toggle');     
         }

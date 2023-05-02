@@ -11,4 +11,6 @@ import com.se.entity.ThongBaoKhoa;
 
 @Repository
 public interface ThongBaoRepository extends CrudRepository<ThongBao, Long> {
+	@Query(value = "SELECT * FROM thong_bao WHERE ma_sinh_vien = ?1", nativeQuery = true)
+	public List<ThongBao> getNotificationsByStudentId(long studentId);
 }

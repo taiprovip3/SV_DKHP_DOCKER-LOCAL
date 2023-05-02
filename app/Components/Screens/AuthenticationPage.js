@@ -110,7 +110,6 @@ const AuthenticationPage = ({ navigation }) => {
       if(response.data) {
           setToken(response.data);
           const response2 = await axios.get(LOCAL_JAVA_API_URL+"/api/student/getStudentById/"+maSinhVien, {headers: {"Authorization": response.data}});
-          
           setCurrentUser(response2.data);
           Toast.show({
             type: 'success',
@@ -123,7 +122,7 @@ const AuthenticationPage = ({ navigation }) => {
           }
           setTimeout(() => {
             navigation.navigate("Homepage");
-          }, 500);
+          }, 100);
       } else {
         Toast.show({
           type: 'error',
@@ -203,7 +202,6 @@ const AuthenticationPage = ({ navigation }) => {
           </Box>
       </Box>
     </NativeBaseProvider>
-    
   )
 };
 

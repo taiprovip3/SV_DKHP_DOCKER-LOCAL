@@ -3,7 +3,7 @@ package com.se.dto;
 import lombok.Data;
 
 @Data
-public class ThongBaoDto {
+public class ThongBaoDTO {
 	private String title;
 	private String message;
 	private String linking;

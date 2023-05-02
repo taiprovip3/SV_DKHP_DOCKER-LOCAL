@@ -3,6 +3,7 @@ package com.se.dao;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,14 @@ public class ThongBaoKhoaImpl implements ThongBaoKhoaService {
 
 	@Override
 	public List<ThongBaoKhoa> getNotificationsByStudentId(Long studentId) {
-		SinhVien sv = sinhVienRepository.findById(studentId).orElse(null);
-		long maKhoa = sv.getLopHocDanhNghia().getNganh().getKhoa().getMaKhoa();
-		return thongBaoKhoaRepository.getNotificationsByDeparmentId(maKhoa);
+		try {
+			SinhVien sv = sinhVienRepository.findById(studentId).orElse(null);
+			long maKhoa = sv.getLopHocDanhNghia().getNganh().getKhoa().getMaKhoa();
+			return thongBaoKhoaRepository.getNotificationsByDeparmentId(maKhoa);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<ThongBaoKhoa>();
+		}
 	}
 
 	@Override

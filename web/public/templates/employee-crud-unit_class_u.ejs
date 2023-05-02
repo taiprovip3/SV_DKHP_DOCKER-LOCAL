@@ -31,7 +31,7 @@
     %>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-2 border-end">
                 <a href="/employee" class="text-decoration-none">
                 <div class="py-3 px-1 navigation-item text-wrap"><i class="fas fa-fire"></i>&ensp;Trang chủ</div>
                 </a>
@@ -68,13 +68,9 @@
             </div>
             <div class="col-lg-10 position-relative overflow-auto" style="height: 100vh;">
                 <p class="fw-bold"><a href="./employee">Home</a> / <a href="./employee-crud-unit_class">Manage unit classe</a> / <a href="javascript:void(0)">Update unit classe</a></p>
-
-
-
                 <%
                     for(let i=0;i<LIST_CHECKBOX.length;i++) { %>
-                
-                    <form action="/employee-crud-add-unit_class" method="post" enctype="multipart/form-data" class="border p-3 position-relative">
+                    <form action="./employee-crud-add-unit_class" method="post" enctype="multipart/form-data" class="border p-3 position-relative">
                         <div class="w-50 mw-50">
                             <label for="maLopHocPhan" class="form-label">Mã LHP:</label>
                             <input type="text" name="maLopHocPhan" id="maLopHocPhan" value="<%= LIST_CHECKBOX[i].maLopHocPhan %>" class="form-control" readonly>
@@ -137,8 +133,6 @@
                     </form>
                 <% }
                 %>
-
-
             </div>
         </div>
     </div>

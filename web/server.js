@@ -253,7 +253,8 @@ async function renderStudentHomepage(req,res,signal){
             ma_first_khoa_hoc = response4.data[0].maKhoaHoc;
         const response5 = await axios.get(javaUrl+"/api/subject/getListSinhVienDangKyHocPhanByMaSinhVienAndMaKhoaHoc/"+ma_sinh_vien+"/"+ma_first_khoa_hoc, {headers: {"Authorization": token}});
         const response6 = await axios.get(javaUrl+"/api/department_announcement/getNotificationsByStudentId/"+ma_sinh_vien, {headers: {"Authorization": token}});
-        return res.render("student", { STUDENT_DATA: response1.data, currentTinChi: response2.data, requireTinChi: response3.data, LIST_COURSE: response4.data, LIST_FIRST_UNIT_SUBJECT: response5.data, LIST_NOTIFICATION: response6.data, signal: signal });
+        const response7 = await axios.get(javaUrl+"/api/announcement/getNotificationsByStudentId/"+ma_sinh_vien, {headers: {"Authorization": token}});
+        return res.render("student", { STUDENT_DATA: response1.data, currentTinChi: response2.data, requireTinChi: response3.data, LIST_COURSE: response4.data, LIST_FIRST_UNIT_SUBJECT: response5.data, LIST_DEPARTMENT_ANNOUNCEMENT: response6.data, LIST_ANNOUNCEMENT: response7.data, signal: signal });
     } catch (error) {
         console.log('req=', req.session.student);
         console.error(error);
@@ -282,13 +283,25 @@ app.post("/student-login", upload.fields([]), async (req, res) => {
         }
     }
 });
-app.post("/student/getNotificationById", async (req, res) => {
+app.post("/student/getDepartmentNotificationById", async (req, res) => {
     if(!req.session.jwt_token) {
         const LIST_ANNOUNCEMENT = await getListAnnouncement();
         return res.render("student-login", {LIST_ANNOUNCEMENT, error: null});
     } else {
         const maThongBao = req.body.maThongBao;
         const response = await axios.get(javaUrl+"/api/department_announcement/getNotificationById/"+maThongBao, {headers: {"Authorization": req.session.jwt_token}});
+        if(response.data)
+            return res.send(response.data);
+        return res.send(null);
+    }
+});
+app.post("/student/getSelfNotificationById", async (req, res) => {
+    if(!req.session.jwt_token) {
+        const LIST_ANNOUNCEMENT = await getListAnnouncement();
+        return res.render("student-login", {LIST_ANNOUNCEMENT, error: null});
+    } else {
+        const id = req.body.id;
+        const response = await axios.get(javaUrl+"/api/announcement/getNotificationById/"+id, {headers: {"Authorization": req.session.jwt_token}});
         if(response.data)
             return res.send(response.data);
         return res.send(null);
@@ -1054,9 +1067,18 @@ app.post("/student/payment/resolvePaymentStudentWallet", async (req, res) => {
             });
             const toEmail = order_detail.data.sinhVien.taiKhoan.email;
             if(toEmail) {
-                //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
+                // Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
                 sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, products, studentId, 'SỐ DƯ VÍ', totalPayed, balanceLeft.data, toEmail);
-            } 
+            }
+            // Tạo thông báo web
+            const thongBaoDTO = {
+                title: 'Giao dịch diện tử',
+                message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                linking: 'https://erukalearn.ddns.net',
+                isRead: false,
+                studentId: studentId,
+            }
+            const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
             return res.send({text: ghiChu, icon: "success"});
         } catch (error) {
             console.log("Server catch an error (resolvePaymentStudentWallet): ", error);

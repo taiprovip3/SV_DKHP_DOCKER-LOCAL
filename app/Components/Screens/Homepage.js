@@ -27,7 +27,6 @@ const Homepage = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
   const [ currentTinChi, setCurrentTinChi ] = React.useState(10);
   const [ requiredTinChi, setRequiredTinChi ] = React.useState(100);
-  const [showPassword, setShowPassword] = React.useState(false);
   const bacDaoTaoShortCut = { DAI_HOC: 'Đại học', CAO_DANG: 'Cao đẳng' };
   const loaiHinhDaoTaoShortCut = { CHAT_LUONG_CAO: 'Chất lượng cao', DAI_TRA: 'Đại trà' };
   const coSoShortCut = { HA_NOI: 'Hà Nội', HO_CHI_MINH: 'Hồ Chí Minh' };
@@ -47,6 +46,7 @@ const Homepage = ({ navigation }) => {
     navigation.navigate("AuthenicationPage");
   }
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
   const [optionModalVisible, setOptionModalVisible] = React.useState(false);
   const [studentInfoVisible, setStudentInfoVisible] = React.useState(false);
   const [currentPassword, setCurrentPassword] = React.useState("");

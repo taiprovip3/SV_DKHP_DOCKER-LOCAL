@@ -169,7 +169,11 @@ public class ThoiKhoaBieuImpl implements ThoiKhoaBieuService {
 
 	@Override
 	public List<ThoiKhoaBieu> getTeacherTimeTableByDay(long maGiaoVien, String theDate) {
-		return thoiKhoaBieuRepository.getTeacherTimeTableByDay(maGiaoVien, theDate);
+		String dayOfWeek = this.getDayOfWeek(theDate);
+		List<ThoiKhoaBieu> listThoiKhoaBieu = thoiKhoaBieuRepository.getTeacherTimeTableByDay(maGiaoVien, theDate, dayOfWeek);
+		List<ThoiKhoaBieuCon> listThoiKhoaBieuCon = thoiKhoaBieuConRepository.getTeacherTimeTableByDay(maGiaoVien, theDate, dayOfWeek);
+		List<ThoiKhoaBieu> ls = this.mixTimeTable(listThoiKhoaBieu, listThoiKhoaBieuCon);
+		return ls;
 	}
 
 	@Override

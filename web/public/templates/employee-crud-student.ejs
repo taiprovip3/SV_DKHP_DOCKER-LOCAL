@@ -17,9 +17,34 @@
     <link rel="stylesheet" href="../css/button.css" type="text/css">
 </head>
 <body>
+    <% if(signal) { %>
+        <% if(signal == "INSERT_SUCCESS") { %>
+            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
+        <% } else {
+            if(signal == "INTERNAL_SERVER_ERROR") { %>
+                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
+            <% }
+        }
+    } %>
+    <%
+        const loaiHinhDaoTaoShortCut = {CHAT_LUONG_CAO: 'Chất Lượng Cao', DAI_TRA: 'Đại Trà'};
+        const bacDaoTaoShortCut = { DAI_HOC: 'Đại Học', CAO_DANG: 'Cao Đẳng' };
+        const coSoShortCut = { HO_CHI_MINH: 'Hồ Chí Minh', HA_NOI: 'Hà Nội' };
+
+        function formatNumber(number) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+        }
+        function formatDate(date){
+            let mydate = new Date(date);
+            let d = mydate.getDate();
+            let m = mydate.getMonth() + 1;
+            let y = mydate.getFullYear();
+            return (d <= 9 ? '0' + d : d) + "/" + (m<=9 ? '0' + m : m) + "/" + y;
+        }
+    %>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-2 border-end">
                 <a href="/employee" class="text-decoration-none">
                 <div class="py-3 px-1 navigation-item text-wrap"><i class="fas fa-fire"></i>&ensp;Trang chủ</div>
                 </a>
@@ -53,29 +78,18 @@
                 </a>
             </div>
             <div class="col-lg-10 position-relative overflow-auto" style="max-height: 100vh;">
-                <div>
-                    <% if(signal) { %>
-                        <% if(signal == "INSERT_SUCCESS") { %>
-                            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
-                        <% } else {
-                            if(signal == "INTERNAL_SERVER_ERROR") { %>
-                                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
-                            <% }
-                        }
-                    } %>
-                </div>
-                <p class="fw-bold"><a href="/employee">Home</a> / <a href="javascript:void(0)">Manage student</a></p>
+                <p class="fw-bold"><a href="./employee">Home</a> / <a href="javascript:void(0)">Manage student</a></p>
                 <div class="d-flex">
-                    <form action="/employee-crud-class-excel-import" enctype="multipart/form-data" method="POST">
-                    <div id="left_action"  class="d-flex align-items-center">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#addModal" class="import-button">Thêm hồ sơ <i class="fas fa-pen-square text-warning"></i></button>
-                        <div>&emsp;</div>
-                        <button class="import-button" type="button"><label for="excel_file" class="crs">Nhập từ file excel</label> <i class="fas fa-file-excel text-success"></i></button>
-                        <input type="file" name="excel_file" id="excel_file" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                        <div>&emsp;</div>
-                        <button class="d-none import-button" id="btn-import" type="submit">Import <i class="fas fa-cloud-upload"></i></button>
-                        <button class="import-button" type="button" id="btn-export-excel">Export excel <i class="fas fa-file-export text-white"></i></button>
-                    </div>
+                    <form action="./employee-crud-import?entityName=student" enctype="multipart/form-data" method="POST">
+                        <div id="left_action"  class="d-flex align-items-center">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#addModal" class="import-button">Thêm hồ sơ <i class="fas fa-pen-square text-warning"></i></button>
+                            <div>&emsp;</div>
+                            <button class="import-button" type="button"><label for="excel_file" class="crs">Nhập từ file excel</label> <i class="fas fa-file-excel text-success"></i></button>
+                            <input type="file" name="excel_file" id="excel_file" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                            <div>&emsp;</div>
+                            <button class="d-none import-button" id="btn-import" type="submit">Import <i class="fas fa-cloud-upload"></i></button>
+                            <button class="import-button" type="button" id="btn-export-excel">Export excel <i class="fas fa-file-export text-white"></i></button>
+                        </div>
                     </form>
                     <div id="right_action" style="position: absolute;">
                         <button id="action_delete">Xoá</button>
@@ -108,23 +122,8 @@
                         </thead>
                         <form id="myForm" method="post" enctype="multipart/form-data">
                         <% for(let i=0; i<LIST_STUDENT.length ;i++) { %>
-                            <% var encodedJsonObject = Buffer.from(JSON.stringify(LIST_STUDENT[i].tot_nghiep)).toString('base64'); %>
+                            <% const encodedJsonObject = Buffer.from(JSON.stringify(LIST_STUDENT[i].tot_nghiep)).toString('base64'); %>
                             <% const decodedJsonObject = Buffer.from(encodedJsonObject, 'base64').toString('ascii'); %>
-                            <% const loaiHinhDaoTaoShortCut = {CHAT_LUONG_CAO: 'Chất Lượng Cao', DAI_TRA: 'Đại Trà'} %>
-                            <% const bacDaoTaoShortCut = { DAI_HOC: 'Đại Học', CAO_DANG: 'Cao Đẳng' } %>
-                            <% const coSoShortCut = { HO_CHI_MINH: 'Hồ Chí Minh', HA_NOI: 'Hà Nội' } %>
-                            <%
-                                function formatNumber(number) {
-                                    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
-                                }
-                                function formatDate(date){
-                                    let mydate = new Date(date);
-                                    let d = mydate.getDate();
-                                    let m = mydate.getMonth() + 1;
-                                    let y = mydate.getFullYear();
-                                    return (d <= 9 ? '0' + d : d) + "/" + (m<=9 ? '0' + m : m) + "/" + y;
-                                }
-                            %>
                             <tr class="small">
                                 <td class="text-truncate">
                                     <input type="checkbox" name="<%= LIST_STUDENT[i].ma_sinh_vien %>" id="<%= LIST_STUDENT[i].ma_sinh_vien %>" class="myCheckBoxClass">

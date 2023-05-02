@@ -156,8 +156,6 @@ const Timetable = ({ navigation }) => {
                 default:
                     break;
             }
-
-
             let currentDateMonth = current_date.getMonth()+1;
             if(currentDateMonth < 10) currentDateMonth = "0"+currentDateMonth;
             let currentDateDate = current_date.getDate();
