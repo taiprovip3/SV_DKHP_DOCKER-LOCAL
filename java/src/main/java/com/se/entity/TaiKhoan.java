@@ -12,7 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.se.entity.security.User;
 import com.se.enums.LoaiTaiKhoan;
@@ -39,6 +43,7 @@ public class TaiKhoan implements Serializable{
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	private String email;
+	private String email_edu;
 	@Enumerated(EnumType.STRING)
 	private LoaiTaiKhoan type;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

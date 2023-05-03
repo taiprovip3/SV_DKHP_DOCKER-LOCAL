@@ -55,6 +55,7 @@ public class GiaoVienImpl implements GiaoVienService{
 			TaiKhoan tk = TaiKhoan
 					.builder()
 					.email(null)
+					.email_edu(null)
 					.type(LoaiTaiKhoan.GIAO_VIEN)
 					.user(u)
 					.build();

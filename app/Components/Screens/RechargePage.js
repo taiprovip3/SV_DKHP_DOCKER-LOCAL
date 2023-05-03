@@ -12,6 +12,7 @@ import { Alert } from 'react-native';
 import { formatCurrency } from '../Utilities/formatCurrency';
 
 const RechargePage = ({ navigation }) => {
+  console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
     
   const { token, currentUser } = React.useContext(AuthContext);
   const [ balanceToRecharge, setBalanceToRecharge] = React.useState('0');

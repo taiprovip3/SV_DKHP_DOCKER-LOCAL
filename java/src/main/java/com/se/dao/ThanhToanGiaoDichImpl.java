@@ -3,6 +3,7 @@ package com.se.dao;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +113,23 @@ public class ThanhToanGiaoDichImpl implements ThanhToanGiaoDichService{
 	@Override
 	public ThanhToanGiaoDich getStudentPayedDebtByDebtId(long debtId, long studentId) {
 		return thanhToanGiaoDichRepository.getStudentPayedDebtByDebtId(debtId, studentId);
+	}
+
+	@Override
+	public ThanhToanGiaoDich updatePaymentIPN(String paymentId, String ipnId) {
+		try {
+			ThanhToanGiaoDich thanhToanGiaoDich = thanhToanGiaoDichRepository.findById(paymentId).orElse(null);
+			thanhToanGiaoDich.setMaIPN(ipnId);
+			return thanhToanGiaoDichRepository.save(thanhToanGiaoDich);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
+	@Override
+	public List<ThanhToanGiaoDich> getInputPaymentsByStudentId(long studentId) {
+		return thanhToanGiaoDichRepository.getInputPaymentsByStudentId(studentId);
 	}
 
 }

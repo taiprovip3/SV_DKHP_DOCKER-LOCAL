@@ -17,6 +17,11 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .bs {
+            box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+        }
+    </style>
 </head>
 <body>
     <%
@@ -64,6 +69,68 @@
             }
         } %>
     </div>
+<div class="modal fade" id="FeatureSelectorModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="text-end">
+                    <button type="button" data-bs-dismiss="modal" class="bg-primary text-white px-2 border-0"><i class="fas fa-times"></i></button>
+                </div>
+                <p>Trợ giúp:</p>
+                <div class="d-flex flex-wrap">
+                    <div class="border rounded-3 p-3 py-4 text-center m-2 crs bs" style="max-width: 20%;" data-bs-toggle="modal" data-bs-target="#GioiThieuModal">
+                        <i class="fas fa-cubes fa-2x d-block teal-color"></i>
+                        <span class="fs-5">Giới thiệu chung về ErukaLearn</span>
+                    </div>
+                    <div class="border rounded-3 p-3 py-4 text-center m-2 crs bs" style="max-width: 20%;" data-bs-toggle="modal" data-bs-target="#FanpageIUHModal">
+                        <i class="fab fa-facebook-square fa-2x d-block teal-color"></i>
+                        <span class="fs-5">Fanpage facebook cộng đồng IUH</span>
+                    </div>
+                    <div class="border rounded-3 p-3 py-4 text-center m-2 crs bs" style="max-width: 20%;" data-bs-toggle="modal" data-bs-target="#ReportBugModal">
+                        <i class="fas fa-spider fa-2x d-block teal-color"></i>
+                        <span class="fs-5">Report lỗi / bug phần mềm hệ thống</span>
+                    </div>
+                </div>
+                <hr>
+                <p>Q&A và Supports:</p>
+                <div class="border-bottom bs crs d-flex align-items-center p-2 text-primary" data-bs-toggle="collapse" data-bs-target="#PaymentError">
+                    <span class="fs-6">Lỗi thanh toán online không thành công</span>&ensp;<i class="fas fa-angle-down"></i>
+                </div>
+                <div id="PaymentError" class="collapse">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </div>
+                <div class="border-bottom bs crs d-flex align-items-center p-2 text-primary" data-bs-toggle="collapse" data-bs-target="#DebtError">
+                    <span class="fs-6">Công nợ chưa được cập nhật dù đã đóng học phí</span>&ensp;<i class="fas fa-angle-down"></i>
+                </div>
+                <div id="DebtError" class="collapse">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </div>
+                <div class="border-bottom bs crs d-flex align-items-center p-2 text-primary" data-bs-toggle="collapse" data-bs-target="#InsureError">
+                    <span class="fs-6">Mất công nợ do không thanh toán bảo hiểm</span>&ensp;<i class="fas fa-angle-down"></i>
+                </div>
+                <div id="InsureError" class="collapse">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </div>
+                <div class="border-bottom bs crs d-flex align-items-center p-2 text-primary" data-bs-toggle="collapse" data-bs-target="#PasswordError">
+                    <span class="fs-6">Sinh viên quên mật khẩu hệ thống</span>&ensp;<i class="fas fa-angle-down"></i>
+                </div>
+                <div id="PasswordError" class="collapse">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </div>
+                <div class="border-bottom bs crs d-flex align-items-center p-2 text-primary" data-bs-toggle="collapse" data-bs-target="#RechargeError">
+                    <span class="fs-6">Nạp tiền vào ví online không thành công</span>&ensp;<i class="fas fa-angle-down"></i>
+                </div>
+                <div id="RechargeError" class="collapse">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <div class="modal" id="GioiThieuModal">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -128,205 +195,7 @@
             </div>
         </div>
     </div>
-  </div>
-<div class="container-fluid bg-light">
-    <div class="row small" style="height: 50vh; overflow: auto;">
-        <div class="col-lg-6 p-3">
-            <div class="d-flex justify-content-center align-items-center border h-100 bg-white">
-                <div class="card">
-                    <div class="card-header">Thông tin sinh viên</div>
-                    <div class="card-body text-center">
-                        <img src="<%= (STUDENT_DATA.avatar == null || STUDENT_DATA.avatar == ' ') ? 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv-iuh-avatar-pattern_oyubmc.jpg' : STUDENT_DATA.avatar %>" alt="avatar" width="100px" height="100px" class="rounded-circle">
-                        <div class="d-flex justify-content-between">
-                            <div class="text-start p-2">
-                                <span>Họ tên: <span class="fw-bold"><%= STUDENT_DATA.hoTen %></span></span><br>
-                                <span>MSSV: <span class="fw-bold"><%= STUDENT_DATA.maSinhVien %></span></span><br>
-                                <span>Giới tính: <span class="fw-bold"><%= STUDENT_DATA.gioiTinh %></span></span><br>
-                                <span>Ngày sinh: <span class="fw-bold"><%= formatDate(STUDENT_DATA.ngaySinh) %></span></span><br>
-                                <span>Nơi sinh: <span class="fw-bold"><%= STUDENT_DATA.noiSinh %></span></span>
-                            </div>
-                            <div class="text-start p-2">
-                                <span>Lớp: <span class="fw-bold"><%= STUDENT_DATA.lopHocDanhNghia.tenLop %></span></span><br>
-                                <span>Khóa học: <span class="fw-bold"><%= STUDENT_DATA.lopHocDanhNghia.khoaHoc.namBatDau %>-<%= calEndYearStudent(STUDENT_DATA.lopHocDanhNghia.khoaHoc.namBatDau, STUDENT_DATA.daoTao.bacDaoTao) %></span></span><br>
-                                <span>Bậc đào tạo: <span class="fw-bold"><%= bacDaoTaoShortCut[STUDENT_DATA.daoTao.bacDaoTao] %></span></span><br>
-                                <span>Loại hình đào tạo: <span class="fw-bold"><%= loaiHinhDaoTaoShortCut[STUDENT_DATA.daoTao.loaiHinhDaoTao] %></span></span><br>
-                                <span>Ngành: <span class="fw-bold"><%= STUDENT_DATA.lopHocDanhNghia.nganh.tenNganh %></span></span>
-                            </div>
-                        </div>    
-                    </div> 
-                    <div class="card-footer text-primary text-center text-decoration-underline"><a href="/student/details" class="crs">Xem chi tiết</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 p-3">
-            <div class="d-flex justify-content-center align-items-center border h-100 bg-white position-relative">
-                <div class="d-flex justify-content-evenly align-items-center w-100">
-                    <div class="text-center">
-                        <div class="progress-container">
-                            <div class="progress-parent">
-                                <div class="progress-child">
-                                    <div class="perfect-circle">
-                                        <span class="progress-value">0%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div><span class="fw-light"><%= currentTinChi %></span> / <span class="fw-bold text-decoration-underline"><%= requireTinChi %></span></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">Tiến độ học tập</div>
-                        <div class="card-body text-center">
-                            <div class="progress" style="height:30px">
-                                <div class="progress-bar" style="width: <%= ((currentTinChi*100)/requireTinChi).toFixed(2) %>%; height:30px;" ></div>
-                            </div>
-                            <span><%= currentTinChi %>/<span class="text-success fw-bold"><%= requireTinChi %></span> tín chỉ</span><br>
-                            <span>(Đã hoàn thành <span class="fw-bold"><%= ((currentTinChi*100)/requireTinChi).toFixed(1)%>%</span>)</span><br>
-                            <i class="fas fa-question-circle text-primary crs" data-bs-toggle="tooltip" title="1 Tín chỉ = 15 tiết học"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="position-absolute end-0 top-0 d-flex">
-                    <div class="me-3 position-relative" onclick="audio.play();">
-                        <i class="far fa-bell pt-1 dropdown-toggle crs" data-bs-toggle="dropdown" style="font-size: larger; font-weight: 900;"></i>
-                        <div class="dropdown-menu mw-100 text-truncate">
-                            <ul class="list-unstyled" style="max-height: 50vh;">
-                                <li class="bg-light"><a class="dropdown-item disabled" href="javascript:void(0);">Thông báo cá nhân:</a></li>
-                                <% for(let i=0; i<LIST_ANNOUNCEMENT.length; i++) { %>
-                                    <li onclick="audio.play();">
-                                        <a class="dropdown-item border-bottom" href="javascript:void(0);" id="<%= LIST_ANNOUNCEMENT[i].id %>" onclick="ShowDetailSelfNotification(this.id);"><%= LIST_ANNOUNCEMENT[i].id %>. <%= LIST_ANNOUNCEMENT[i].title %></a>
-                                    </li>
-                                <% } %>
-                            </ul>
-                            <ul class="list-unstyled" style="max-height: 50vh;">
-                                <li class="bg-light"><a class="dropdown-item disabled" href="javascript:void(0);">Thông báo khoa:</a></li>
-                                <% for(let i=0; i<LIST_DEPARTMENT_ANNOUNCEMENT.length; i++) { %>
-                                    <li onclick="audio.play();">
-                                        <a class="dropdown-item border-bottom" href="javascript:void(0);" id="<%= LIST_DEPARTMENT_ANNOUNCEMENT[i].maThongBao %>" onclick="ShowDetailDepartmentNotification(this.id);"><%= LIST_ANNOUNCEMENT[i].maThongBao %>. <%= LIST_DEPARTMENT_ANNOUNCEMENT[i].tieuDe %></a>
-                                    </li>
-                                <% } %>
-                                <li class="bg-light"><a class="dropdown-item text-danger" href="/student/clear-notifications">Xoá tất cả</a></li>
-                            </ul>
-                        </div>
-                        <div class="position-absolute fw-bold end-0 small"><%= LIST_DEPARTMENT_ANNOUNCEMENT.length %></div>
-                    </div>
-                    <div class="px-2" onclick="audio.play();">
-                        <div class="d-flex align-items-center crs" data-bs-toggle="dropdown">
-                            <img src="<%= STUDENT_DATA.avatar %>" alt="sv-iuh" width="32px" height="32px" class="rounded-circle">
-                            <span class="mx-1">Phan Tấn Tài </span>
-                            <i class="fas fa-angle-down"></i>
-                        </div>
-                        <!-- <i class="fas fa-caret-down dropdown-toggle crs" data-bs-toggle="dropdown" style="font-size: x-large;"></i> -->
-                        <ul class="dropdown-menu">
-                            <li id="BtnChangePassword" onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">Đổi mật khẩu</a></li>
-                            <li id="BtnChangeTheme" onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);">Giao diện</a></li>
-                            <li onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#GioiThieuModal">Giới thiệu</a></li>
-                            <li class="bg-light"><a class="dropdown-item text-danger" href="/student-logout" onclick="delete_cookie('session');">Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row small" style="height: 50vh; overflow: auto;">
-        <div class="col-lg-6 p-3">
-            <div class="d-flex justify-content-sm-evenly align-items-center border h-100 bg-white" id="box3">
-                <div class="card" style="max-height: 40vh; overflow: auto;">
-                    <div class="card-header">Học phần đang học</div>
-                    <div class="card-body text-center">
-                        <select name="select_course" id="select_course" class="form-control my-1" onclick="audio.play();">
-                            <% for(let i=0; i<LIST_COURSE.length; i++) { %>
-                                <option value="<%= LIST_COURSE[i].maKhoaHoc %>" onclick="audio.play();"><%= LIST_COURSE[i].alias %> (<%= LIST_COURSE[i].namBatDau %>-<%= LIST_COURSE[i].namKetThuc %>)</option>
-                            <% } %>
-                        </select>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Mã học phần/Học phần</th>
-                                    <th>Số tín chỉ</th>
-                                </tr>    
-                            </thead>
-                            <tbody id="tBodySubjectCourseSelected">
-                                <% for(let i=0; i<LIST_FIRST_UNIT_SUBJECT.length; i++) { %>
-                                    <tr>
-                                        <td>
-                                            <span><%= LIST_FIRST_UNIT_SUBJECT[i].maMonHoc %></span><br>
-                                            <span><%= LIST_FIRST_UNIT_SUBJECT[i].tenMonHoc %></span>    
-                                        </td>
-                                        <td class="d-table-cell align-middle"><%= LIST_FIRST_UNIT_SUBJECT[i].soTinChi %></td>
-                                    </tr>
-                                <% } %>
-                            </tbody>    
-                        </table>
-                    </div> 
-                </div>
-                <div class="border">
-                    <canvas id="myChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 p-3">
-            <div class="d-flex flex-wrap justify-content-center align-items-center border h-100 bg-white">
-                <a href="/student/timetable" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs">
-                    <div><i class="fas fa-calendar-alt fa-2x text-primary"></i></div>
-                    <div class="fw-light">Lịch học</div>
-                    <div class="fw-light">theo tuần</div>
-                </div>
-                </a>
-                <a href="/student/score" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs">
-                    <div><i class="fas fa-chart-bar fa-2x text-primary"></i></div>
-                    <div class="fw-light">Kết quả</div>
-                    <div class="fw-light">học tập</div>
-                </div>
-                </a>
-                <a href="/student/dkhp" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs">
-                    <div><i class="fab fa-uncharted fa-2x text-primary"></i></div>
-                    <div class="fw-light">Đăng ký</div>
-                    <div class="fw-light">học phần</div>
-                </div>
-                </a>
-                <a href="/student/pattern" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs">
-                    <div><i class="fab fa-windows fa-2x text-primary"></i></div>
-                    <div class="fw-light">Chương trình</div>
-                    <div class="fw-light">khung</div>
-                </div>
-                </a>
-                <a href="/student/debt" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs">
-                    <div><i class="fas fa-sack-dollar fa-2x text-primary"></i></div>
-                    <div class="fw-light">Tra cứu</div>
-                    <div class="fw-light">công nợ</div>
-                </div>
-                </a>
-                <a href="/student/order-detail" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs">
-                    <div><i class="fas fa-file-invoice-dollar fa-2x text-primary"></i></div>
-                    <div class="fw-light">Biên lai</div>
-                    <div class="fw-light">tổng hợp</div>
-                </div>
-                </a>
-                <a href="/student/payment" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs">
-                    <div><i class="fab fa-cc-amazon-pay fa-2x text-primary"></i></div>
-                    <div class="fw-light">Thanh toán</div>
-                    <div class="fw-light">học phí</div>
-                </div>
-                </a>
-                <a href="/student/wallet" class="text-decoration-none text-dark">
-                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs" onclick="audio.play();">
-                    <div><i class="fab fa-bitcoin fa-2x text-success"></i></div>
-                    <div class="fw-light">Số dư ví</div>
-                    <div class="fw-bold" style="color: #FF5A00;"><%= new Intl.NumberFormat().format(STUDENT_DATA.soDu) %>đ</div>
-                </div>
-                </a>
-            </div>
-        </div>
-    </div>
 </div>
-<!-- The Modal -->
 <div class="modal fade" id="ChangePasswordModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -368,7 +237,277 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="FanpageIUHModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-end">
+                    <button type="button" data-bs-dismiss="modal" class="bg-primary text-white px-2 border-0"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="w-100 text-center">
+                    <div class="fb-page" data-href="https://www.facebook.com/sviuh" data-tabs="timeline" data-width="400" data-height="600" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
+                </div>
+                <div class="d-flex">
+                    <button class="w-100 btn btn-light border">Cancel</button>
+                    <!-- <button class="w-100 import-button">Truy cập nhóm</button> -->
+                    <a href="https://www.facebook.com/sviuh" target="_blank" class="w-100 import-button" onmouseover="this.style.color='white';">Truy cập nhóm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ReportBugModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="reportBugForm">
+                    <div class="text-end">
+                        <button type="button" data-bs-dismiss="modal" class="bg-primary text-white px-2 border-0"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div>
+                        <div class="alert alert-warning">
+                            <strong>Chúng tôi!</strong> rất lấy làm tiếc nếu hệ thống chúng tôi đang gây ra 1 vài vấn đề khó khăn cho bạn trong việc sử dụng. Rất mong bạn hãy mô tả chi tiết cụ thể vấn đề của bạn xung đột với hệ thống của chúng tôi. Chúng tôi sẽ phản hồi trong thời gian sớm nhất!
+                        </div>
+                        <label for="objectErrorType" class="form-label">Chọn loại / đối tượng lỗi mà hệ thống / chức năng:</label>
+                        <input class="form-control" list="errors" name="objectErrorType" id="objectErrorType" placeholder="Nhấp chọn loại lỗi bạn đang gặp vấn đề..." required>
+                        <datalist id="errors">
+                            <option value="Lịch học">
+                            <option value="kết quả học tập">
+                            <option value="Đăng ký học phần">
+                            <option value="Chương trình khung">
+                            <option value="Công nợ">
+                            <option value="Biên lai / Phiếu thu">
+                            <option value="Thanh toán online">
+                            <option value="Ví sinh viên">
+                            <option value="Khác">
+                        </datalist>
+                    </div>
+                    <label for="comment">Nội dung report:</label>
+                    <textarea class="form-control" rows="5" id="comment" name="text" placeholder="Nhập mô tả nội dung lỗi hệ thống.." required></textarea>
+                    <span>Mức độ nghiêm trọng / ưu tiên xử lý:</span>
+                    <div class="d-flex">
+                        <div class="form-check border">
+                            <input type="radio" class="form-check-input" id="severityNormal" name="severity" value="NORMAL" required>Normal <i class="fas fa-frown-open text-secondary"></i>
+                            <label class="form-check-label" for="severityNormal"></label>
+                        </div>
+                        &emsp;
+                        <div class="form-check border">
+                            <input type="radio" class="form-check-input" id="severityUrgent" name="severity" value="URGENT" required>Urgent <i class="fas fa-tired"></i>
+                            <label class="form-check-label" for="severityUrgent"></label>
+                        </div>
+                        &emsp;
+                        <div class="form-check border">
+                            <input type="radio" class="form-check-input" id="severitySerious" name="severity" value="SERIOUS" required>Serious <i class="fas fa-angry text-danger"></i>
+                            <label class="form-check-label" for="severitySerious"></label>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="bg-primary text-white border-0 my-1 p-2">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid bg-light">
+    <div class="row small" style="height: 50vh; overflow: auto;">
+        <div class="col-lg-6 p-3">
+            <div class="d-flex justify-content-center align-items-center border h-100 bg-white">
+                <div class="card bs">
+                    <div class="card-header">Thông tin sinh viên</div>
+                    <div class="card-body text-center">
+                        <img src="<%= (STUDENT_DATA.avatar == null || STUDENT_DATA.avatar == ' ') ? 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv-iuh-avatar-pattern_oyubmc.jpg' : STUDENT_DATA.avatar %>" alt="avatar" width="100px" height="100px" class="rounded-circle">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-start p-2">
+                                <span>Họ tên: <span class="fw-bold"><%= STUDENT_DATA.hoTen %></span></span><br>
+                                <span>MSSV: <span class="fw-bold"><%= STUDENT_DATA.maSinhVien %></span></span><br>
+                                <span>Giới tính: <span class="fw-bold"><%= STUDENT_DATA.gioiTinh %></span></span><br>
+                                <span>Ngày sinh: <span class="fw-bold"><%= formatDate(STUDENT_DATA.ngaySinh) %></span></span><br>
+                                <span>Nơi sinh: <span class="fw-bold"><%= STUDENT_DATA.noiSinh %></span></span>
+                            </div>
+                            <div class="text-start p-2">
+                                <span>Lớp: <span class="fw-bold"><%= STUDENT_DATA.lopHocDanhNghia.tenLop %></span></span><br>
+                                <span>Khóa học: <span class="fw-bold"><%= STUDENT_DATA.lopHocDanhNghia.khoaHoc.namBatDau %>-<%= calEndYearStudent(STUDENT_DATA.lopHocDanhNghia.khoaHoc.namBatDau, STUDENT_DATA.daoTao.bacDaoTao) %></span></span><br>
+                                <span>Bậc đào tạo: <span class="fw-bold"><%= bacDaoTaoShortCut[STUDENT_DATA.daoTao.bacDaoTao] %></span></span><br>
+                                <span>Loại hình đào tạo: <span class="fw-bold"><%= loaiHinhDaoTaoShortCut[STUDENT_DATA.daoTao.loaiHinhDaoTao] %></span></span><br>
+                                <span>Ngành: <span class="fw-bold"><%= STUDENT_DATA.lopHocDanhNghia.nganh.tenNganh %></span></span>
+                            </div>
+                        </div>    
+                    </div> 
+                    <div class="card-footer text-primary text-center text-decoration-underline"><a href="/student/details" class="crs">Xem chi tiết</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 p-3">
+            <div class="d-flex justify-content-center align-items-center border h-100 bg-white position-relative">
+                <div class="d-flex justify-content-evenly align-items-center w-100">
+                    <div class="text-center">
+                        <div class="progress-container">
+                            <div class="progress-parent">
+                                <div class="progress-child">
+                                    <div class="perfect-circle">
+                                        <span class="progress-value">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div><span class="fw-light"><%= currentTinChi %></span> / <span class="fw-bold text-decoration-underline"><%= requireTinChi %></span></div>
+                    </div>
+                    <div class="card bs">
+                        <div class="card-header">Tiến độ học tập</div>
+                        <div class="card-body text-center">
+                            <div class="progress" style="height:30px">
+                                <div class="progress-bar" style="width: <%= ((currentTinChi*100)/requireTinChi).toFixed(2) %>%; height:30px;" ></div>
+                            </div>
+                            <span><%= currentTinChi %>/<span class="text-success fw-bold"><%= requireTinChi %></span> tín chỉ</span><br>
+                            <span>(Đã hoàn thành <span class="fw-bold"><%= ((currentTinChi*100)/requireTinChi).toFixed(1)%>%</span>)</span><br>
+                            <i class="fas fa-question-circle text-primary crs" data-bs-toggle="tooltip" title="1 Tín chỉ = 15 tiết học"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="position-absolute end-0 top-0 d-flex">
+                    <div class="me-3 position-relative" onclick="audio.play();">
+                        <i class="far fa-bell pt-1 dropdown-toggle crs" data-bs-toggle="dropdown" style="font-size: larger; font-weight: 900;"></i>
+                        <div class="dropdown-menu mw-100 text-truncate">
+                            <ul class="list-unstyled" style="max-height: 50vh;">
+                                <li class="bg-light"><a class="dropdown-item disabled text-dark fw-bold" href="javascript:void(0);">Thông báo:</a></li>
+                                <% for(let i=0; i<LIST_ANNOUNCEMENT.length; i++) { %>
+                                    <li onclick="audio.play();">
+                                        <a class="dropdown-item border text-secondary small" href="javascript:void(0);" id="<%= LIST_ANNOUNCEMENT[i].id %>" onclick="ShowDetailSelfNotification(this.id);"><%= LIST_ANNOUNCEMENT[i].title %></a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                            <ul class="list-unstyled" style="max-height: 50vh;">
+                                <li class="bg-light"><a class="dropdown-item disabled text-dark fw-bold" href="javascript:void(0);">Thông báo khoa:</a></li>
+                                <% for(let i=0; i<LIST_DEPARTMENT_ANNOUNCEMENT.length; i++) { %>
+                                    <li onclick="audio.play();">
+                                        <a class="dropdown-item border text-secondary small" href="javascript:void(0);" id="<%= LIST_DEPARTMENT_ANNOUNCEMENT[i].maThongBao %>" onclick="ShowDetailDepartmentNotification(this.id);"><%= LIST_DEPARTMENT_ANNOUNCEMENT[i].tieuDe %></a>
+                                    </li>
+                                <% } %>
+                                <li class="bg-light"><a class="dropdown-item text-danger" href="/student/clear-notifications">Xoá tất cả</a></li>
+                            </ul>
+                        </div>
+                        <div class="position-absolute fw-bold end-0 small"><%= LIST_DEPARTMENT_ANNOUNCEMENT.length %></div>
+                    </div>
+                    <div class="px-2" onclick="audio.play();">
+                        <div class="d-flex align-items-center crs" data-bs-toggle="dropdown">
+                            <img src="<%= STUDENT_DATA.avatar %>" alt="sv-iuh" width="32px" height="32px" class="rounded-circle">
+                            <span class="mx-1">Phan Tấn Tài </span>
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                        <!-- <i class="fas fa-caret-down dropdown-toggle crs" data-bs-toggle="dropdown" style="font-size: x-large;"></i> -->
+                        <ul class="dropdown-menu">
+                            <li id="BtnChangePassword" onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">Đổi mật khẩu</a></li>
+                            <li id="BtnChangeTheme" onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);">Giao diện</a></li>
+                            <li onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#FeatureSelectorModal">Trợ giúp</a></li>
+                            <li class="bg-light"><a class="dropdown-item text-danger" href="/student-logout" onclick="delete_cookie('session');">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row small" style="height: 50vh; overflow: auto;">
+        <div class="col-lg-6 p-3">
+            <div class="d-flex justify-content-sm-evenly align-items-center border h-100 bg-white" id="box3">
+                <div class="card bs" style="max-height: 40vh; overflow: auto;">
+                    <div class="card-header">Học phần đang học</div>
+                    <div class="card-body text-center">
+                        <select name="select_course" id="select_course" class="form-control my-1" onclick="audio.play();">
+                            <% for(let i=0; i<LIST_COURSE.length; i++) { %>
+                                <option value="<%= LIST_COURSE[i].maKhoaHoc %>" onclick="audio.play();"><%= LIST_COURSE[i].alias %> (<%= LIST_COURSE[i].namBatDau %>-<%= LIST_COURSE[i].namKetThuc %>)</option>
+                            <% } %>
+                        </select>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Mã học phần/Học phần</th>
+                                    <th>Số tín chỉ</th>
+                                </tr>    
+                            </thead>
+                            <tbody id="tBodySubjectCourseSelected">
+                                <% for(let i=0; i<LIST_FIRST_UNIT_SUBJECT.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <span><%= LIST_FIRST_UNIT_SUBJECT[i].maMonHoc %></span><br>
+                                            <span><%= LIST_FIRST_UNIT_SUBJECT[i].tenMonHoc %></span>    
+                                        </td>
+                                        <td class="d-table-cell align-middle"><%= LIST_FIRST_UNIT_SUBJECT[i].soTinChi %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>    
+                        </table>
+                    </div> 
+                </div>
+                <div class="border bs">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 p-3">
+            <div class="d-flex flex-wrap justify-content-center align-items-center border h-100 bg-white">
+                <a href="/student/timetable" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs bs">
+                    <div><i class="fas fa-calendar-alt fa-2x text-primary"></i></div>
+                    <div class="fw-light">Lịch học</div>
+                    <div class="fw-light">theo tuần</div>
+                </div>
+                </a>
+                <a href="/student/score" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs bs">
+                    <div><i class="fas fa-chart-bar fa-2x text-primary"></i></div>
+                    <div class="fw-light">Kết quả</div>
+                    <div class="fw-light">học tập</div>
+                </div>
+                </a>
+                <a href="/student/dkhp" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs bs">
+                    <div><i class="fab fa-uncharted fa-2x text-primary"></i></div>
+                    <div class="fw-light">Đăng ký</div>
+                    <div class="fw-light">học phần</div>
+                </div>
+                </a>
+                <a href="/student/pattern" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs bs">
+                    <div><i class="fab fa-windows fa-2x text-primary"></i></div>
+                    <div class="fw-light">Chương trình</div>
+                    <div class="fw-light">khung</div>
+                </div>
+                </a>
+                <a href="/student/debt" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs bs">
+                    <div><i class="fas fa-sack-dollar fa-2x text-primary"></i></div>
+                    <div class="fw-light">Tra cứu</div>
+                    <div class="fw-light">công nợ</div>
+                </div>
+                </a>
+                <a href="/student/order-detail" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs bs">
+                    <div><i class="fas fa-file-invoice-dollar fa-2x text-primary"></i></div>
+                    <div class="fw-light">Biên lai</div>
+                    <div class="fw-light">tổng hợp</div>
+                </div>
+                </a>
+                <a href="/student/payment" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs bs">
+                    <div><i class="fab fa-cc-amazon-pay fa-2x text-primary"></i></div>
+                    <div class="fw-light">Thanh toán</div>
+                    <div class="fw-light">học phí</div>
+                </div>
+                </a>
+                <a href="/student/wallet" class="text-decoration-none text-dark">
+                <div id="OneItem" class="text-center border rounded p-3 px-4 mx-1 crs" onclick="audio.play();">
+                    <div><i class="fab fa-bitcoin fa-2x text-success"></i></div>
+                    <div class="fw-light">Số dư ví</div>
+                    <div class="fw-bold" style="color: #FF5A00;"><%= new Intl.NumberFormat().format(STUDENT_DATA.soDu) %>đ</div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0" nonce="5ID3Xyn5"></script>
 <script>
 var myChartData;
 const audio = new Audio();
@@ -507,7 +646,25 @@ $(document).ready(function(){
     $('.fa-eye-slash').mouseleave(function() {
         $('.password-input').attr('type', 'password');
     });
-
+    $('#reportBugForm').submit(function(event) {
+        event.preventDefault();
+        let formDataObject = {reporter: '<%= STUDENT_DATA.hoTen %>'};
+        const inputArray = $(this).serializeArray();
+        $.each(inputArray, function(i, field) {
+            formDataObject[field.name] = field.value;
+        });
+        $.ajax({
+            type: "POST",
+            url: pathNodejs+"/student-report",
+            data: JSON.stringify(formDataObject),
+            contentType: "application/json",
+            success: (data) => {
+                console.log('data=',data);
+            }, error: (error) => {
+                console.error(error);
+            }
+        });
+    });
 });
 function ShowDetailDepartmentNotification(notificationId) {
     $.ajax({
@@ -642,7 +799,7 @@ function diemTongKetCal(obj) {
         } else {//Nếu ko có chart thì render lại box3
             console.log("Student has now scores in choosed maKhoaHoc select");
             const element = 
-            '<div class="card" style="max-height: 40vh; overflow: auto;">'+
+            '<div class="card bs" style="max-height: 40vh; overflow: auto;">'+
                 '<div class="card-header">Học phần đang học</div>'+
                 '<div class="card-body text-center">'+
                     '<select name="select_course" id="select_course" class="form-control my-1" onclick="audio.play();">'+

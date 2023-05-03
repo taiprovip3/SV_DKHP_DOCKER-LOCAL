@@ -14,6 +14,7 @@ import { Alert } from 'react-native';
 import { LOCAL_JAVA_API_URL } from '@env';
 
 const DkhpPage = () => {
+  console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
 
   const { token, currentUser } = React.useContext(AuthContext);
   const [hocKySelected, setHocKySelected] = React.useState(0); //maKhoaHoc nè

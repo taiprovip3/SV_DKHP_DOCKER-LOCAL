@@ -4,7 +4,7 @@ import React from 'react';
 import { AuthContext } from '../Providers/AuthProvider';
 import Toast from 'react-native-toast-message';
 import publicIP from 'react-native-public-ip';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -128,7 +128,7 @@ const AuthenticationPage = ({ navigation }) => {
           <Box position="absolute" width="100%" top="0">
             <Center>
               <Text><FontAwesome name="close" size={15} color="red" /> Kết nối internet không khả dụng <MaterialCommunityIcons name="wifi-alert" size={15} color="red" />. Tuy nhiên bạn vẫn có thể xem lịch dạy đồng bộ trước đó.</Text>
-              <Text fontSize="lg" underline>Xem lịch dạy</Text>
+              <Text fontSize="lg" underline onPress={() => navigation.navigate('Timetable')}>Xem lịch dạy</Text>
             </Center>
         </Box>
         }

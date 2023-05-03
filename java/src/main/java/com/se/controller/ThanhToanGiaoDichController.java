@@ -1,10 +1,13 @@
 package com.se.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +39,7 @@ public class ThanhToanGiaoDichController {
     public ThanhToanGiaoDich updatePaymentToPassById(@RequestBody ThanhToanGiaoDichDTO thanhToanGiaoDichDTO) {
     	return thanhToanGiaoDichService.updatePaymentToPassById(thanhToanGiaoDichDTO);
     }
+    
     @PostMapping("/payment/createTransaction")
     public String createTransaction(@RequestBody ThanhToanGiaoDich2DTO thanhToanGiaoDich2DTO) {
         return thanhToanGiaoDichService.createTransaction(thanhToanGiaoDich2DTO);
@@ -49,5 +53,15 @@ public class ThanhToanGiaoDichController {
     @GetMapping("/payment/getStudentPayedDebtByDebtId/{debtId}/{studentId}")
     public ThanhToanGiaoDich getStudentPayedDebtByDebtId(@PathVariable long debtId, @PathVariable long studentId) {
         return thanhToanGiaoDichService.getStudentPayedDebtByDebtId(debtId, studentId);
+    }
+    
+    @PutMapping("/payment/updatePaymentIPN/{paymentId}/{ipnId}")
+    public ThanhToanGiaoDich updatePaymentIPN(@PathVariable String paymentId, @PathVariable String ipnId) {
+    	return thanhToanGiaoDichService.updatePaymentIPN(paymentId, ipnId);
+    }
+    
+    @GetMapping("/payment/getInputPaymentsByStudentId/{studentId}")
+    public List<ThanhToanGiaoDich> getInputPaymentsByStudentId(@PathVariable long studentId) {
+    	return thanhToanGiaoDichService.getInputPaymentsByStudentId(studentId);
     }
 }

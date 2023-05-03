@@ -14,13 +14,35 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="../css/common.css" type="text/css">
+    <link rel="stylesheet" href="../css/button.css" type="text/css">
     <script src="https://www.paypal.com/sdk/js?client-id=AWr1ugFyX8drd_9M8C2nCzIevgvclI5sdU5izC9lamGeKwW9FC0exjrfxgNzvqtsP5R16QMMTNjJ03kc&currency=USD&commit=false"></script>
+    <style>
+        td {
+          max-width: 200px;
+          /* overflow: hidden; */
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
     <%
         function formatNumber(number) {
             return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
         }
+        function formatDateTime(dateTimeString) {
+            const dateTime = new Date(dateTimeString);
+            const year = dateTime.getFullYear();
+            const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+            const date = String(dateTime.getDate()).padStart(2, '0');
+            const hours = String(dateTime.getHours() % 12 || 12).padStart(2, '0');
+            const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+            const amPm = dateTime.getHours() >= 12 ? 'PM' : 'AM';
+            const formattedDateTime = `${year}-${month}-${date}, ${hours}:${minutes} ${amPm}`;
+            return formattedDateTime;
+        }
+          
+          
     %>
     <div class="container-fluid">
         <div class="row position-relative">
@@ -53,20 +75,18 @@
                 <a href="/student"><i class="fas fa-door-open text-secondary crs" onclick="audio.play();"></i></a>
             </div>
             
-            <div class="col-lg-12 py-2 px-5" style="background: #ededed;">
-                <div class="bg-white p-3">
+            <div class="col-lg-12 py-2 px-5" style="background: #ededed; height: 100vh;">
+                <div class="h-50 bg-white border p-3 overflow-auto">
                     <p class="fs-3 text-secondary fw-bold">Nạp tiền vào ví</p>
                     <hr>
                     <div class="text-center d-flex justify-content-center">
-                        <div class="px-5 py-3 rounded-circle" style="background-color: #edf1f2;">
-                            <!-- <i class="fas fa-hand-holding-usd"></i> -->
+                        <div class="px-3 py-3 rounded-circle border" style="background-color: #ebebeb;">
                             <i class="fab fa-bitcoin fa-2x d-block text-success"></i>
-                            <span class="d-block">Số dư ví:</span>
+                            <span>Số dư ví:</span>
                             <span class="text-warning fw-bold"><%= formatNumber(STUDENT_DATA.soDu) %></span>
                         </div>
                     </div>
                     <div class="d-flex">
-
                         <div id="left">
                             <div>
                                 <p>Các phương thức thanh toán, loại giao dịch chấp nhận hiện tại <i class="fas fa-question-circle text-primary" data-bs-toggle="tooltip" title="Thanh toán trực tuyến là bạn có thể đóng tiền học phí mà không cần phải gặp mặt các nhân viên phòng tài chính kế toán, tránh mất thời gian đi lại, chậm trễ. Thực hiện đúng theo chỉ dẫn đóng tiền đảm bảo tin cậy 100%. Hỗ trợ sinh viên nếu xảy ra chậm trễ trong việc nhận tiền thanh toán."></i></p>
@@ -117,15 +137,48 @@
                                     <input type="radio" name="wannaWallet" id="wanna500000" value="500000">
                                     <label for="wanna500000">500.000đ</label>
                                 </div>
-                                <div class="d-flex align-items-start">
+                                <div class="d-flex align-items-center">
                                     <input type="radio" name="wannaWallet" id="wannaOptional" value="0" checked>
                                     &ensp;
-                                    <input type="number" name="balance" id="balanced" placeholder="Số tiền muốn nạp tuỳ ý..." class="form-control form-control-lg" value="0">
+                                    <input type="number" name="balance" id="balanced" placeholder="Số tiền muốn nạp tuỳ ý..." class="form-control form-control border-0 border-bottom" value="0">
                                 </div>
                             </div>
                         </div>
-
                     </div>
+                </div>
+                <div class="bg-white border p-3 mt-3 position-relative overflow-auto" style="max-height: 45%;">
+                    <span class="text-secondary"><i class="fas fa-angle-right"></i> Lịch sử giao dịch:</span>
+                    <table class="w-100">
+                        <tr class="border-bottom">
+                            <th class="border-end">Mã giao dịch</th>
+                            <th class="border-end">Số tiền</th>
+                            <th class="border-end">Thời gian</th>
+                            <th class="border-end">Trạng thái</th>
+                            <th class="border-end">Ghi chú</th>
+                            <th class="border-end"><i class="fas fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Trạng thái giao dịch 'Đang xử lý' là những giao dịch bạn bỏ ngang hoặc server tắt ngẽn lúc bạn đang thanh toán dẫn đến chưa xử lý! Có thể nhấp 'Xác thực lại'"></i></th>
+                        </tr>
+                        <% for (let i=0; i<LIST_PAYMENT.length; i++) { %>
+                            <tr class="border-top">
+                                <td style="width: 20%;"><%= LIST_PAYMENT[i].maGiaoDich %></td>
+                                <td style="width: 20%;"><%= formatNumber(LIST_PAYMENT[i].balance) %></td>
+                                <td style="width: 20%;"><%= formatDateTime(LIST_PAYMENT[i].createdTime) %></td>
+                                <td style="width: 20%;">
+                                    <% if(LIST_PAYMENT[i].status) { %>
+                                        <span>Đã xử lý</span>
+                                    <% } else { %>
+                                        <span>Đang xử lý <div class="spinner-border spinner-border-sm"></div></span>
+                                    <% } %>
+                                </td>
+                                <td style="width: 20%;" class="text-truncate"><%= LIST_PAYMENT[i].ghiChu %></td>
+                                <td style="width: 20%;" class="dropup text-center">
+                                    <i class="fas fa-ellipsis-h crs" data-bs-toggle="dropdown"></i>
+                                    <div class="dropdown-menu dropdown-menu-end text-end border-0">
+                                        <button class="border-0 p-1 text-white bg-primary">Xác thực lại</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </table>
                 </div>
             </div>
         </div>
@@ -137,24 +190,17 @@
     <div class="modal" id="paypalModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Xác nhận thanh toán</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                Paypal hiện tại chỉ chấp nhận thanh toán tiền tệ đơn vị USD. Sẽ có sự chênh lệnh mệnh giá với các phương thức thanh toán khác là đồng VNĐ. Chúng tôi sẽ chuyển bạn đến trang thanh toán của Paypal.
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> -->
-                <div id="paypal-button-container"></div>
-            </div>
-
+                <div class="modal-header">
+                    <h4 class="modal-title">Xác nhận thanh toán</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Paypal hiện tại chỉ chấp nhận thanh toán tiền tệ đơn vị USD. Sẽ có sự chênh lệnh mệnh giá với các phương thức thanh toán khác là đồng VNĐ. Chúng tôi sẽ chuyển bạn đến trang thanh toán của Paypal.
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> -->
+                    <div id="paypal-button-container"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -261,7 +307,7 @@
             var mapInput = document.createElement("input"); //input maSinhVien
             mapInput.type = "text";
             mapInput.name = "maSinhVien";
-            mapInput.value = <%= STUDENT_DATA.maSinhVien %>;
+            mapInput.value = '<%= STUDENT_DATA.maSinhVien %>';
             mapForm.appendChild(mapInput);
             document.body.appendChild(mapForm);
             const parentWidth = window.screen.availWidth;   //setting windows
@@ -291,7 +337,7 @@
                 var mapInput = document.createElement("input"); //input maSinhVien
                 mapInput.type = "text";
                 mapInput.name = "maSinhVien";
-                mapInput.value = <%= STUDENT_DATA.maSinhVien %>;
+                mapInput.value = '<%= STUDENT_DATA.maSinhVien %>';
                 mapForm.appendChild(mapInput);
                 document.body.appendChild(mapForm);
                 const parentWidth = window.screen.availWidth;   //setting windows
@@ -304,49 +350,9 @@
             }
             if(global_method_recharge === "PAYPAL") {
                 $("#paypalModal").modal("toggle");
-                // swal({
-                //     title: "Bạn có chắc chắn?",
-                //     text: "Paypal hiện tại chỉ chấp nhận thanh toán tiền tệ đơn vị USD. Sẽ có sự chênh lệnh mệnh giá với các phương thức thanh toán khác là đồng VNĐ. Chúng tôi sẽ chuyển bạn đến trang thanh toán của Paypal.",
-                //     icon: "warning",
-                //     buttons: true,
-                //     dangerMode: true,
-                // })
-                // .then((willDelete) => {
-                //     if (willDelete) {
-                //         audio.play();
-                //         var mapForm = document.createElement("form");
-                //         mapForm.className = "d-none";
-                //         mapForm.target = "Map";
-                //         mapForm.method = "POST"; // or "post" if appropriate
-                //         mapForm.action = pathPhpApache+"/paypal-recharge/paypal.php";
-                //         var mapInput = document.createElement("input"); //input momo_method
-                //         mapInput.type = "text";
-                //         mapInput.name = "method_payment";
-                //         mapInput.value = global_method_recharge;
-                //         mapForm.appendChild(mapInput);
-                //         var mapInput = document.createElement("input"); //input total_payment
-                //         mapInput.type = "text";
-                //         mapInput.name = "total_payment";
-                //         mapInput.value = global_total_recharge;
-                //         mapForm.appendChild(mapInput);
-                //         var mapInput = document.createElement("input"); //input maSinhVien
-                //         mapInput.type = "text";
-                //         mapInput.name = "maSinhVien";
-                //         mapInput.value = <%= STUDENT_DATA.maSinhVien %>;
-                //         mapForm.appendChild(mapInput);
-                //         document.body.appendChild(mapForm);
-                //         const parentWidth = window.screen.availWidth;   //setting windows
-                //         const parentHeight = window.screen.availHeight;
-                //         const childWidth = parentWidth - (parentWidth * 0.2);
-                //         const childHeight = parentHeight - (parentHeight * 0.2);
-                //         map = window.open("", "Map", "status=0,title=0,height="+childHeight+",width="+childWidth+",scrollbars=1");
-                //         if(map) mapForm.submit();
-                //         else alert('You must allow popups for this map to work.');
-                //     } else audio.play();
-                // });
             }
             if(global_method_recharge === "CARD") {
-                
+              // Product promise in future...  
             }
         }
     }
@@ -365,7 +371,7 @@
 </script>
 <script>
     async function createTransaction() {//Hàm nhận input {studentId, balance} trả về string maGiaoDich
-        const maSinhVien = <%= STUDENT_DATA.maSinhVien %>;
+        const maSinhVien = '<%= STUDENT_DATA.maSinhVien %>';
         return $.ajax({
             type: "POST",
             url: pathNodejs+"/student/wallet/createTransaction",
@@ -386,7 +392,8 @@
                 purchase_units: [{
                     amount: {
                         value: parseFloat(global_total_recharge/23450).toFixed(2) // Can also reference a variable or function
-                    }
+                    },
+                    invoice_id: global_ma_giao_dich
                 }]
             });
         },

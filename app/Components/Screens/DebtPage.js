@@ -15,6 +15,7 @@ import { formatDate } from '../Utilities/formatDate';
 import { Foundation } from '@expo/vector-icons';
 
 const DebtPage = ({navigation}) => {
+  console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
 
   const appStateSubscriptionRef = React.useRef(null);
   const appStateRef = React.useRef(AppState.currentState);

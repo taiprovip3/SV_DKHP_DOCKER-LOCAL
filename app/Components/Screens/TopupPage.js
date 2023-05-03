@@ -6,6 +6,7 @@ import { LOCAL_EJS_API_URL, LOCAL_PHP_API_URL } from '@env';
 
 
 const TopupPage = ({ navigation, route }) => {
+  console.log('LOCAL_EJS_API_URL=',LOCAL_EJS_API_URL + LOCAL_PHP_API_URL);
 
   const { rechargeData } = route.params;
   let url = "";

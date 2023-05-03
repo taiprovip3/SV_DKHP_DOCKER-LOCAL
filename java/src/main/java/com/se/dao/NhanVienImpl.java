@@ -51,6 +51,7 @@ public class NhanVienImpl implements NhanVienService{
 		TaiKhoan tk = TaiKhoan //TH add
 				.builder()
 				.email(null)
+				.email_edu(null)
 				.type(LoaiTaiKhoan.NHAN_VIEN)
 				.user(u)
 				.build();

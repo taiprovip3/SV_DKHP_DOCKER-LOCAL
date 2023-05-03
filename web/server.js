@@ -238,6 +238,27 @@ app.post("/student-changepassword", async (req, res) => {
         return res.status(status).send(error.message);
     }
 });
+app.post("/student-report", async (req, res) => {
+    if(!req.session.student || !req.session.jwt_token) {
+        return res.redirect("/student");
+    }
+    try {
+        const token = req.session.jwt_token;
+        const baoLoiDTO = {
+            nguoiBaoLoi: req.body.reporter,
+            loaiLoi: req.body.objectErrorType,
+            mucDoNghiemTrong: req.body.severity,
+            noiDung: req.body.text,
+        }
+        const response = await axios.post(javaUrl+"/api/report", baoLoiDTO, {headers: {"Authorization": token}});
+        if(response.data) {
+            return res.send(response.data)
+        }
+        return res.send(null);
+    } catch (error) {
+        return res.send(error.message);
+    }
+});
 async function renderStudentHomepage(req,res,signal){
     if(!signal)
         signal = null;
@@ -863,6 +884,15 @@ app.get("/student/payment/callback", async (req, res) => {
                         //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
                         sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, products, maSinhVien, req.query.orderType, totalPayed, balanceLeft.data, toEmail);
                     }
+                    // Tạo thông báo web
+                    const thongBaoDTO = {
+                        title: 'Giao dịch diện tử',
+                        message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                        linking: 'https://erukalearn.ddns.net',
+                        isRead: false,
+                        studentId: maSinhVien,
+                    }
+                    const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
                     return res.render("student-callback", {signal: {title: "PAYMENT_SUCCESS", text: ghiChu, icon: "success"}});
                 } else {//nếu quá hạn
                     return res.render("student-callback", {signal: {title: "PAYMENT_OUT", text: "Giao dịch đã quá hạn! Bấm xác nhận để quay lại trang chủ.", icon: "warning"}});
@@ -963,6 +993,15 @@ app.get("/student/recharge/callback", async (req, res) => {
                         //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
                         sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, [product], maSinhVien, req.query.orderType, soTienGiaoDich, balanceLeft.data, toEmail);
                     }
+                    // Tạo thông báo web
+                    const thongBaoDTO = {
+                        title: 'Giao dịch diện tử',
+                        message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                        linking: 'https://erukalearn.ddns.net',
+                        isRead: false,
+                        studentId: maSinhVien,
+                    }
+                    const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
                     return res.render("student-callback", {signal: {title: "PAYMENT_SUCCESS", text: ghiChu, icon: "success"}});
                 } else {//nếu quá hạn
                     return res.render("student-callback", {signal: {title: "PAYMENT_OUT", text: "Giao dịch đã quá hạn! Bấm xác nhận để quay lại trang chủ.", icon: "warning"}});
@@ -1120,8 +1159,11 @@ app.post("/student/order-detail/getHddtById", async (req, res) => {
    //----- student wallet oriented -----\\
 app.get("/student/wallet", async (req, res) => {
     if(req.session.jwt_token) {
-        const response1 = await axios.get(javaUrl+"/api/student/getStudentById/" + req.session.student, {headers: {"Authorization": req.session.jwt_token}});//Sử lý cookie mã sv
-        return res.render("student-wallet", {STUDENT_DATA: response1.data});
+        const maSinhVien = req.session.student;
+        const token = req.session.jwt_token;
+        const response1 = await axios.get(javaUrl+"/api/student/getStudentById/" + maSinhVien, {headers: {"Authorization": token}});//Sử lý cookie mã sv
+        const response2 = await axios.get(javaUrl+"/api/payment/getInputPaymentsByStudentId/" + maSinhVien, {headers: {"Authorization": token}});
+        return res.render("student-wallet", {STUDENT_DATA: response1.data, LIST_PAYMENT: response2.data});
     }
     return res.redirect("/student");
 });
@@ -1196,12 +1238,15 @@ app.post("/paypal/payment", upload.fields([]), async (req, res) => {
                 }]
             };
     
-            paypal.payment.create(create_payment_json, function (error, paymentResponse) {
+            paypal.payment.create(create_payment_json, async function (error, paymentResponse) {
                 if (error) {
                     throw error;
                 } else {
                     console.log("Create Payment Response");
                     console.log(paymentResponse);
+                    const ipnId = paymentResponse.id;
+                    const response = await axios.put(javaUrl+"/api/payment/updatePaymentIPN/"+maThanhToanGiaoDich+"/"+ipnId, {headers: {"Authorization": token}});
+                    if(!response.data) throw new Error('Cant"t update IPN id in database paymentId: ' + maThanhToanGiaoDich);
                     return res.redirect(paymentResponse.links[1].href);
                 }
             });
@@ -1329,6 +1374,15 @@ app.get("/paypal/payment/success", async (req, res) => {// Xác thực thanh to�
                                     //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
                                     sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, products, maSinhVien, 'PAYPAL - WALLET', balanceGiaoDich, balanceLeft.data, toEmail);
                                 }
+                                // Tạo thông báo web
+                                const thongBaoDTO = {
+                                    title: 'Giao dịch diện tử',
+                                    message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                                    linking: 'https://erukalearn.ddns.net',
+                                    isRead: false,
+                                    studentId: maSinhVien,
+                                }
+                                const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
                                 return res.render("student-callback", {signal: {title: "PAYMENT_SUCCESS", text: ghiChu, icon: "success"}});
                             } else {//nếu quá hạn
                                 return res.render("student-callback", {signal: {title: "PAYMENT_OUT", text: "Giao dịch đã quá hạn! Bấm xác nhận để quay lại trang chủ.", icon: "warning"}});
@@ -1347,15 +1401,6 @@ app.get("/paypal/payment/cancel", async (req, res) => {
     return res.render("student-react-native-paypal-cancel");
 });
 
-// app.get("/paypal/recharge/confirm", async (req, res) => {
-//     const maThanhToanGiaoDich = req.query.maThanhToanGiaoDich;
-//     const maSinhVien = req.query.maSinhVien;
-//     const tenSinhVien = req.query.tenSinhVien;
-//     const soTien = req.query.balanceGiaoDich;
-//     const loaiThanhToan = req.query.loaiThanhToan;
-//     const rechargeData = {maThanhToanGiaoDich, maSinhVien, tenSinhVien, soTien, loaiThanhToan};
-//     return res.render("student-react-native-recharge-confirm", {rechargeData});
-// });
 app.get("/paypal/topup", upload.fields([]), async (req, res) => {
     try {
         const maThanhToanGiaoDich = req.query.maThanhToanGiaoDich;
@@ -1526,6 +1571,15 @@ app.get("/paypal/topup/success", async (req, res) => {// Xác thực thanh toán
                                     //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
                                     sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, [product], maSinhVien, "PAYPAL - WALLET", soTienGiaoDich, balanceLeft.data, toEmail);
                                 }
+                                // Tạo thông báo web
+                                const thongBaoDTO = {
+                                    title: 'Giao dịch diện tử',
+                                    message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                                    linking: 'https://erukalearn.ddns.net',
+                                    isRead: false,
+                                    studentId: maSinhVien,
+                                }
+                                const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
                                 return res.render("student-callback", {signal: {title: "PAYMENT_SUCCESS", text: ghiChu, icon: "success"}});
                             } else {//nếu quá hạn
                                 return res.render("student-callback", {signal: {title: "PAYMENT_OUT", text: "Giao dịch đã quá hạn! Bấm xác nhận để quay lại trang chủ.", icon: "warning"}});
@@ -1665,6 +1719,15 @@ app.get("/paypal/topup/cancel", async (req, res) => {
                             //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
                             sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, products, maSinhVien, 'STUDENT - WALLET', soTienCongNo, balanceLeft.data, toEmail);
                         }
+                        // Tạo thông báo web
+                        const thongBaoDTO = {
+                            title: 'Giao dịch diện tử',
+                            message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                            linking: 'https://erukalearn.ddns.net',
+                            isRead: false,
+                            studentId: maSinhVien,
+                        }
+                        const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
                         return res.render("student-callback", {signal: {title: "PAYMENT_SUCCESS", text: ghiChu, icon: "success"}});
 
 

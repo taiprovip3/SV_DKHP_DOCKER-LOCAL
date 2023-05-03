@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,7 @@ public class SinhVienImpl implements SinhVienService {
 			TaiKhoan tk = TaiKhoan
 					.builder()
 					.email(sinhVien.getEmail())
+					.email_edu("")
 					.type(LoaiTaiKhoan.SINH_VIEN)
 					.user(u)
 					.build();
@@ -106,7 +108,11 @@ public class SinhVienImpl implements SinhVienService {
 					.daoTao(daoTao)
 					.build();
 			SinhVien myStudent = sinhVienRepository.save(sv);
-			return myStudent;
+			String emailEdu = generateEmail(myStudent.getHoTen(), myStudent.getMaSinhVien());
+			tk.setEmail_edu(emailEdu);;
+			myStudent.setTaiKhoan(tk);
+			SinhVien updateMyStudent = sinhVienRepository.save(sv);;
+			return updateMyStudent;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -224,5 +230,12 @@ public class SinhVienImpl implements SinhVienService {
         }
         return color;
     }
+	
+	private String generateEmail(String fullName, long userId) {
+	    String[] nameParts = fullName.split("\\s+");
+	    String lastName = nameParts[nameParts.length - 1];
+	    String lowerCaseLastName = StringUtils.stripAccents(lastName.toLowerCase());
+	    return userId + "." + lowerCaseLastName + "@student.iuh.edu.vn";
+	}
 
 }

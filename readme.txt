@@ -14,11 +14,12 @@ sudo usermod -aG docker ${USER}
 
 
 1. Thêm chức năng U,D cho nhân viên. [20%]
-2. Remake app teacher SQLite đồng bộ lịch local.
+2. Remake app teacher SQLite đồng bộ lịch local. [v]
 
 4. Thêm thông báo thanh toán ví cho web sinh viên. [v]
 5. Sửa con mắt xem mật khẩu [v]
 6. Sửa realtime lắng nge duplicate toastr. [v]
+
 
 3. Sửa app sinh viên connect API dns, api server php.
 7. Sửa port lại cho các cổng docker service. 

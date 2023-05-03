@@ -57,21 +57,58 @@ const Timetable = ({ navigation }) => {
             set_DATE_PREV(1, -5, -4, -3, -2, -1, 0);
         }
     },[now]);
-    React.useEffect(() => {
-        const getTeacherTimeTableByDay = async () => {
-            const isConnected = checkInternetConnection();
-            if(isConnected) {
-                const javaIp = await publicIP();
-                const response = await axios.get("http://"+ javaIp +":8080/api/time_table/getTeacherTimeTableByDay/"+ currentUser.maGiaoVien + "/" + formatDate(selectedNow), {headers: {"Authorization": token}});
-                if(response.data) {
-                    setTKBsInSelected(response.data);
-                }
-            } else {// Hàm lấy data offline từ SQLite
-                readDataFromSQLite(selectedNow);
+
+
+
+
+
+    // React.useEffect(() => {
+    //     console.log('on selectedNow change');
+    //     const getTeacherTimeTableByDay = async () => {
+    //         const isConnected = await checkInternetConnection();
+    //         console.log('isConnected=',isConnected);
+    //         if(isConnected) {
+    //             const javaIp = await publicIP();
+    //             const response = await axios.get("http://"+ javaIp +":8080/api/time_table/getTeacherTimeTableByDay/"+ currentUser.maGiaoVien + "/" + formatDate(selectedNow), {headers: {"Authorization": token}});
+    //             if(response.data) {
+    //                 setTKBsInSelected(response.data);
+    //             }
+    //         } else {// Hàm lấy data offline từ SQLite
+    //             console.log('No internet found -> Load local timetables');
+    //             readDataFromSQLite(selectedNow);
+    //         }
+    //     }
+    //     getTeacherTimeTableByDay();
+    // },[selectedNow]);
+    const onClickOneDay = async (theDate) => {
+        setSelectedNow(theDate);
+        const isConnected = await checkInternetConnection();
+        if (isConnected) {
+            // Gọi render tkb dưới local
+            console.log('Connection was good, let"s call!');
+            const javaIp = await publicIP();
+            const response = await axios.get("http://"+ javaIp +":8080/api/time_table/getTeacherTimeTableByDay/"+ currentUser.maGiaoVien + "/" + formatDate(theDate), {headers: {"Authorization": token}});
+            if(response.data) {
+                setTKBsInSelected(response.data);
             }
+        } else {
+            // Hiển thị thông báo lỗi liên quan đến kết nối mạng
+            console.log('Bad connection, let"s call in local!');
+            readDataFromSQLite(theDate);
         }
-        getTeacherTimeTableByDay();
-    },[selectedNow]);
+    }
+      
+      
+      
+      
+      
+      
+      
+
+
+
+
+
 
     React.useEffect(() => {// Init skeleton
         const initSkeleton = async (theInputDate) => {
@@ -194,6 +231,7 @@ const Timetable = ({ navigation }) => {
                 insertDataSQLite(response.data);
             }
         }
+        onClickOneDay(now);
         rebootTable();
         initSkeleton();
     },[]);
@@ -374,7 +412,7 @@ const Timetable = ({ navigation }) => {
                 <Box>
                     <HStack justifyContent="space-evenly">
                         <Box>
-                            <Pressable onPress={() => setSelectedNow(DATE_PREV1)}>
+                            <Pressable onPress={() => onClickOneDay(DATE_PREV1)}>
                                 <Center>
                                     <Text color="white" fontWeight="light" fontSize="xs">MON</Text>
                                     {
@@ -387,7 +425,7 @@ const Timetable = ({ navigation }) => {
                             </Pressable>
                         </Box>
                         <Box>
-                            <Pressable onPress={() => setSelectedNow(DATE_PREV2)}>
+                            <Pressable onPress={() => onClickOneDay(DATE_PREV2)}>
                                 <Center>
                                     <Text color="white" fontWeight="light" fontSize="xs">TUE</Text>
                                     {
@@ -400,7 +438,7 @@ const Timetable = ({ navigation }) => {
                             </Pressable>
                         </Box>
                         <Box>
-                            <Pressable onPress={() => setSelectedNow(DATE_PREV3)}>
+                            <Pressable onPress={() => onClickOneDay(DATE_PREV3)}>
                                 <Center>
                                     <Text color="white" fontWeight="light" fontSize="xs">WED</Text>
                                     {
@@ -413,7 +451,7 @@ const Timetable = ({ navigation }) => {
                             </Pressable>
                         </Box>
                         <Box>
-                            <Pressable onPress={() => setSelectedNow(DATE_PREV4)}>
+                            <Pressable onPress={() => onClickOneDay(DATE_PREV4)}>
                                 <Center>
                                     <Text color="white" fontWeight="light" fontSize="xs">THU</Text>
                                     {
@@ -426,7 +464,7 @@ const Timetable = ({ navigation }) => {
                             </Pressable>
                         </Box>
                         <Box>
-                            <Pressable onPress={() => setSelectedNow(DATE_PREV5)}>
+                            <Pressable onPress={() => onClickOneDay(DATE_PREV5)}>
                                 <Center>
                                     <Text color="white" fontWeight="light" fontSize="xs">FRI</Text>
                                     {
@@ -439,7 +477,7 @@ const Timetable = ({ navigation }) => {
                             </Pressable>
                         </Box>
                         <Box>
-                            <Pressable onPress={() => setSelectedNow(DATE_PREV6)}>
+                            <Pressable onPress={() => onClickOneDay(DATE_PREV6)}>
                                 <Center>
                                     <Text color="white" fontWeight="light" fontSize="xs">SAT</Text>
                                     {
@@ -452,7 +490,7 @@ const Timetable = ({ navigation }) => {
                             </Pressable>
                         </Box>
                         <Box>
-                            <Pressable onPress={() => setSelectedNow(DATE_PREV0)}>
+                            <Pressable onPress={() => onClickOneDay(DATE_PREV0)}>
                                 <Center>
                                     <Text color="white" fontWeight="light" fontSize="xs">SUN</Text>
                                     {

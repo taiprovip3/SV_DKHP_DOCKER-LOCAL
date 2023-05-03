@@ -15,6 +15,7 @@ import * as SQLite from 'expo-sqlite';
 import * as Progress from 'react-native-progress';
 
 const Timetable = ({ navigation }) => {
+    console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
 
     const db = SQLite.openDatabase('sv_dkhp.db');
     const { token, currentUser } = React.useContext(AuthContext);

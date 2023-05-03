@@ -1,5 +1,7 @@
 package com.se.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -14,5 +16,8 @@ public interface ThanhToanGiaoDichRepository extends CrudRepository<ThanhToanGia
 
     @Query(value = "SELECT * FROM thanh_toan_giao_dich WHERE un_debt_ids = ?1 AND ma_sinh_vien = ?2 AND status = 1 AND ghi_chu != '' LIMIT 1", nativeQuery = true)
     public ThanhToanGiaoDich getStudentPayedDebtByDebtId(long debtId, long studentId);
+
+    @Query(value = "SELECT * FROM thanh_toan_giao_dich WHERE ma_sinh_vien = ?1 AND un_debt_ids = 'Array' ORDER BY created_time DESC", nativeQuery = true)
+	public List<ThanhToanGiaoDich> getInputPaymentsByStudentId(long studentId);
 
 }
