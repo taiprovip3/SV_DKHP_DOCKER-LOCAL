@@ -8,4 +8,5 @@ public class ThanhToanGiaoDich2DTO {
 	private double balance;
 	private String unDebtIds;
 	private String ghiChu;
+	private String maIPN;
 }

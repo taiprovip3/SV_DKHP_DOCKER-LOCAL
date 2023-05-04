@@ -114,37 +114,42 @@ public class SinhVien_LopHocPhanImpl implements SinhVien_LopHocPhanService {
 			LopHocPhan lhp = sv_lhp.getLopHocPhan();
 			LocalDate startDay = lhp.getNgayBatDau().toLocalDate();
 			LocalDate today = LocalDate.now();
-			if(startDay.isEqual(today)) {
+			if(startDay.isEqual(today)) {// return hết hạn đồng thời lock lhp lại
 				if(lhp.getTrangThai().equals(TrangThai.DANG_CHO_SINH_VIEN_DANG_KY)) {
 					lhp.setTrangThai(TrangThai.CHAP_NHAN_MO_LOP);
 					lopHocPhanRepository.save(lhp);
 				}
 				return "OUT_OF_DATE";
-			} else if(startDay.isAfter(today)) {
-				// Cập nhật số lượng cho LHP
-				lhp.setSoLuong(lhp.getSoLuong() - 1);
-				lopHocPhanRepository.save(lhp);
-				// Cập nhật số lượng tkb
-				ThoiKhoaBieu thoiKhoaBieu = sv_lhp.getThoiKhoaBieu();
-				thoiKhoaBieu.setSoLuongDaDangKy(thoiKhoaBieu.getSoLuongDaDangKy() - 1);
-				thoiKhoaBieuRepository.save(thoiKhoaBieu);
-				// Cập nhật số lượng tkbCon
-				ThoiKhoaBieuCon thoiKhoaBieuCon = sv_lhp.getThoiKhoaBieuCon();
-				if(thoiKhoaBieuCon != null) {
-					thoiKhoaBieuCon.setSoLuongDaDangKy(thoiKhoaBieuCon.getSoLuongDaDangKy() - 1);
-					thoiKhoaBieuConRepository.save(thoiKhoaBieuCon);
-				}
-				sinhVien_LopHocPhanRepository.deleteById(sv_lhp.getId());
-				long studentId = sv_lhp.getSinhVien().getMaSinhVien();
-				long unitClassId = lhp.getMaLopHocPhan();
-				congNoRepository.deleteDebByStudentAndUnitClassId(studentId, unitClassId);
-				return "OK";
 			} else {
-				if(lhp.getTrangThai().equals(TrangThai.DANG_CHO_SINH_VIEN_DANG_KY)) {
-					lhp.setTrangThai(TrangThai.DA_KHOA);
-					lopHocPhanRepository.save(lhp);
+				if(sv_lhp.isDaThuHocPhi() == true) {
+					return "WAS_PAID";
 				}
-				return "OUT_OF_DATE";
+				if(startDay.isAfter(today)) {
+					// Cập nhật số lượng cho LHP
+					lhp.setSoLuong(lhp.getSoLuong() - 1);
+					lopHocPhanRepository.save(lhp);
+					// Cập nhật số lượng tkb
+					ThoiKhoaBieu thoiKhoaBieu = sv_lhp.getThoiKhoaBieu();
+					thoiKhoaBieu.setSoLuongDaDangKy(thoiKhoaBieu.getSoLuongDaDangKy() - 1);
+					thoiKhoaBieuRepository.save(thoiKhoaBieu);
+					// Cập nhật số lượng tkbCon
+					ThoiKhoaBieuCon thoiKhoaBieuCon = sv_lhp.getThoiKhoaBieuCon();
+					if(thoiKhoaBieuCon != null) {
+						thoiKhoaBieuCon.setSoLuongDaDangKy(thoiKhoaBieuCon.getSoLuongDaDangKy() - 1);
+						thoiKhoaBieuConRepository.save(thoiKhoaBieuCon);
+					}
+					sinhVien_LopHocPhanRepository.deleteById(sv_lhp.getId());
+					long studentId = sv_lhp.getSinhVien().getMaSinhVien();
+					long unitClassId = lhp.getMaLopHocPhan();
+					congNoRepository.deleteDebByStudentAndUnitClassId(studentId, unitClassId);
+					return "OK";
+				} else {
+					if(lhp.getTrangThai().equals(TrangThai.DANG_CHO_SINH_VIEN_DANG_KY)) {
+						lhp.setTrangThai(TrangThai.DA_KHOA);
+						lopHocPhanRepository.save(lhp);
+					}
+					return "OUT_OF_DATE";
+				}	
 			}
 		} catch (DateTimeParseException e) {
 			System.out.println("Chuỗi ngày không hợp lệ!");

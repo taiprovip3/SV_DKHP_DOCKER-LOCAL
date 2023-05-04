@@ -15,7 +15,7 @@ const PaymentPage = ({ navigation, route }) => {
 
   let url = "";
   if(debtData.service === "PAYPAL")
-    url = LOCAL_EJS_API_URL+"/paypal/payment/confirm";
+    url = LOCAL_EJS_API_URL+"/paypal/payment";
   else {
     if(debtData.service === "MOMO_QR" || debtData.service === "MOMO_ATM")
       url = LOCAL_PHP_API_URL+"/momo/momo-mobile-implements.php";

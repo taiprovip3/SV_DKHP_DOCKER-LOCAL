@@ -37,6 +37,7 @@ public class ThongBao implements Serializable{
 	private long id;
 	@Column(columnDefinition = "DEFAULT 'Không có tiêu đề'")
 	private String title;
+	@Column(columnDefinition = "TEXT")
 	private String message;
 	private String linking;
 	private boolean isRead;

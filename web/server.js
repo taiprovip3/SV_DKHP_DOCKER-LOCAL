@@ -64,7 +64,11 @@ con.connect(function(err) {
 });
 const query = util.promisify(con.query).bind(con);
 const { admin_firebase_sdk, firebaseDB } = require('./utils/admin-firebase-sdk');
-
+paypal.configure({
+    'mode': 'sandbox', //sandbox or live
+    'client_id': process.env.PAYPAL_CLIENT_ID,
+    'client_secret':  process.env.PAYPAL_SECRET_KEY
+});
 
 
 
@@ -138,7 +142,9 @@ app.use('/', employeeFeatureRouter);
 */
 const { formatCurrency } = require('./utils/functional');
 const { sendEmailHddt } = require('./utils/functional');
+const { isJSON } = require('./utils/functional');
 const { getListAnnouncement } = require('./sub-modules/employee/employee-functional');
+
 /*
                                                     ****
     ****            ****    ********************              ****
@@ -284,24 +290,30 @@ async function renderStudentHomepage(req,res,signal){
     }
 }
 app.post("/student-login", upload.fields([]), async (req, res) => {
-    if(req.session.student && req.session.jwt_token) { //Đã session
-        return res.redirect("./student");
-    } else { //First try
-        const {ma_sinh_vien, mat_khau, captcha_code} = req.body;
-        const LIST_ANNOUNCEMENT = await getListAnnouncement();
-        if(captcha_code !== req.session.captcha) {//Sai captcha
-            return res.render("student-login", {LIST_ANNOUNCEMENT, error: "wrong_captcha"});
-        } else {
-            const response = await axios.post(javaUrl+"/api/login", {username: "sv"+ma_sinh_vien, password: mat_khau});
-            if(response.data) {
-                const token = response.data;
-                req.session.jwt_token = token;
-                req.session.student = ma_sinh_vien;
-                return res.redirect("/student?signal=SUCCESS_LOGON");
+    const LIST_ANNOUNCEMENT = await getListAnnouncement();
+    try {
+        if(req.session.student && req.session.jwt_token) { //Đã session
+            return res.redirect("./student");
+        } else { //First try
+            const {ma_sinh_vien, mat_khau, captcha_code} = req.body;
+            if(captcha_code !== req.session.captcha) {//Sai captcha
+                return res.render("student-login", {LIST_ANNOUNCEMENT, error: "wrong_captcha"});
             } else {
-                return res.render("student-login", {LIST_ANNOUNCEMENT, error: "wrong_password"});
+                const response = await axios.post(javaUrl+"/api/login", {username: "sv"+ma_sinh_vien, password: mat_khau});
+                if(response.data) {
+                    const token = response.data;
+                    req.session.jwt_token = token;
+                    req.session.student = ma_sinh_vien;
+                    return res.redirect("/student?signal=SUCCESS_LOGON");
+                } else {
+                    return res.render("student-login", {LIST_ANNOUNCEMENT, error: "wrong_password"});
+                }
             }
         }
+    } catch (error) {
+        const routerName = req.baseUrl+req.route.path;
+        console.log(`error ${routerName}: ${error.message}`);
+        return res.render("student-login", {LIST_ANNOUNCEMENT, error: "internal_server_error"});
     }
 });
 app.post("/student/getDepartmentNotificationById", async (req, res) => {
@@ -474,7 +486,8 @@ app.delete("/student/dkhp/sv_lhp", async (req, res) => {
         }
         const response2 = await axios.delete(javaUrl+"/api/sv_lhp/deleteById/"+maSVLHP, {headers: {"Authorization": req.session.jwt_token}});
         if(response2.data) {
-            await updateDocumentFieldAEqualsABC(maLopHocPhan, 'minus');
+            if(response2.data !== "WAS_PAID")
+                await updateDocumentFieldAEqualsABC(maLopHocPhan, 'minus');
             return res.send(response2.data);
         }
         return res.send("ERROR");
@@ -737,7 +750,22 @@ app.get("/student/payment", async (req, res) => {
         if(response.data)
             LIST_DEBT = response.data;
         const response1 = await axios.get(javaUrl+"/api/student/getStudentById/" + ma_sinh_vien, {headers: {"Authorization": token}});
-        return res.render("student-payment", {STUDENT_DATA: response1.data, LIST_COURSE, LIST_DEBT});
+        const response2 = await axios.get(javaUrl+"/api/payment/getOutputPaymentsByStudentId/" + ma_sinh_vien, {headers: {"Authorization": token}});
+        return res.render("student-payment", {STUDENT_DATA: response1.data, LIST_COURSE, LIST_DEBT, LIST_PAYMENT: response2.data});
+    }
+    return res.redirect("/student");
+});
+app.post("/student/payment/createTransaction", async (req, res) => {
+    if(req.session.jwt_token) {
+        const token = req.session.jwt_token;
+        const studentId = req.body.studentId;
+        const balance = req.body.balance;
+        const unDebtIds = req.body.unDebtIds;
+        const maIPN = 'EMPTY';
+        const maGiaoDichResponse = await axios.get(javaUrl+"/api/payment/createTransaction/"+studentId+"/"+balance+"/"+unDebtIds+"/"+maIPN, {headers: {"Authorization": token}});
+        if(maGiaoDichResponse.data)
+            return res.send(maGiaoDichResponse.data);
+        return res.send("");
     }
     return res.redirect("/student");
 });
@@ -805,7 +833,7 @@ app.get("/student/payment/callback", async (req, res) => {
                     for(let i=0; i<unDebtCounter; i++) {
                         const unDebtId = arrayUnDebtIds[i];
                         const debt = await axios.get(javaUrl+"/api/debt/getUnDebtById/"+unDebtId, {headers: {"Authorization": token}});
-                        const soTien = debt.data.monHoc.soTinChi * 850000;
+                        const soTien = debt.data.monHoc.soTinChi * process.env.SO_TIEN_1_TIN_CHI;
                         if(soDu >= soTien) { //nếu còn đủ tiền thanh toán
                             const newUndebt = await axios.get(javaUrl+"/api/debt/updateUnDebtById/"+unDebtId, {headers: {"Authorization": token}});//Giải quyết công nợ here....
                             soDu -= soTien;
@@ -1034,7 +1062,7 @@ app.post("/student/payment/resolvePaymentStudentWallet", async (req, res) => {
                 const debtId = total_debt[i];
                 const debtResponse = await axios.get(javaUrl+"/api/debt/getUnDebtById/"+debtId, {headers: {"Authorization": token}});
                 const debt = debtResponse.data;
-                const soTien = debt.monHoc.soTinChi * 850000;
+                const soTien = debt.monHoc.soTinChi * process.env.SO_TIEN_1_TIN_CHI;
                 if(soDu >= soTien) {
                     const newUndebt = await axios.get(javaUrl+"/api/debt/updateUnDebtById/"+debtId, {headers: {"Authorization": token}});
                     soDu -= soTien;
@@ -1126,6 +1154,270 @@ app.post("/student/payment/resolvePaymentStudentWallet", async (req, res) => {
     }
     return res.redirect("/student");
 });
+app.put("/student/payment/recheckPayment/:paymentId", async (req, res) => {
+    // [NO_IPN_FOUND, INTERNAL_SERVER_ERROR, PAYMENT_DONE_BEFORE, RECHECK_SUCCESS, NO_PAYPAL_TRANSACTION_ID_FOUND, PAYMENT_INSUFFICIENT]
+    let SIGNAL_RESPONSE = "RECHECK_SUCCESS";
+    try {
+        if(req.session.jwt_token) {
+            const token = req.session.jwt_token;
+            const maGiaoDich = req.params.paymentId;
+            const maSinhVien = req.session.student;
+            const giaoDichReponse = await axios.get(javaUrl+"/api/payment/getPaymentById/" + maGiaoDich, {headers: {"Authorization": token}});
+            if(giaoDichReponse.data.status) {
+                res.status(400).send('PAYMENT_DONE_BEFORE');
+            }
+            if(!giaoDichReponse.data.maIPN) {
+                res.status(400).send('NO_IPN_FOUND');
+            }
+            // Bước xác định coi payment này là của momo hay paypal
+            const transactionID = giaoDichReponse.data.maIPN;
+            if(isJSON(transactionID)) {// Nếu là giao dịch loại momo
+                const ipnObject = JSON.parse(transactionID);
+                const requestDTO = {
+                    partnerCode: ipnObject.partnerCode,
+                    requestId: ipnObject.requestId,
+                    orderId: ipnObject.orderId,
+                    signature: ipnObject.signature,
+                    lang: ipnObject.lang,
+                }
+                const recheckMomoResponse = await axios.post("https://test-payment.momo.vn/v2/gateway/api/query", requestDTO);
+                if(!recheckMomoResponse.data) {
+                    SIGNAL_RESPONSE = 'INTERNAL_SERVER_ERROR';// Case này không bao giờ xảy ra vì gọi req lên momo lên lúc nào cũng có
+                } else {
+                    const momoResponse = recheckMomoResponse.data;
+                    if(momoResponse.resultCode == 1006) {
+                        const ghiChu = 'Giao dịch thất bại, do người dùng tự hủy hoặc từ chối giao dịch.';
+                        const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: 0};
+                        const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                        SIGNAL_RESPONSE = 'RECHECK_SUCCESS';
+                    }
+                    if(momoResponse.resultCode == 0) {
+                        let soDu = momoResponse.amount;//số tiền trong giao dịch
+                        const stringUnDebtIds = giaoDichReponse.data.unDebtIds; 
+                        let arrayUnDebtIds = stringUnDebtIds.split(",").map(Number);
+                        const unDebtCounter = arrayUnDebtIds.length;
+                        let payedCounter = 0;
+                        let totalPayed = 0;
+                        let products = [];
+                        for(let i=0; i<unDebtCounter; i++) {
+                            const unDebtId = arrayUnDebtIds[i];
+                            const debt = await axios.get(javaUrl+"/api/debt/getUnDebtById/"+unDebtId, {headers: {"Authorization": token}});
+                            const soTien = debt.data.monHoc.soTinChi * process.env.SO_TIEN_1_TIN_CHI;
+                            if(soDu >= soTien) { //nếu còn đủ tiền thanh toán
+                                const newUndebt = await axios.get(javaUrl+"/api/debt/updateUnDebtById/"+unDebtId, {headers: {"Authorization": token}});//Giải quyết công nợ here....
+                                soDu -= soTien;
+                                payedCounter++;
+                                totalPayed += soTien;
+                                //Update sv_lhp
+                                const maLopHocPhan = debt.data.lopHocPhan.maLopHocPhan;
+                                const newSvlhp = await axios.get(javaUrl+"/api/sv_lhp/updateStudentRegisSVLHP/"+maSinhVien + "/" + maLopHocPhan, {headers: {"Authorization": token}});
+                                //Push các môn đã pay vào list product của hoá đơn
+                                const product = {
+                                    "quantity": 1,
+                                    "description": newSvlhp.data.lopHocPhan.monHoc.tenMonHoc,
+                                    "tax-rate": 0,
+                                    "price": soTien
+                                };
+                                products.push(product);
+                            } else {
+                                if(i == 0) {
+                                    SIGNAL_RESPONSE = 'PAYMENT_INSUFFICIENT';
+                                    break;
+                                } else break;
+                            }
+                        }
+                        const balanceLeft = await axios.get(javaUrl+"/api/student/updateBalance/"+maSinhVien+"/"+soDu, {headers: {"Authorization": token}});
+                        const ghiChu = "Thanh toán thành công: " + payedCounter + "/" + unDebtCounter + " mục. Tổng tiền đã thanh toán: "+ formatCurrency(momoResponse.amount) +". Số tiến đã thanh toán thành công: "+ formatCurrency(totalPayed) +". Số tiền dư thanh toán còn lại: " + formatCurrency(soDu);
+                        //Update ThanhToanGiaoDich thành status pass;
+                        const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: momoResponse.amount};
+                        const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                        //Tạo phieuThu
+                        const phieuThu2DTO = {donViThu: 'PAYPAL - WALLET', ghiChu, ngayThu: "", soTien: momoResponse.amount, trangThai: "DA_XU_LY", maSinhVien, maGiaoDich, loaiPhieuThu: 'OUT'};
+                        const order_detail = await axios.post(javaUrl+"/api/order_detail/createOrderDetailBy", phieuThu2DTO, {headers: {"Authorization": token}});
+                        //Tạo hddt {hddt chứa nhiều products}
+                        const hddtData = {
+                            "customize": {
+                            },
+                            "images": {
+                                "logo": "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-iuh-inkythuatso-01-08-11-18-25.jpg",
+                                "background": "https://public.easyinvoice.cloud/img/watermark-draft.jpg"
+                            },
+                            "sender": {
+                                "company": "Thanh toán học phí - Phương thức: [MOMO - WALLET]",
+                                "address": "Số 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, Thành phố Hồ Chí Minh",
+                                "zip": "70000 NVB",
+                                "city": "Hồ Chí Minh",
+                                "country": "Việt Nam"
+                            },
+                            "client": {
+                                "company": order_detail.data.sinhVien.hoTen + " - MSSV: " + maSinhVien,
+                                "address": order_detail.data.sinhVien.diaChi,
+                                "zip": "70000 HTH",
+                                "city": "Hồ Chí Minh",
+                                "country": "Việt Nam"
+                            },
+                            "information": {
+                                "number": "2021.0001",
+                                "date": new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }),
+                                "due-date": new Date().toLocaleDateString('en-GB'),
+                            },
+                            "products": products,
+                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                            "settings": {
+                                "currency": "VND",
+                            },
+                            "translate": {
+                            },
+                        };
+                        db.insert({_id: order_detail.data.maPhieuThu, hddtData}, function (err, newDoc) {
+                            if(err) {
+                                console.error(err.message);
+                            } else {
+                                console.log('Tạo HDDT thành công: ', newDoc);
+                            }
+                        });
+                        //Gửi mail hddt...
+                        const toEmail = order_detail.data.sinhVien.taiKhoan.email;
+                        if(toEmail) {
+                            //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
+                            sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, products, maSinhVien, 'MOMO - WALLET', totalPayed, balanceLeft.data, toEmail);
+                        }
+                        // Tạo thông báo web
+                        const thongBaoDTO = {
+                            title: 'Giao dịch diện tử',
+                            message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                            linking: 'https://erukalearn.ddns.net',
+                            isRead: false,
+                            studentId: maSinhVien,
+                        }
+                        const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
+                    }
+                }
+            } else {// Nếu là giao dịch loại paypal
+                paypal.payment.get(transactionID, async function (error, payment) {
+                    if (error) {
+                        SIGNAL_RESPONSE = "NO_PAYPAL_TRANSACTION_ID_FOUND";
+                    } else {// Tiến hành [gạch công nợ] cho student
+                        if(!payment.payer) {// Update giao dịch thành đã xử lý
+                            const ghiChu = `Giao dịch thất bại!. Mã giao dịch ${maGiaoDich} không tồn tại trên hệ thống thanh toán tích hợp.`;
+                            const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: 0};
+                            const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                        } else {
+                            const soTienPayOnPaypal = Number(payment.transactions[0].amount.total) * process.env.EXCHANGE_PAYPAL_CURRENCY;
+                            let soDu = Number(payment.transactions[0].amount.total) * process.env.EXCHANGE_PAYPAL_CURRENCY;//số tiền trong giao dịch
+                            const stringUnDebtIds = giaoDichReponse.data.unDebtIds; 
+                            let arrayUnDebtIds = stringUnDebtIds.split(",").map(Number);
+                            const unDebtCounter = arrayUnDebtIds.length;
+                            let payedCounter = 0;
+                            let totalPayed = 0;
+                            let products = [];
+                            for(let i=0; i<unDebtCounter; i++) {
+                                const unDebtId = arrayUnDebtIds[i];
+                                const debt = await axios.get(javaUrl+"/api/debt/getUnDebtById/"+unDebtId, {headers: {"Authorization": token}});
+                                const soTien = debt.data.monHoc.soTinChi * process.env.SO_TIEN_1_TIN_CHI;
+                                if(soDu >= soTien) { //nếu còn đủ tiền thanh toán
+                                    const newUndebt = await axios.get(javaUrl+"/api/debt/updateUnDebtById/"+unDebtId, {headers: {"Authorization": token}});//Giải quyết công nợ here....
+                                    soDu -= soTien;
+                                    payedCounter++;
+                                    totalPayed += soTien;
+                                    //Update sv_lhp
+                                    const maLopHocPhan = debt.data.lopHocPhan.maLopHocPhan;
+                                    const newSvlhp = await axios.get(javaUrl+"/api/sv_lhp/updateStudentRegisSVLHP/"+maSinhVien + "/" + maLopHocPhan, {headers: {"Authorization": token}});
+                                    //Push các môn đã pay vào list product của hoá đơn
+                                    const product = {
+                                        "quantity": 1,
+                                        "description": newSvlhp.data.lopHocPhan.monHoc.tenMonHoc,
+                                        "tax-rate": 0,
+                                        "price": soTien
+                                    };
+                                    products.push(product);
+                                } else {
+                                    if(i == 0) {
+                                        SIGNAL_RESPONSE = 'PAYMENT_INSUFFICIENT';
+                                        break;
+                                    } else break;
+                                }
+                            }
+                            const balanceLeft = await axios.get(javaUrl+"/api/student/updateBalance/"+maSinhVien+"/"+soDu, {headers: {"Authorization": token}});
+                            const ghiChu = "Thanh toán thành công: " + payedCounter + "/" + unDebtCounter + " mục. Tổng tiền đã thanh toán: "+ formatCurrency(soTienPayOnPaypal) +". Số tiến đã thanh toán thành công: "+ formatCurrency(totalPayed) +". Số tiền dư thanh toán còn lại: " + formatCurrency(soDu);
+                            //Update ThanhToanGiaoDich thành status pass;
+                            const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: soTienPayOnPaypal};
+                            const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                            //Tạo phieuThu
+                            const phieuThu2DTO = {donViThu: 'PAYPAL - WALLET', ghiChu, ngayThu: "", soTien: soTienPayOnPaypal, trangThai: "DA_XU_LY", maSinhVien, maGiaoDich, loaiPhieuThu: 'OUT'};
+                            const order_detail = await axios.post(javaUrl+"/api/order_detail/createOrderDetailBy", phieuThu2DTO, {headers: {"Authorization": token}});
+                            //Tạo hddt {hddt chứa nhiều products}
+                            const hddtData = {
+                                "customize": {
+                                },
+                                "images": {
+                                    "logo": "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-iuh-inkythuatso-01-08-11-18-25.jpg",
+                                    "background": "https://public.easyinvoice.cloud/img/watermark-draft.jpg"
+                                },
+                                "sender": {
+                                    "company": "Thanh toán học phí - Phương thức: [PAYPAL - WALLET]",
+                                    "address": "Số 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, Thành phố Hồ Chí Minh",
+                                    "zip": "70000 NVB",
+                                    "city": "Hồ Chí Minh",
+                                    "country": "Việt Nam"
+                                },
+                                "client": {
+                                    "company": order_detail.data.sinhVien.hoTen + " - MSSV: " + maSinhVien,
+                                    "address": order_detail.data.sinhVien.diaChi,
+                                    "zip": "70000 HTH",
+                                    "city": "Hồ Chí Minh",
+                                    "country": "Việt Nam"
+                                },
+                                "information": {
+                                    "number": "2021.0001",
+                                    "date": new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }),
+                                    "due-date": new Date().toLocaleDateString('en-GB'),
+                                },
+                                "products": products,
+                                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                                "settings": {
+                                    "currency": "VND",
+                                },
+                                "translate": {
+                                },
+                            };
+                            db.insert({_id: order_detail.data.maPhieuThu, hddtData}, function (err, newDoc) {
+                                if(err) {
+                                    console.error(err.message);
+                                } else {
+                                    console.log('Tạo HDDT thành công: ', newDoc);
+                                }
+                            });
+                            //Gửi mail hddt...
+                            const toEmail = order_detail.data.sinhVien.taiKhoan.email;
+                            if(toEmail) {
+                                //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
+                                sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, products, maSinhVien, 'PAYPAL - WALLET', totalPayed, balanceLeft.data, toEmail);
+                            }
+                            // Tạo thông báo web
+                            const thongBaoDTO = {
+                                title: 'Giao dịch diện tử',
+                                message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                                linking: 'https://erukalearn.ddns.net',
+                                isRead: false,
+                                studentId: maSinhVien,
+                            }
+                            const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
+                        }
+                        SIGNAL_RESPONSE = 'RECHECK_SUCCESS';
+                    }
+                });
+            }
+            res.send(SIGNAL_RESPONSE);
+        } else return res.redirect("/student");
+    } catch (error) {
+        SIGNAL_RESPONSE = "INTERNAL_SERVER_ERROR";
+        const routerName = req.baseUrl+req.route.path;
+        const errorMessage = error.message;
+        console.log(`MyError: ${routerName}: ${errorMessage}`);
+        return res.send(SIGNAL_RESPONSE);
+    }
+});
    //----- student order-detail oriented -----\\
 app.get("/student/order-detail", async (req, res) => {
     if(req.session.jwt_token) {
@@ -1169,16 +1461,226 @@ app.get("/student/wallet", async (req, res) => {
 });
 app.post("/student/wallet/createTransaction", async (req, res) => {
     if(req.session.jwt_token) {
+        const token = req.session.jwt_token;
         const studentId = req.body.studentId;
         const balance = req.body.balance;
         const unDebtIds = 'Array';
-        const token = req.session.jwt_token;
-        const maGiaoDichResponse = await axios.get(javaUrl+"/api/payment/createTransaction/"+studentId+"/"+balance+"/"+unDebtIds, {headers: {"Authorization": token}});
+        const maIPN = 'EMPTY';
+        const maGiaoDichResponse = await axios.get(javaUrl+"/api/payment/createTransaction/"+studentId+"/"+balance+"/"+unDebtIds+"/"+maIPN, {headers: {"Authorization": token}});
         if(maGiaoDichResponse.data)
             return res.send(maGiaoDichResponse.data);
         return res.send("");
     }
     return res.redirect("/student");
+});
+app.put("/student/wallet/recheckPayment/:paymentId", async (req, res) => {
+    // [NO_IPN_FOUND, INTERNAL_SERVER_ERROR, PAYMENT_DONE_BEFORE, RECHECK_SUCCESS, NO_PAYPAL_TRANSACTION_ID_FOUND]
+    let SIGNAL_RESPONSE = "RECHECK_SUCCESS";
+    try {
+        if(req.session.jwt_token) {
+            const token = req.session.jwt_token;
+            const maGiaoDich = req.params.paymentId;
+            const maSinhVien = req.session.student;
+            const giaoDichReponse = await axios.get(javaUrl+"/api/payment/getPaymentById/" + maGiaoDich, {headers: {"Authorization": token}});
+            if(giaoDichReponse.data.status) {
+                return res.send('PAYMENT_DONE_BEFORE');
+            }
+            if(!giaoDichReponse.data.maIPN) {
+                return res.send('NO_IPN_FOUND');
+            }
+            // Bước xác định coi payment này là của momo hay paypal
+            const transactionID = giaoDichReponse.data.maIPN;
+            if(isJSON(transactionID)) {// Là momo
+                const ipnObject = JSON.parse(transactionID);
+                const requestDTO = {
+                    partnerCode: ipnObject.partnerCode,
+                    requestId: ipnObject.requestId,
+                    orderId: ipnObject.orderId,
+                    signature: ipnObject.signature,
+                    lang: ipnObject.lang,
+                }
+                const recheckMomoResponse = await axios.post("https://test-payment.momo.vn/v2/gateway/api/query", requestDTO);
+                if(!recheckMomoResponse.data) {
+                    SIGNAL_RESPONSE = 'INTERNAL_SERVER_ERROR';
+                    // Mark done cho payment đó luôn
+                } else {
+                    const momoResponse = recheckMomoResponse.data;
+                    if(momoResponse.resultCode == 1006) {
+                        const ghiChu = 'Giao dịch thất bại, do người dùng tự hủy hoặc từ chối giao dịch.';
+                        const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: 0};
+                        const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                        SIGNAL_RESPONSE = 'RECHECK_SUCCESS';
+                    }
+                    if(momoResponse.resultCode == 0) {// Tiến hạnh nạp tiền vào ví cho student
+                        let soTienGiaoDich = momoResponse.amount;
+                        const product = {
+                            "quantity": 1,
+                            "description": 'NẠP TIỀN VÀO SỐ DƯ VÍ - SINH VIÊN',
+                            "tax-rate": 0,
+                            "price": soTienGiaoDich
+                        };
+                        const sinhVienAddBalanceDTO = {maSinhVien, soTienGiaoDich};
+                        const balanceLeft = await axios.post(javaUrl+"/api/student/addStudentBalance", sinhVienAddBalanceDTO, {headers: {"Authorization": token}});
+                        const ghiChu = "Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: "+ formatCurrency(soTienGiaoDich) +". Số tiến đã thanh toán thành công: "+ formatCurrency(soTienGiaoDich) +". Số tiền dư thanh toán còn lại: " + formatCurrency(balanceLeft.data);
+                        const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: soTienGiaoDich};
+                        const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                        const phieuThu2DTO = {donViThu: 'MOMO - WALLET', ghiChu, ngayThu: "", soTien: soTienGiaoDich, trangThai: "DA_XU_LY", maSinhVien, maGiaoDich, loaiPhieuThu: 'IN'};
+                        const order_detail = await axios.post(javaUrl+"/api/order_detail/createOrderDetailBy", phieuThu2DTO, {headers: {"Authorization": token}});
+                        const hddtData = {
+                            "customize": {
+                            },
+                            "images": {
+                                "logo": "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-iuh-inkythuatso-01-08-11-18-25.jpg",
+                                "background": "https://public.easyinvoice.cloud/img/watermark-draft.jpg"
+                            },
+                            "sender": {
+                                "company": "Nạp tiền vào ví - Phương thức: [MOMO - WALLET]",
+                                "address": "Số 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, Thành phố Hồ Chí Minh",
+                                "zip": "70000 NVB",
+                                "city": "Hồ Chí Minh",
+                                "country": "Việt Nam"
+                            },
+                            "client": {
+                                "company": order_detail.data.sinhVien.hoTen + " - MSSV: " + maSinhVien,
+                                "address": order_detail.data.sinhVien.diaChi,
+                                "zip": "70000 HTH",
+                                "city": "Hồ Chí Minh",
+                                "country": "Việt Nam"
+                            },
+                            "information": {
+                                "number": "2021.0001",
+                                "date": new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }),
+                                "due-date": new Date().toLocaleDateString('en-GB'),
+                            },
+                            "products": [
+                                product,
+                            ],
+                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                            "settings": {
+                                "currency": "VND",
+                            },
+                            "translate": {
+                            },
+                        };
+                        db.insert({_id: order_detail.data.maPhieuThu, hddtData}, function (err, newDoc) {
+                            if(err) {
+                                console.error(err.message);
+                            } else {
+                                console.log('Tạo HDDT thành công: ', newDoc);
+                            }
+                        });
+                        const toEmail = order_detail.data.sinhVien.taiKhoan.email;
+                        if(toEmail) {
+                            //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
+                            sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, [product], maSinhVien, 'MOMO - WALLET', soTienGiaoDich, balanceLeft.data, toEmail);
+                        }
+                        const thongBaoDTO = {
+                            title: 'Giao dịch diện tử',
+                            message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                            linking: 'https://erukalearn.ddns.net',
+                            isRead: false,
+                            studentId: maSinhVien,
+                        }
+                        const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
+                        SIGNAL_RESPONSE = 'RECHECK_SUCCESS';
+                    }
+                }
+            } else {// Là paypal
+                paypal.payment.get(transactionID, async function (error, payment) {
+                    if (error) {
+                        SIGNAL_RESPONSE = "NO_PAYPAL_TRANSACTION_ID_FOUND";
+                    } else {// Tiến hành [nạp tiền vào ví] cho student
+                        if(!payment.payer) {// Update giao dịch thành đã xử lý
+                            const ghiChu = `Giao dịch thất bại!. Do người dùng tự thoát hoặc bỏ lỡ giao dịch giữa chừng.`;
+                            const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: 0};
+                            const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                        } else {
+                            let soTienGiaoDich = Number(payment.transactions[0].amount.total) * process.env.EXCHANGE_PAYPAL_CURRENCY;
+                            const product = {
+                                "quantity": 1,
+                                "description": 'NẠP TIỀN VÀO SỐ DƯ VÍ - SINH VIÊN',
+                                "tax-rate": 0,
+                                "price": soTienGiaoDich
+                            };
+                            const sinhVienAddBalanceDTO = {maSinhVien, soTienGiaoDich};
+                            const balanceLeft = await axios.post(javaUrl+"/api/student/addStudentBalance", sinhVienAddBalanceDTO, {headers: {"Authorization": token}});
+                            const ghiChu = "Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: "+ formatCurrency(soTienGiaoDich) +". Số tiến đã thanh toán thành công: "+ formatCurrency(soTienGiaoDich) +". Số tiền dư thanh toán còn lại: " + formatCurrency(balanceLeft.data);
+                            const thanhToanGiaoDichDTO = {maGiaoDich, ghiChu, balance: soTienGiaoDich};
+                            const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                            const phieuThu2DTO = {donViThu: 'PAYPAL - WALLET', ghiChu, ngayThu: "", soTien: soTienGiaoDich, trangThai: "DA_XU_LY", maSinhVien, maGiaoDich, loaiPhieuThu: 'IN'};
+                            const order_detail = await axios.post(javaUrl+"/api/order_detail/createOrderDetailBy", phieuThu2DTO, {headers: {"Authorization": token}});
+                            const hddtData = {
+                                "customize": {
+                                },
+                                "images": {
+                                    "logo": "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-iuh-inkythuatso-01-08-11-18-25.jpg",
+                                    "background": "https://public.easyinvoice.cloud/img/watermark-draft.jpg"
+                                },
+                                "sender": {
+                                    "company": "Nạp tiền vào ví - Phương thức: [PAYPAL - WALLET]",
+                                    "address": "Số 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, Thành phố Hồ Chí Minh",
+                                    "zip": "70000 NVB",
+                                    "city": "Hồ Chí Minh",
+                                    "country": "Việt Nam"
+                                },
+                                "client": {
+                                    "company": order_detail.data.sinhVien.hoTen + " - MSSV: " + maSinhVien,
+                                    "address": order_detail.data.sinhVien.diaChi,
+                                    "zip": "70000 HTH",
+                                    "city": "Hồ Chí Minh",
+                                    "country": "Việt Nam"
+                                },
+                                "information": {
+                                    "number": "2021.0001",
+                                    "date": new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: false }),
+                                    "due-date": new Date().toLocaleDateString('en-GB'),
+                                },
+                                "products": [
+                                    product,
+                                ],
+                                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                                "settings": {
+                                    "currency": "VND",
+                                },
+                                "translate": {
+                                },
+                            };
+                            db.insert({_id: order_detail.data.maPhieuThu, hddtData}, function (err, newDoc) {
+                                if(err) {
+                                    console.error(err.message);
+                                } else {
+                                    console.log('Tạo HDDT thành công: ', newDoc);
+                                }
+                            });
+                            const toEmail = order_detail.data.sinhVien.taiKhoan.email;
+                            if(toEmail) {
+                                //Hàm nhận vào (hddtData, user, products, maSinhVien, orderType, totalPayed, balanceLeft, toEmail)
+                                sendEmailHddt(hddtData, order_detail.data.sinhVien.hoTen, [product], maSinhVien, 'PAYPAL - WALLET', soTienGiaoDich, balanceLeft.data, toEmail);
+                            }
+                            const thongBaoDTO = {
+                                title: 'Giao dịch diện tử',
+                                message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
+                                linking: 'https://erukalearn.ddns.net',
+                                isRead: false,
+                                studentId: maSinhVien,
+                            }
+                            const announcementResponse = await axios.post(javaUrl+"/api/announcement", thongBaoDTO, {headers: {"Authorization": token}});
+                        }
+                        SIGNAL_RESPONSE = 'RECHECK_SUCCESS';
+                    }
+                });
+            }
+            console.log('return res.send(SIGNAL_RESPONSE) DO RETURN SIGNAL_RESPONSE');
+            return res.send(SIGNAL_RESPONSE);
+        }
+        return res.redirect("/student");
+    } catch (error) {
+        SIGNAL_RESPONSE = "INTERNAL_SERVER_ERROR";
+        const routerName = req.baseUrl+req.route.path;
+        const errorMessage = error.message;
+        console.log(`MyError: ${routerName}: ${errorMessage}`);
+        return res.send(SIGNAL_RESPONSE);
+    }
 });
 /*
 ****************            ****            ****            ****    ****************            ****            ****
@@ -1189,55 +1691,46 @@ app.post("/student/wallet/createTransaction", async (req, res) => {
 ****                ****            ****            ****            ****                ****            ****    ****
 ****                ****            ****            ****            ****                ****            ****    ************
 */
-paypal.configure({
-    'mode': 'sandbox', //sandbox or live
-    'client_id': process.env.PAYPAL_CLIENT_ID,
-    'client_secret':  process.env.PAYPAL_SECRET_KEY
-});
-app.get("/paypal/payment/confirm", async (req, res) => {
-    const maThanhToanGiaoDich = req.query.maThanhToanGiaoDich;
-    const maCongNo = req.query.maCongNo;
-    const maSinhVien = req.query.maSinhVien;
-    const soTien = req.query.soTien;
-    const tenMonHoc = req.query.tenMonHoc;
-    const loaiThanhToan = req.query.loaiThanhToan;
-    const maLopHocPhan = req.query.maLopHocPhan;
-    const debtData = {maCongNo,soTien,tenMonHoc,loaiThanhToan,maSinhVien,maLopHocPhan,maThanhToanGiaoDich};
-    return res.render("student-react-native-paypal-confirm", {debtData});
-});
-app.post("/paypal/payment", upload.fields([]), async (req, res) => {
+app.get("/paypal/payment", async (req, res) => {
     try {
-        const maThanhToanGiaoDich = req.body.maThanhToanGiaoDich;
-        const maSinhVien = req.body.maSinhVien;
-        const maLopHocPhan = req.body.maLopHocPhan;
-        const maCongNo = req.body.maCongNo;
+        const maThanhToanGiaoDich = req.query.maThanhToanGiaoDich;
+        const maSinhVien = req.query.maSinhVien;
+        const maCongNo = req.query.maCongNo;
         const getTokenByPaymentAndStudentIdReponse = await axios.get(javaUrl+"/api/payment/getTokenByPaymentAndStudentId/"+maThanhToanGiaoDich+"/"+maSinhVien);
         if(getTokenByPaymentAndStudentIdReponse.data) {// Nếu thanh toán gg với mã sinh viên tồn tại trong hệ thống validate
             const token = getTokenByPaymentAndStudentIdReponse.data;
             req.session.jwt_token = token;
             req.session.student = maSinhVien;
             // Lấy ra soTien từ mã môn học
-            const congNoResponse = await axios.get(javaUrl+"/api/debt/getUnDebtById/"+maCongNo, {headers: {"Authorization": token}});
-            const soTien = congNoResponse.data.monHoc.soTinChi * process.env.SO_TIEN_1_TIN_CHI;
-            const price = (soTien / process.env.EXCHANGE_PAYPAL_CURRENCY).toFixed(2);
+            let totalBalanceUnDebt = 0;
+            const arrayCongNo = maCongNo.split(",");
+            for(const undebtId of arrayCongNo) {
+                const soTienCongNo = await axios.get(javaUrl+"/api/debt/getSoTienByDebtId/"+undebtId);
+                totalBalanceUnDebt += soTienCongNo.data;
+            }
+            console.log('totalBalanceUnDebt=',totalBalanceUnDebt);
+            const price = Math.floor(Number(totalBalanceUnDebt / process.env.EXCHANGE_PAYPAL_CURRENCY) * 100 + 1) / 100;
+            const orderType = "PAYPAL - WALLET";
+            const encodedOrderType = encodeURIComponent(orderType);
+            const return_url = process.env.EJS_API_URL+`/student/payment/callback?extraData=${maThanhToanGiaoDich}&resultCode=0&amount=${totalBalanceUnDebt}&orderType=${encodedOrderType}`;
+            const cancel_url = process.env.EJS_API_URL+"/student/payment/callback?resultCode=1006";
             const create_payment_json = {
                 "intent": "sale",
                 "payer": {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": process.env.EJS_EMULATOR_API_URL+"/paypal/payment/success?maCongNo="+maCongNo+"&maThanhToanGiaoDich="+maThanhToanGiaoDich,
-                    "cancel_url": process.env.EJS_EMULATOR_API_URL+"/paypal/payment/cancel"
+                    "return_url": return_url,
+                    "cancel_url": cancel_url
                 },
                 "transactions": [{
                     "amount": {
                         "currency": "USD",
-                        "total": 1
+                        "total": price
                     },
                     "description": "This is the payment description."
                 }]
             };
-    
             paypal.payment.create(create_payment_json, async function (error, paymentResponse) {
                 if (error) {
                     throw error;
@@ -1245,7 +1738,11 @@ app.post("/paypal/payment", upload.fields([]), async (req, res) => {
                     console.log("Create Payment Response");
                     console.log(paymentResponse);
                     const ipnId = paymentResponse.id;
-                    const response = await axios.put(javaUrl+"/api/payment/updatePaymentIPN/"+maThanhToanGiaoDich+"/"+ipnId, {headers: {"Authorization": token}});
+                    const capNhatIPNThanhToanGiaoDichDTO = {
+                        paymentId: maThanhToanGiaoDich,
+                        ipnId: ipnId,
+                    }
+                    const response = await axios.put(javaUrl+"/api/payment/updatePaymentIPN", capNhatIPNThanhToanGiaoDichDTO, {headers: {"Authorization": token}});
                     if(!response.data) throw new Error('Cant"t update IPN id in database paymentId: ' + maThanhToanGiaoDich);
                     return res.redirect(paymentResponse.links[1].href);
                 }
@@ -1257,7 +1754,7 @@ app.post("/paypal/payment", upload.fields([]), async (req, res) => {
         console.log("error nè:",error.message);
     }
 });
-app.get("/paypal/payment/success", async (req, res) => {// Xác thực thanh toán
+app.get("/paypal/payment/success", async (req, res) => {// HÀm này vô dụng vì đã có student callback
     if(req.session.jwt_token) {
         const maCongNo = req.query.maCongNo;
         const maGiaoDich = req.query.maThanhToanGiaoDich;
@@ -1290,7 +1787,6 @@ app.get("/paypal/payment/success", async (req, res) => {// Xác thực thanh to�
                         console.log("Look good to verify!");
                         console.log(JSON.stringify(paymentResponse));
                         // Tiến hành thanh toán ở đây....
-                        
                         const response = await axios.get(javaUrl+"/api/payment/getPaymentById/"+maGiaoDich, {headers: {"Authorization": token}});
                         if(response.data) {//Nếu có giao dịch hợp lệ
                             const paymentObject = response.data;
@@ -1401,7 +1897,7 @@ app.get("/paypal/payment/cancel", async (req, res) => {
     return res.render("student-react-native-paypal-cancel");
 });
 
-app.get("/paypal/topup", upload.fields([]), async (req, res) => {
+app.get("/paypal/topup", upload.fields([]), async (req, res) => {// Tạo hóa đơn & redirect
     try {
         const maThanhToanGiaoDich = req.query.maThanhToanGiaoDich;
         const maSinhVien = req.query.maSinhVien;
@@ -1423,15 +1919,15 @@ app.get("/paypal/topup", upload.fields([]), async (req, res) => {
                     req.session.jwt_token = token;
                     req.session.student = maSinhVien;
                     // Render paypal
-                    const price = (balanceToRecharge / process.env.EXCHANGE_PAYPAL_CURRENCY).toFixed(2);
+                    const price = Math.floor(Number(balanceToRecharge / process.env.EXCHANGE_PAYPAL_CURRENCY) * 100 + 1) / 100;
                     const create_payment_json = {
                         "intent": "sale",
                         "payer": {
                             "payment_method": "paypal"
                         },
                         "redirect_urls": {
-                            "return_url": process.env.EJS_EMULATOR_API_URL+"/paypal/topup/success?maThanhToanGiaoDich="+maThanhToanGiaoDich,
-                            "cancel_url": process.env.EJS_EMULATOR_API_URL+"/paypal/topup/cancel"
+                            "return_url": process.env.EJS_API_URL+"/paypal/topup/success?maThanhToanGiaoDich="+maThanhToanGiaoDich,
+                            "cancel_url": process.env.EJS_API_URL+"/paypal/topup/cancel"
                         },
                         "transactions": [{
                             "amount": {
@@ -1441,12 +1937,19 @@ app.get("/paypal/topup", upload.fields([]), async (req, res) => {
                             "description": "This is the payment description."
                         }]
                     };
-                    paypal.payment.create(create_payment_json, function (error, paymentResponse) {
+                    paypal.payment.create(create_payment_json, async function (error, paymentResponse) {
                         if (error) {
                             throw error;
                         } else {
                             console.log("Create Payment Response");
                             console.log(paymentResponse);
+                            const ipnId = paymentResponse.id;
+                            const capNhatIPNThanhToanGiaoDichDTO = {
+                                paymentId: maThanhToanGiaoDich,
+                                ipnId: ipnId,
+                            }
+                            const response = await axios.put(javaUrl+"/api/payment/updatePaymentIPN", capNhatIPNThanhToanGiaoDichDTO, {headers: {"Authorization": token}});
+                            if(!response.data) throw new Error('Cant"t update IPN id in database paymentId: ' + maThanhToanGiaoDich);
                             return res.redirect(paymentResponse.links[1].href);
                         }
                     });
@@ -1460,7 +1963,9 @@ app.get("/paypal/topup", upload.fields([]), async (req, res) => {
             return res.render("student-callback", {signal: {title: "PAYMENT_FAILED", text: "Thanh toán đã bị huỷ hoặc lỗi phía server. Bấm xác nhận để quay lại trang chủ!", icon: "warning"}});
         }
     } catch (error) {
-        console.log("error nè:",error.message);
+        const routerName = req.baseUrl+req.route.path;
+        console.log(`error nè ${routerName}: ${error}`);
+        return res.render("student-callback", {signal: {title: "INTERNAL_SERVER_ERROR", text: "Đã xảy ra lỗi không xác định ở phía server.", icon: "warning"}});
     }
 });
 app.get("/paypal/topup/success", async (req, res) => {// Xác thực thanh toán

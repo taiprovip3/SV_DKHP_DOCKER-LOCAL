@@ -127,4 +127,12 @@ async function sendEmailHddt(hddtData, user, products, maSinhVien, orderType, to
         }
     }); 
 }
-module.exports = { formatCurrency, sendEmailHddt };
+function isJSON(str) {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (e) {
+      return false;
+    }
+}  
+module.exports = { formatCurrency, sendEmailHddt, isJSON };

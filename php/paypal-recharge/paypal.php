@@ -34,7 +34,7 @@ if(!isset($_POST['maSinhVien'])) {
             $total_payment = $_POST['total_payment'];
             $maSinhVien = $_POST['maSinhVien'];
             $unDebtIds = [];
-            $url = "http://java:8080/api/payment/createTransaction/".$maSinhVien."/".$total_payment."/".$unDebtIds."";
+            $url = "http://java:8080/api/payment/createTransaction/".$maSinhVien."/".$total_payment."/".$unDebtIds."/EMPTY";
             $maGiaoDich = file_get_contents($url);
             $orderType = 'PAYPAL - WALLET';
             $callBackUrl = 'https://erukalearn.ddns.net/student/payment/callback?extraData='.$maGiaoDich.'&resultCode=0&amount='.$total_payment.'&orderType='.$orderType.'';    

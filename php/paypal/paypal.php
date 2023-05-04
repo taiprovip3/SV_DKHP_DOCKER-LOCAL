@@ -116,7 +116,7 @@ paypal.Buttons({
             }
             $unDebtIdsString = implode(",", $total_debt);//tạo ra string mảng
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, "http://java:8080/api/payment/createTransaction/".$maSinhVien."/".$totalBalance."/".$unDebtIdsString."");
+            curl_setopt($curl, CURLOPT_URL, "http://java:8080/api/payment/createTransaction/".$maSinhVien."/".$totalBalance."/".$unDebtIdsString."/EMPTY");
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             $maGiaoDich = curl_exec($curl);
             curl_close($curl);    

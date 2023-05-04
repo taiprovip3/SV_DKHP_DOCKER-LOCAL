@@ -339,18 +339,21 @@ function handleDestroySvdkhp(id_svlhp) {
                     data: JSON.stringify({maSVLHP: id_svlhp}),
                     contentType: 'application/json',
                     success: function(myStringResult) {
-                        if(myStringResult == "OUT_OF_DATE") {
-                            swal({title: "Thất bại!",text: "Lớp học ở trạng thái 'Đã Khóa' hoặc 'Chấp Nhận\nMở Lớp' sẽ không thể hủy được!",icon: "warning", dangerMode: true});
-                        } else {
-                            if(myStringResult == "OK") {
+                        switch (myStringResult) {
+                            case "OUT_OF_DATE":
+                                swal({title: "Thất bại!",text: "Lớp học ở trạng thái 'Đã Khóa' hoặc 'Chấp Nhận\nMở Lớp' sẽ không thể hủy được!",icon: "warning", dangerMode: true});
+                                break;
+                            case "WAS_PAID":
+                                swal({title: "Thất bại!",text: "Bạn đã thanh toán học phí cho lớp học phần\n. này. Sẽ không thể hủy bỏ được nữa!",icon: "warning", dangerMode: true});
+                                break;
+                            case "OK":
                                 swal({title: "Thành công!",text: "Đã hủy thành công lớp học phần",icon: "success", dangerMode: false}).then((willDelete) => {
                                     audio.play();
                                     location.reload();
                                 });
-                            } else {
-                                swal({title: "ERROR!",text: "Internal Server Error",icon: "warning", dangerMode: true});
-                                return;
-                            }
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });

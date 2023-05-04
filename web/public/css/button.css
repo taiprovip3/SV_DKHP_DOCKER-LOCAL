@@ -161,3 +161,29 @@
   .oran-button:hover {
     background-color: orange; /* Đổi màu nền của nút khi di chuột qua */
   }
+
+  .paypal-button {
+    background-color: #003087;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .paypal-button:hover {
+    background-color: #002D66;
+  }
+  
+  .paypal-button:active {
+    background-color: #00284d;
+    box-shadow: none;
+    transform: translateY(1px);
+  }

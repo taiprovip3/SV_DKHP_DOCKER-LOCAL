@@ -22,6 +22,9 @@
             if(error == "wrong_captcha") { %>
                 <script>swal({title: "Captcha",text: "Nhập sai mã, vui lòng thử lại",icon: "warning", dangerMode: true});</script>
             <% }
+            if(error == "internal_server_error") { %>
+                <script>swal({title: "Server đang bận",text: "vui lòng thử lại sau",icon: "warning", dangerMode: true});</script>
+            <% }
         } %>   
     </div>
     <div class="container-fluid">

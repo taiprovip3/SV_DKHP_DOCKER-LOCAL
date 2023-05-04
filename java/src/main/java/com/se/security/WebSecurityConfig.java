@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
     protected void configure(HttpSecurity http) throws Exception { //"/api/**", 
         http.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/api/payment/createTransaction/**", "/api/payment/getTokenByPaymentAndStudentId/**", "/api/debt/getSoTienByDebtId/**", "/api/generate", "/api/register", "/api/login", "/api/hello", "/api/signout", "/api/student/add", "/").permitAll().
+                .authorizeRequests().antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/api/payment/updateMomoIpn", "/api/payment/createTransaction/**", "/api/payment/getTokenByPaymentAndStudentId/**", "/api/debt/getSoTienByDebtId/**", "/api/generate", "/api/register", "/api/login", "/api/hello", "/api/signout", "/api/student/add", "/").permitAll().
                         anyRequest().authenticated().and()
                         .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).and().sessionManagement()
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

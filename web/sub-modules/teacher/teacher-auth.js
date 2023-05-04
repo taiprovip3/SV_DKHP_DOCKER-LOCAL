@@ -70,18 +70,24 @@ teacherAuthRouter.get("/teacher", async (req, res) => {
     return res.render("teacher-login", {error: ""});
 });
 teacherAuthRouter.post('/teacher-login', upload.fields([]), async (req, res) => {
-    const { maGiaoVien, matKhau, captcha } = req.body;
-    if(captcha !== req.session.captcha) {//Sai captcha
-        return res.render("teacher-login", { error: "wrong_captcha" }); 
-    } else {
-        const response = await axios.post(javaUrl+"/api/login", {username: "gv"+maGiaoVien, password: matKhau});
-        if(response.data) {
-            const token = response.data;
-            req.session.teacher = maGiaoVien;
-            req.session.teacher_token = token;
-            return res.redirect("/teacher?signal=SUCCESS_LOGON");
+    try {
+        const { maGiaoVien, matKhau, captcha } = req.body;
+        if(captcha !== req.session.captcha) {//Sai captcha
+            return res.render("teacher-login", { error: "wrong_captcha" }); 
+        } else {
+            const response = await axios.post(javaUrl+"/api/login", {username: "gv"+maGiaoVien, password: matKhau});
+            if(response.data) {
+                const token = response.data;
+                req.session.teacher = maGiaoVien;
+                req.session.teacher_token = token;
+                return res.redirect("/teacher?signal=SUCCESS_LOGON");
+            }
+            return res.render("teacher-login", { error: "wrong_password" });
         }
-        return res.render("teacher-login", { error: "wrong_password" }); 
+    } catch (error) {
+        const routerName = req.baseUrl+req.route.path;
+        console.log(`error ${routerName}: ${error.message}`);
+        return res.render("teacher-login", { error: "wrong_password" });
     }
 });
 teacherAuthRouter.get("/teacher-logout", (req, res) => {

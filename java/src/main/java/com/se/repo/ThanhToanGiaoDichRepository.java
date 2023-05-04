@@ -20,4 +20,7 @@ public interface ThanhToanGiaoDichRepository extends CrudRepository<ThanhToanGia
     @Query(value = "SELECT * FROM thanh_toan_giao_dich WHERE ma_sinh_vien = ?1 AND un_debt_ids = 'Array' ORDER BY created_time DESC", nativeQuery = true)
 	public List<ThanhToanGiaoDich> getInputPaymentsByStudentId(long studentId);
 
+    @Query(value = "SELECT * FROM thanh_toan_giao_dich WHERE ma_sinh_vien = ?1 AND un_debt_ids != 'Array' ORDER BY created_time DESC", nativeQuery = true)
+	public List<ThanhToanGiaoDich> getOutputPaymentsByStudentId(long studentId);
+
 }

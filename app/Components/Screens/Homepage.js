@@ -256,28 +256,28 @@ const Homepage = ({ navigation }) => {
             <Box borderWidth="1" borderColor="coolGray.400" borderRadius="lg" p="2" mt="2" mx="2" flex="1" alignItems="center" justifyContent="center" display="flex">
               <Text fontSize="xs" bold underline>Feature:</Text>
               <HStack p="3" space="5" justifyContent="space-evenly">
-                  <Box borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center">
-                      <MaterialCommunityIcons name="calendar-multiple-check" size={32} color="purple" onPress={() => navigation.navigate("Timetable")} />
-                      <Text color="success.700" onPress={() => navigation.navigate("Timetable")}>Xem lịch</Text>
-                      <Text color="success.700" onPress={() => navigation.navigate("Timetable")}>trong tuần</Text>
-                  </Box>
-                  <Box borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center">
-                        <AntDesign name="CodeSandbox" size={32} color="purple" onPress={() => navigation.navigate("DkhpPage")} />
-                        <Text color="success.700" onPress={() => navigation.navigate("DkhpPage")}>Đăng ký</Text>
-                        <Text color="success.700" onPress={() => navigation.navigate("DkhpPage")}>học phần</Text>
-                  </Box>
+                  <Pressable borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center" onPress={() => navigation.navigate("Timetable")}>
+                      <MaterialCommunityIcons name="calendar-multiple-check" size={32} color="purple" />
+                      <Text color="success.700">Xem lịch</Text>
+                      <Text color="success.700">trong tuần</Text>
+                  </Pressable>
+                  <Pressable borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center" onPress={() => navigation.navigate("DkhpPage")}>
+                        <AntDesign name="CodeSandbox" size={32} color="purple" />
+                        <Text color="success.700">Đăng ký</Text>
+                        <Text color="success.700">học phần</Text>
+                  </Pressable>
               </HStack>
               <HStack p="3" space="5" justifyContent="space-evenly">
-                  <Box borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center">
-                      <FontAwesome5 name="cc-apple-pay" size={32} color="purple" onPress={() => navigation.navigate("DebtPage")} />
-                      <Text color="success.700" onPress={() => navigation.navigate("DebtPage")}>Thanh toán</Text>
-                      <Text color="success.700" onPress={() => navigation.navigate("DebtPage")}>học phí</Text>
-                  </Box>
-                  <Box borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center">
-                      <MaterialCommunityIcons name="hand-coin" size={32} color="purple" onPress={() => navigation.navigate("RechargePage")} />
-                      <Text color="success.700" onPress={() => navigation.navigate("RechargePage")}>Nạp tiền</Text>
-                      <Text color="success.700" onPress={() => navigation.navigate("RechargePage")}>vào ví</Text>
-                  </Box>
+                  <Pressable borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center" onPress={() => navigation.navigate("DebtPage")}>
+                      <FontAwesome5 name="cc-apple-pay" size={32} color="purple" />
+                      <Text color="success.700">Thanh toán</Text>
+                      <Text color="success.700">học phí</Text>
+                  </Pressable>
+                  <Pressable borderWidth="0.5" borderColor={'gray.300'} p="3" px="5" display="flex" alignItems="center" justifyContent="center" onPress={() => navigation.navigate("RechargePage")}>
+                      <MaterialCommunityIcons name="hand-coin" size={32} color="purple" />
+                      <Text color="success.700">Nạp tiền</Text>
+                      <Text color="success.700">vào ví</Text>
+                  </Pressable>
               </HStack>
             </Box>
             <Box>

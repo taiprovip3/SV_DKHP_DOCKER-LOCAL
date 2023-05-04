@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.se.dto.CapNhatIPNThanhToanGiaoDichDTO;
 import com.se.dto.ThanhToanGiaoDich2DTO;
 import com.se.dto.ThanhToanGiaoDichDTO;
+import com.se.dto.UpdateMomoIpnDTO;
 import com.se.entity.ThanhToanGiaoDich;
 import com.se.service.ThanhToanGiaoDichService;
 
@@ -25,9 +27,9 @@ public class ThanhToanGiaoDichController {
     @Autowired
     private ThanhToanGiaoDichService thanhToanGiaoDichService;
 
-    @GetMapping("/payment/createTransaction/{studentId}/{balance}/{unDebtIds}")
-    public String createTransaction(@PathVariable long studentId, @PathVariable double balance, @PathVariable String unDebtIds) {
-        return thanhToanGiaoDichService.createTransaction(studentId, balance, unDebtIds);
+    @GetMapping("/payment/createTransaction/{studentId}/{balance}/{unDebtIds}/{maIPN}")
+    public String createTransaction(@PathVariable long studentId, @PathVariable double balance, @PathVariable String unDebtIds, @PathVariable String maIPN) {
+        return thanhToanGiaoDichService.createTransaction(studentId, balance, unDebtIds, maIPN);
     }
     
     @GetMapping("/payment/getPaymentById/{paymentId}")
@@ -55,13 +57,26 @@ public class ThanhToanGiaoDichController {
         return thanhToanGiaoDichService.getStudentPayedDebtByDebtId(debtId, studentId);
     }
     
-    @PutMapping("/payment/updatePaymentIPN/{paymentId}/{ipnId}")
-    public ThanhToanGiaoDich updatePaymentIPN(@PathVariable String paymentId, @PathVariable String ipnId) {
-    	return thanhToanGiaoDichService.updatePaymentIPN(paymentId, ipnId);
+    @PutMapping("/payment/updatePaymentIPN")// Hàm này dành cho paypal
+    public ThanhToanGiaoDich updatePaymentIPN(@RequestBody CapNhatIPNThanhToanGiaoDichDTO capNhatIPNThanhToanGiaoDichDTO) {
+    	System.out.println("capNhatIPNThanhToanGiaoDichDTO"+capNhatIPNThanhToanGiaoDichDTO);
+    	return thanhToanGiaoDichService.updatePaymentIPN(capNhatIPNThanhToanGiaoDichDTO);
     }
     
     @GetMapping("/payment/getInputPaymentsByStudentId/{studentId}")
     public List<ThanhToanGiaoDich> getInputPaymentsByStudentId(@PathVariable long studentId) {
     	return thanhToanGiaoDichService.getInputPaymentsByStudentId(studentId);
     }
+    
+    @GetMapping("/payment/getOutputPaymentsByStudentId/{studentId}")
+    public List<ThanhToanGiaoDich> getOutputPaymentsByStudentId(@PathVariable long studentId) {
+    	return thanhToanGiaoDichService.getOutputPaymentsByStudentId(studentId);
+    }
+    
+    @PostMapping("/payment/updateMomoIpn")// Recharge
+    public ThanhToanGiaoDich updateMomoIpn(@RequestBody UpdateMomoIpnDTO updateMomoIpnDTO) {
+    	return thanhToanGiaoDichService.updateMomoIpn(updateMomoIpnDTO);
+    }
+    
+    
 }

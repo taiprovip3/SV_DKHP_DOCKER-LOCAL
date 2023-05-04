@@ -66,6 +66,9 @@
                 if(signal == "CHANGE_WRONG_PASSWORD") { %>
                     <script>swal({title: "Đổi  mật khẩu",text: "Mật khẩu cũ không đúng",icon: "warning", dangerMode: true});</script>
                 <% }
+                if(signal == "INTERNAL_SERVER_ERROR") { %>
+                    <script>swal({title: "Server đang bận",text: "Hãy thử lại sau!",icon: "warning", dangerMode: true});</script>
+                <% }
             }
         } %>
     </div>

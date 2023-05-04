@@ -16,14 +16,7 @@
     <link rel="stylesheet" href="../css/common.css" type="text/css">
     <link rel="stylesheet" href="../css/button.css" type="text/css">
     <script src="https://www.paypal.com/sdk/js?client-id=AWr1ugFyX8drd_9M8C2nCzIevgvclI5sdU5izC9lamGeKwW9FC0exjrfxgNzvqtsP5R16QMMTNjJ03kc&currency=USD&commit=false"></script>
-    <style>
-        td {
-          max-width: 200px;
-          /* overflow: hidden; */
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-    </style>
+
 </head>
 <body>
     <%
@@ -41,8 +34,6 @@
             const formattedDateTime = `${year}-${month}-${date}, ${hours}:${minutes} ${amPm}`;
             return formattedDateTime;
         }
-          
-          
     %>
     <div class="container-fluid">
         <div class="row position-relative">
@@ -75,14 +66,14 @@
                 <a href="/student"><i class="fas fa-door-open text-secondary crs" onclick="audio.play();"></i></a>
             </div>
             
-            <div class="col-lg-12 py-2 px-5" style="background: #ededed; height: 100vh;">
-                <div class="h-50 bg-white border p-3 overflow-auto">
+            <div class="col-lg-12 py-2 px-5" style="background: #ededed;">
+                <div class="bg-white border p-3">
                     <p class="fs-3 text-secondary fw-bold">Nạp tiền vào ví</p>
                     <hr>
                     <div class="text-center d-flex justify-content-center">
-                        <div class="px-3 py-3 rounded-circle border" style="background-color: #ebebeb;">
+                        <div class="px-5 py-3 rounded-circle border" style="background-color: #ebebeb;">
                             <i class="fab fa-bitcoin fa-2x d-block text-success"></i>
-                            <span>Số dư ví:</span>
+                            <span class="d-block">Số dư ví:</span>
                             <span class="text-warning fw-bold"><%= formatNumber(STUDENT_DATA.soDu) %></span>
                         </div>
                     </div>
@@ -146,16 +137,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white border p-3 mt-3 position-relative overflow-auto" style="max-height: 45%;">
-                    <span class="text-secondary"><i class="fas fa-angle-right"></i> Lịch sử giao dịch:</span>
+                <div class="bg-white border px-3 py-5 mt-2 position-relative overflow-auto" style="max-height: 100vh;">
                     <table class="w-100">
                         <tr class="border-bottom">
-                            <th class="border-end">Mã giao dịch</th>
-                            <th class="border-end">Số tiền</th>
-                            <th class="border-end">Thời gian</th>
-                            <th class="border-end">Trạng thái</th>
-                            <th class="border-end">Ghi chú</th>
-                            <th class="border-end"><i class="fas fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Trạng thái giao dịch 'Đang xử lý' là những giao dịch bạn bỏ ngang hoặc server tắt ngẽn lúc bạn đang thanh toán dẫn đến chưa xử lý! Có thể nhấp 'Xác thực lại'"></i></th>
+                            <th>Mã giao dịch</th>
+                            <th>Số tiền</th>
+                            <th>Thời gian</th>
+                            <th>Trạng thái</th>
+                            <th>Ghi chú</th>
+                            <th><i class="fas fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Trạng thái giao dịch 'Đang chờ..' là những giao dịch bạn bỏ ngang hoặc server tắt ngẽn lúc bạn đang thanh toán dẫn đến chưa xử lý! Có thể nhấp 'Xác thực lại'"></i></th>
                         </tr>
                         <% for (let i=0; i<LIST_PAYMENT.length; i++) { %>
                             <tr class="border-top">
@@ -164,16 +154,18 @@
                                 <td style="width: 20%;"><%= formatDateTime(LIST_PAYMENT[i].createdTime) %></td>
                                 <td style="width: 20%;">
                                     <% if(LIST_PAYMENT[i].status) { %>
-                                        <span>Đã xử lý</span>
+                                        <i class="fas fa-check-circle text-success"></i>
                                     <% } else { %>
-                                        <span>Đang xử lý <div class="spinner-border spinner-border-sm"></div></span>
+                                        <span><div class="spinner-grow spinner-grow-sm text-primary"></div></span>
                                     <% } %>
                                 </td>
-                                <td style="width: 20%;" class="text-truncate"><%= LIST_PAYMENT[i].ghiChu %></td>
+                                <td style="width: 20%;"><%= LIST_PAYMENT[i].ghiChu %></td>
                                 <td style="width: 20%;" class="dropup text-center">
-                                    <i class="fas fa-ellipsis-h crs" data-bs-toggle="dropdown"></i>
+                                    <% if(!LIST_PAYMENT[i].status) { %>
+                                        <i class="fas fa-undo-alt crs text-secondary" data-bs-toggle="dropdown"></i>
+                                    <% } %>
                                     <div class="dropdown-menu dropdown-menu-end text-end border-0">
-                                        <button class="border-0 p-1 text-white bg-primary">Xác thực lại</button>
+                                        <button type="button" class="border-0 p-2 text-white bg-primary" onclick="recheckPayment('<%= LIST_PAYMENT[i].maGiaoDich %>');">Xác thực lại</button>
                                     </div>
                                 </td>
                             </tr>
@@ -186,7 +178,7 @@
     <div class="position-fixed bottom-0 small p-2 teal-color">
         Secure <i class="fas fa-shield-alt"></i>
     </div>
-    <!-- The Modal -->
+    <!-- Paypal Modal -->
     <div class="modal" id="paypalModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -198,8 +190,8 @@
                     Paypal hiện tại chỉ chấp nhận thanh toán tiền tệ đơn vị USD. Sẽ có sự chênh lệnh mệnh giá với các phương thức thanh toán khác là đồng VNĐ. Chúng tôi sẽ chuyển bạn đến trang thanh toán của Paypal.
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> -->
-                    <div id="paypal-button-container"></div>
+                    <!-- <div id="paypal-button-container"></div> -->
+                    <button type="button" class="paypal-button" onclick="checkoutPaypal();"><i class="fab fa-paypal text-warning"></i> PayPal checkout</button>
                 </div>
             </div>
         </div>
@@ -370,7 +362,7 @@
     });
 </script>
 <script>
-    async function createTransaction() {//Hàm nhận input {studentId, balance} trả về string maGiaoDich
+    async function createTransaction() {// Hàm nhận input {studentId, balance} trả về string maGiaoDich
         const maSinhVien = '<%= STUDENT_DATA.maSinhVien %>';
         return $.ajax({
             type: "POST",
@@ -379,32 +371,96 @@
             contentType: 'application/json',
         }).then(data => data);
     }
-    paypal.Buttons({
-        style: {
-            layout: 'vertical',
-            color:  'gold',
-            shape:  'pill',
-            label:  'checkout'
-        },
-        createOrder: async (data, actions) => {
-            global_ma_giao_dich = await createTransaction();
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: parseFloat(global_total_recharge/23450).toFixed(2) // Can also reference a variable or function
-                    },
-                    invoice_id: global_ma_giao_dich
-                }]
-            });
-        },
-        onApprove: (data, actions) => {
-            const callBackUrl = pathNodejs+"/student/recharge/callback?extraData="+global_ma_giao_dich+"&resultCode=0&amount="+global_total_recharge+"&orderType='PAYPAL - WALLET'";
-            return actions.redirect(callBackUrl);
-        },
-        onCancel: function(data) {
-            window.location.href = pathNodejs+"/student/payment/callback?resultCode=1006";
-        }
-    }).render('#paypal-button-container');
+    async function checkoutPaypal() {
+        const maThanhToanGiaoDich = await createTransaction();
+        const balanceGiaoDich = global_total_recharge;
+        const maSinhVien = '<%= STUDENT_DATA.maSinhVien %>';
+        const urlBuilder = pathNodejs+`/paypal/topup?maThanhToanGiaoDich=${maThanhToanGiaoDich}&balanceGiaoDich=${balanceGiaoDich}&maSinhVien=${maSinhVien}`;
+        window.location.href = urlBuilder;
+    }
+    // paypal.Buttons({
+    //     style: {
+    //         layout: 'vertical',
+    //         color:  'gold',
+    //         shape:  'pill',
+    //         label:  'checkout'
+    //     },
+    //     createOrder: async (data, actions) => {
+    //         global_ma_giao_dich = await createTransaction();
+    //         return actions.order.create({
+    //             purchase_units: [{
+    //                 amount: {
+    //                     value: parseFloat(global_total_recharge/23450).toFixed(2) // Can also reference a variable or function
+    //                 },
+    //                 invoice_id: global_ma_giao_dich
+    //             }]
+    //         });
+    //     },
+    //     onApprove: (data, actions) => {
+    //         const callBackUrl = pathNodejs+"/student/recharge/callback?extraData="+global_ma_giao_dich+"&resultCode=0&amount="+global_total_recharge+"&orderType='PAYPAL - WALLET'";
+    //         return actions.redirect(callBackUrl);
+    //     },
+    //     onCancel: function(data) {
+    //         window.location.href = pathNodejs+"/student/payment/callback?resultCode=1006";
+    //     }
+    // }).render('#paypal-button-container');
+    function recheckPayment(maGiaoDich) {
+        $.ajax({
+            type: "PUT",
+            url: pathNodejs+`/student/wallet/recheckPayment/${maGiaoDich}`,
+            contentType: 'application/json',
+            success: (data) => {
+                console.log('data callback=',data);
+                // [NO_IPN_FOUND, INTERNAL_SERVER_ERROR, PAYMENT_DONE_BEFORE, RECHECK_SUCCESS]
+                switch (data) {
+                    case "NO_IPN_FOUND":
+                        toastr.error('Giao dịch này không còn tồn tại dưới hệ thống!', `Không tìm thấy ${maGiaoDich}`);
+                        break;
+                    case "PAYMENT_DONE_BEFORE":
+                        toastr.error('Giao dịch này đã hoàn tất xử lý trước đó', 'Giao dịch đã hoàn tất');
+                        break;
+                    case "INTERNAL_SERVER_ERROR":
+                        toastr.error(`Không tìm thấy giao dịch ${maGiaoDich} trong hệ thống tích hợp`, 'Lỗi');
+                        swal({
+                            title: "Lỗi!",
+                            text: `Không tìm thấy mã giao dịch ${maGiaoDich}\ntrong hệ thống tích hợp`,
+                            icon: "warning",
+                            dangerMode: true,
+                        }).then((val) => {
+                            location.reload();
+                        });
+                        break;
+                    case "RECHECK_SUCCESS":
+                        toastr.success('Giao dịch đã có sự thay đổi, hãy tải lại trang', 'Xác thực thành công');
+                        swal({
+                            title: "Gọi lại thanh công!",
+                            text: "Giao dịch có tồn tại trong hệ thống và đã được gọi lại!",
+                            icon: "success",
+                            button: "Aww yiss!",
+                        }).then((val) => {
+                            location.reload();
+                        });
+                        break;
+                    case "NO_PAYPAL_TRANSACTION_ID_FOUND":
+                        toastr.error('Mã giao dịch trong hệ thống tích hợp', `Không tìm thấy ${maGiaoDich}`);
+                        break;
+                    default:
+                        break;
+                }
+            }, error: (error) => {
+                console.error(error);
+                toastr.error('Server đã xảy ra lỗi không xác định', 'Internal server error');
+                swal({
+                    title: "Lỗi!",
+                    text: "Đã xảy ra lỗi không xác định trong hệ thống",
+                    icon: "warning",
+                    dangerMode: true,
+                }).then((val) => {
+                    location.reload();
+                });
+            },
+        });
+    }
 </script>
 </body>
 </html>

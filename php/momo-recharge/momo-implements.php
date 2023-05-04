@@ -55,7 +55,7 @@
     $unDebtIds = "Array";
 
     $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, "http://java:8080/api/payment/createTransaction/".$maSinhVien."/".$total."/".$unDebtIds."");
+    curl_setopt($curl, CURLOPT_URL, "http://java:8080/api/payment/createTransaction/".$maSinhVien."/".$total."/".$unDebtIds."/EMPTY");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $output = curl_exec($curl);
     curl_close($curl);

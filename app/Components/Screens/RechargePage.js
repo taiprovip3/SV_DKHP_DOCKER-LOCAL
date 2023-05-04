@@ -89,7 +89,7 @@ const RechargePage = ({ navigation }) => {
           onPress: async () => {
             console.log('OK Pressed');
             const maSinhVien = currentUser.maSinhVien;
-            const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/Array", {headers: {"Authorization": token}});
+            const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/Array/EMPTY", {headers: {"Authorization": token}});
             const maThanhToanGiaoDich = maThanhToanGiaoDichReponse.data;
             // const maThanhToanGiaoDich = "0tYr3oi3";
             const rechargeData = {service,momoMethod,balanceGiaoDich,maSinhVien,maThanhToanGiaoDich};

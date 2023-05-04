@@ -1354,7 +1354,7 @@ public class GenerateController {
 		svLhpDTO.setMaThoiKhoaBieu(tkb.getMaThoiKhoaBieu());
 		sinhVien_LopHocPhanService.saveUnitSubject(svLhpDTO);
 		//Generate thanhToanGiaoDich
-		String maGiaoDich = thanhToanGiaoDichService.createTransaction(sv.getMaSinhVien(), 1700000, "1");
+		String maGiaoDich = thanhToanGiaoDichService.createTransaction(sv.getMaSinhVien(), 1700000, "1", "");
 		ThanhToanGiaoDich ttgd = thanhToanGiaoDichService.getPaymentById(maGiaoDich);
 		//Generate phieuThu
 		PhieuThu phieuThu = PhieuThu
