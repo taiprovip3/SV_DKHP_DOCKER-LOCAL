@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.se.dto.ThongBaoKhoaDTO;
 import com.se.entity.ThongBaoKhoa;
 import com.se.service.ThongBaoKhoaService;
 
@@ -28,5 +31,10 @@ public class ThongBaoKhoaController {
 	@GetMapping("/department_announcement/getNotificationById/{notificationId}")
 	public ThongBaoKhoa getNotificationById(@PathVariable long notificationId) {
 		return thongBaoKhoaService.getNotificationById(notificationId);
+	}
+	
+	@PostMapping("/department_announcement")
+	public ThongBaoKhoa addAnnouncement(@RequestBody ThongBaoKhoaDTO thongBaoKhoaDTO) {
+		return thongBaoKhoaService.addAnnouncement(thongBaoKhoaDTO);
 	}
 }

@@ -76,6 +76,8 @@ const PaymentPage = ({ navigation, route }) => {
         onError={handleError}
         style={{ width: '100%', height: '100%' }}
         javaScriptEnabled={true}
+        scalesPageToFit={true}
+        originWhitelist={['*']}
         onNavigationStateChange={(data) => handleResponse(data)}
       />
     </NativeBaseProvider>

@@ -206,7 +206,6 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="text-end">
-                    <!-- <button type="button" class="btn-close bg-primary" data-bs-dismiss="modal"></button> -->
                     <button type="button" data-bs-dismiss="modal" class="bg-primary text-white px-2 border-0"><i class="fas fa-times"></i></button>
                 </div>
                 <form action="./student-changepassword" method="post" id="changePasswordForm">
@@ -251,8 +250,7 @@
                     <div class="fb-page" data-href="https://www.facebook.com/sviuh" data-tabs="timeline" data-width="400" data-height="600" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
                 </div>
                 <div class="d-flex">
-                    <button class="w-100 btn btn-light border">Cancel</button>
-                    <!-- <button class="w-100 import-button">Truy cập nhóm</button> -->
+                    <button type="button" class="w-100 btn btn-light border" data-bs-dismiss="modal">Cancel</button>
                     <a href="https://www.facebook.com/sviuh" target="_blank" class="w-100 import-button" onmouseover="this.style.color='white';">Truy cập nhóm</a>
                 </div>
             </div>
@@ -286,7 +284,7 @@
                         </datalist>
                     </div>
                     <label for="comment">Nội dung report:</label>
-                    <textarea class="form-control" rows="5" id="comment" name="text" placeholder="Nhập mô tả nội dung lỗi hệ thống.." required></textarea>
+                    <textarea class="form-control" rows="5" id="comment" name="noiDung" placeholder="Nhập mô tả nội dung lỗi hệ thống.." required></textarea>
                     <span>Mức độ nghiêm trọng / ưu tiên xử lý:</span>
                     <div class="d-flex">
                         <div class="form-check border">
@@ -390,7 +388,7 @@
                                 <li class="bg-light"><a class="dropdown-item text-danger" href="/student/clear-notifications">Xoá tất cả</a></li>
                             </ul>
                         </div>
-                        <div class="position-absolute fw-bold end-0 small"><%= LIST_DEPARTMENT_ANNOUNCEMENT.length %></div>
+                        <div class="position-absolute fw-bold end-0 small"><%= LIST_ANNOUNCEMENT.length + LIST_DEPARTMENT_ANNOUNCEMENT.length %></div>
                     </div>
                     <div class="px-2" onclick="audio.play();">
                         <div class="d-flex align-items-center crs" data-bs-toggle="dropdown">
@@ -631,10 +629,10 @@ $(document).ready(function(){
             contentType: 'application/json',
             success: (data) => {
                 $(':input','#changePasswordForm')
-                .not(':button, :submit, :reset, :hidden')
-                .val('')
-                .prop('checked', false)
-                .prop('selected', false);
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .prop('checked', false)
+                    .prop('selected', false);
                 $("#ChangePasswordModal").modal('toggle');
                 toastr.success('Mật khẩu của bạn đã được cập nhật!', 'Đổi thành công');
             }, error: (error) => {
@@ -662,7 +660,17 @@ $(document).ready(function(){
             data: JSON.stringify(formDataObject),
             contentType: "application/json",
             success: (data) => {
-                console.log('data=',data);
+                toastr.success('Cám ơn bạn đã dành thời gian report cho chúng tôi. Chúng tôi sẽ cố gắng giải quyết và phản hồi lại bạn trong thời gian sớm nhất', 'Báo lỗi thành công');
+                $('input[name="objectErrorType"]').val('');
+                $('textarea[name="noiDung"]').val('');
+                $('input[name="severity"]').prop('checked', false);
+                swal({
+                    title: 'Thành công',
+                    text: 'Cám ơn bạn đã dành thời gian report cho chúng\ntôi. Chúng tôi sẽ cố gắng giải quyết và phản\nhồi lại bạn trong thời gian sớm nhất',
+                    icon: 'success',
+                });
+                $('#ReportBugModal').modal('toggle');
+                $('#FeatureSelectorModal').modal('toggle');
             }, error: (error) => {
                 console.error(error);
             }
@@ -722,7 +730,6 @@ async function getScoreByStudentIdAndSubjectId(subjectId) {
 }
 function diemTongKetCal(obj) {
     let diemTongKet = 0;
-    console.log("obj==",obj);
     if(obj.lopHocPhan.monHoc.soTietTH == 0) { //Nếu môn chỉ có LT
         lt = ((obj.diemLT1 + obj.diemLT2 + obj.diemLT3)/3)*0.2;
         gk = obj.diemGK*0.3;

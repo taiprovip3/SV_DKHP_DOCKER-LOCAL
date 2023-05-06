@@ -18,7 +18,7 @@ const RechargePage = ({ navigation }) => {
   const [ balanceToRecharge, setBalanceToRecharge] = React.useState('0');
   const [ service, setService ] = React.useState("");
   const [ momoMethodModalVisible, setMomoMethodModalVisible ] = React.useState(false);
-  const [ momoMethod, setMomoMethod] = React.useState('MOMO_QR');
+  const [ momoMethod, setMomoMethod] = React.useState('MOMO_ATM');
   const inputRef = React.useRef(null);
   
   const handleBalanceToRechargeChange = (text) => {
@@ -202,7 +202,7 @@ const RechargePage = ({ navigation }) => {
                 setMomoMethod(nextValue);
               }}
             >
-              <Radio value="MOMO_QR" my="1">
+              <Radio value="MOMO_QR" my="1" isDisabled>
                 MOMO QR (Thanh toán quét mã QR)
               </Radio>
               <Radio value="MOMO_ATM" my="1">

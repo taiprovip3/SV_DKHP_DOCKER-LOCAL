@@ -118,6 +118,49 @@
     <div class="position-fixed bottom-0 text-primary small p-2">
         Secure <i class="fas fa-shield-alt"></i>
     </div>
+    <div class="modal" id="addModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="text-end">
+                        <button type="button" data-bs-dismiss="modal" class="bg-primary text-white px-2 border-0"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div>
+                        <form action="./employee-crud-add-department_announcement" method="post" enctype="multipart/form-data">
+                            <div class="my-3">
+                                <label for="tieuDe" class="form-label">Tiêu đề:</label>
+                                <input type="text" class="form-control" id="tieuDe" placeholder="Nhập tiêu đề thông báo.." name="tieuDe" list="browsers" required />
+                                <datalist id="browsers">
+                                    <option value="Mở lớp học phần">
+                                    <option value="Lịch nghĩ tết nguyên đán">
+                                    <option value="Phòng chống COVID">
+                                    <option value="Hỗ trợ học bỗng">
+                                    <option value="Lịch nghĩ hè">
+                                </datalist>
+                            </div>
+                            <div class="my-3">
+                                <label for="noiDung" class="form-label">Nội dung:</label>
+                                <textarea name="noiDung" id="noiDung" rows="5" placeholder="Nhập nội dụng thông báo.." class="form-control" required></textarea>
+                            </div>
+                            <div class="my-3">
+                                <label for="ngayXuatBan" class="form-label">Ngày thông báo:</label>
+                                <input type="date" class="form-control" id="ngayXuatBan" name="ngayXuatBan" />
+                            </div>
+                            <div class="my-3">
+                                <label for="maKhoa" class="form-label">Mã khoa:</label>
+                                <input type="number" class="form-control" id="maKhoa" name="maKhoa" value="0" required />
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="import-button">Tạo thông báo</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </div>
 </body>
 <script>
 const pathNodejs = '<%= process.env.EJS_API_URL %>';
@@ -132,6 +175,16 @@ $(document).ready(function() {
     $("#btn-export-excel").click(function() {
         window.location.href = pathNodejs+"/employee-crud-export?entityName=department_announcement";
     });
+
+    const now = new Date();
+    let month = (now.getMonth() + 1);               
+    let day = now.getDate();
+    if (month < 10) 
+        month = "0" + month;
+    if (day < 10) 
+        day = "0" + day;
+    const today = now.getFullYear() + '-' + month + '-' + day;
+    $('#ngayXuatBan').val(today);
 });
 </script>
 </html>

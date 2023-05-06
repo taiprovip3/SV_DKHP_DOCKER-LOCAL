@@ -14,13 +14,11 @@
     <script src="https://kit.fontawesome.com/ad778f42b3.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div>
-        <% if(signal) {
-            if(signal == "INTERNAL_SERVER_ERROR") { %>
-                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
-            <% }
-        } %>
-    </div>
+    <% if(signal) {
+        if(signal == "INTERNAL_SERVER_ERROR") { %>
+            <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
+        <% }
+    } %>
     <div class="container-fluid">
         <div class="row position-relative">
             <div class="position-absolute top-0 start-0 text-start mt-2 fs-3 w-50">

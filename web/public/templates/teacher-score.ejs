@@ -18,17 +18,15 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 </head>
 <body>
-    <div>
-        <% if(signal) { %>
-            <% if(signal == "INSERT_SUCCESS") { %>
-                <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
-            <% } else {
-                if(signal == "INTERNAL_SERVER_ERROR") { %>
-                    <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
-                <% }
-            }
-        } %>
-    </div>
+    <% if(signal) { %>
+        <% if(signal == "INSERT_SUCCESS") { %>
+            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"})</script>
+        <% } else {
+            if(signal == "INTERNAL_SERVER_ERROR") { %>
+                <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
+            <% }
+        }
+    } %>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 p-2" style="height: 100vh; overflow: hidden;">
@@ -142,7 +140,7 @@
                                     <td><%= SCORES[i].diemTongKet.toFixed(2) %></td>
                                     <td><%= SCORES[i].diem4.toFixed(2) %></td>
                                     <td><%= SCORES[i].diemChu %></td>
-                                    <td><%= SCORES[i].xepLoai %></td>
+                                    <td><%= xepLoaiCal(SCORES[i].xepLoai) %></td>
                                     <td><%= SCORES[i].ghiChu %></td>
                                     <td><%= SCORES[i].pass %></td>
                                     <td><input type="radio" name="isSelected" id="<%= SCORES[i].maDiem %>" class="form-check-input" onchange="sendData(<%= JSON.stringify(SCORES[i]) %>, this.id);"></td>

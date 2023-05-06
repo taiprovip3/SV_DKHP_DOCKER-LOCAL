@@ -22,7 +22,7 @@ public class BaoLoiImplement implements BaoLoiService {
 				.builder()
 				.loaiLoi(baoLoiDTO.getLoaiLoi())
 				.noiDung(baoLoiDTO.getNoiDung())
-				.mucDoNghiemTrong(MucDoNghiemTrong.valueOf(null))
+				.mucDoNghiemTrong(MucDoNghiemTrong.valueOf(baoLoiDTO.getMucDoNghiemTrong()))
 				.nguoiBaoLoi(baoLoiDTO.getNguoiBaoLoi())
 				.build();
 			return baoLoiRepository.save(baoLoi);

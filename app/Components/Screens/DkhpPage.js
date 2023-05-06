@@ -118,29 +118,29 @@ const DkhpPage = () => {
         timeLeft = 'Khóa sau: ' + (myResult <10 ? "0"+myResult : myResult) + ' ngày nữa';
     }
     if(tkb.tkbCons.length <= 0) {
-      return <Pressable key={Math.random()} onPress={() => register(tkb.maThoiKhoaBieu, 0)}>
+      return <Pressable key={Math.random()} onPress={() => register(tkb.tkb.maThoiKhoaBieu, 0)}>
         <Box bg="coolGray.200" my="1" p="1" borderRadius="md">
           <HStack>
-            <Box w="1/2">
-              <Text fontSize="xs">Trạng thái: <Text color="teal.800" bold>{timeLeft}</Text></Text>
+            <Box w="1/2" borderRightColor="coolGray.600" borderRightWidth="0.3" pl="2">
+              <Text fontSize="xs">Trạng thái:</Text>
+              <Text color="teal.800" bold>{timeLeft}</Text>
             </Box>
-            <Box w="1/2">
-              <Text fontSize="xs">Nhóm học: <Text color="teal.800" bold>{(tkb.tkb.nhomHoc) == 0 ? "Không phân nhóm" : tkb.tkb.nhomHoc}</Text></Text>
+            <Box w="1/2" pl="3">
+              <Text fontSize="xs">Nhóm học:</Text>
+              <Text color="teal.800" bold>{(tkb.tkb.nhomHoc) == 0 ? "Không phân nhóm" : tkb.tkb.nhomHoc}</Text>
             </Box>
           </HStack>
-          <Divider bg="black"></Divider>
+          <Divider bg="black" my="2"></Divider>
           <HStack>
-            <Box w="2/3" borderRightWidth="0.5" borderRightColor="black">
+            <Box w="1/2" borderRightWidth="0.5" borderRightColor="black" pl="2">
               <Text fontSize="xs">Lịch học: <Text color="teal.800" bold>LT - {tkb.tkb.thuHoc} (Tiết {tkb.tkb.tuTietHoc} -> {tkb.tkb.denTietHoc} )</Text></Text>
               <Text fontSize="xs">Dãy nhà: <Text color="teal.800" bold>{tkb.tkb.phongHoc.substring(0,1)}</Text></Text>
               <Text fontSize="xs">Phòng học: <Text color="teal.800" bold>{tkb.tkb.phongHoc}</Text></Text>
             </Box>
-            <Box w="1/3">
-              <Center>
-                <Text bold fontSize="xs">GV: TS/Th.s {tkb.tkb.lopHocPhan.giaoVien.tenGiaoVien}</Text>
-                <Text fontSize="xs">Bắt đầu học: {formatDate(tkb.tkb.lopHocPhan.ngayBatDau)} - {formatDate(tkb.tkb.lopHocPhan.ngayKetThuc)}</Text>
-                <Text fontSize="xs">Đã đăng ký: {tkb.tkb.soLuongDaDangKy}/{tkb.tkb.lopHocPhan.soLuongMax} <FontAwesome5 name="user-check" size={12} color="'rgba(5, 148, 78, 0.8)'" /></Text>
-              </Center>
+            <Box w="1/2" pl="3">
+              <Text bold fontSize="xs">GV: TS/Th.s {tkb.tkb.lopHocPhan.giaoVien.tenGiaoVien}</Text>
+              <Text fontSize="xs">Bắt đầu học: {formatDate(tkb.tkb.lopHocPhan.ngayBatDau)} - {formatDate(tkb.tkb.lopHocPhan.ngayKetThuc)}</Text>
+              <Text fontSize="xs">Đã đăng ký: {tkb.tkb.soLuongDaDangKy}/{tkb.tkb.lopHocPhan.soLuongMax} <FontAwesome5 name="user-check" size={12} color="'rgba(5, 148, 78, 0.8)'" /></Text>
             </Box>
           </HStack>
         </Box>
@@ -686,7 +686,7 @@ const DkhpPage = () => {
           onPress: async () => {
             // /api/sv_lhp/deleteById/"+maSVLHP
             const javaIp = await publicIP();
-            const response = await axios.get(LOCAL_JAVA_API_URL+"/api/sv_lhp/getSVLHPByMaLopHocPhanId/"+selectedLHPRegistered.current.maLopHocPhan, {headers: {"Authorization": token}});
+            const response = await axios.get(LOCAL_JAVA_API_URL+"/api/sv_lhp/getSVLHPByMaLopHocPhanId/"+selectedLHPRegistered.current.maLopHocPhan+"/"+currentUser.maSinhVien, {headers: {"Authorization": token}});
             const svlhp = response.data;
             const response2 = await axios.delete(LOCAL_JAVA_API_URL+"/api/sv_lhp/deleteById/"+svlhp.id, {headers: {"Authorization": token}});
             const myStringResult = response2.data;

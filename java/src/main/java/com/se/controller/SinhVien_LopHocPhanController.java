@@ -32,9 +32,9 @@ public class SinhVien_LopHocPhanController {
 	public boolean isStudentRegisThisUnitClass(@PathVariable long maLopHocPhan, @PathVariable long maMonHoc, @PathVariable long maKhoaHoc, @PathVariable long maSinhVien) {
 		return sinhVien_LopHocPhanService.isStudentRegisThisUnitClass(maLopHocPhan, maMonHoc, maKhoaHoc, maSinhVien);
 	}
-	@GetMapping("/sv_lhp/getSVLHPByMaLopHocPhanId/{id}")
-	public SinhVien_LopHocPhan getSVLHPByMaLopHocPhanId(@PathVariable long id) {
-		return sinhVien_LopHocPhanService.getSVLHPByMaLopHocPhanId(id);
+	@GetMapping("/sv_lhp/getSVLHPByMaLopHocPhanId/{unitClassId}/{studentId}")
+	public SinhVien_LopHocPhan getSVLHPByMaLopHocPhanId(@PathVariable long unitClassId, @PathVariable long studentId) {
+		return sinhVien_LopHocPhanService.getSVLHPByMaLopHocPhanId(unitClassId, studentId);
 	}
 	@DeleteMapping("/sv_lhp/deleteById/{id}")
 	public String deleteById(@PathVariable long id) {

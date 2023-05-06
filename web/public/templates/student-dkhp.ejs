@@ -219,7 +219,7 @@
 </body>
 <script src="<%= process.env.EJS_API_URL %>/socket.io/socket.io.js"></script>
 <script>
-    var socket = io.connect('wss://<%= process.env.EJS_API %>');
+    var socket = io.connect('ws://<%= process.env.EJS_API %>');
     socket.on('connect', function() {
       console.log('Connected to server');
     });
@@ -256,7 +256,7 @@ var selected_ma_mon_hoc = '';
 var selected_ma_khoa_hoc = 0;
 const latestCourseId = '<%= LIST_COURSE[LIST_COURSE.length-1].maKhoaHoc %>';
 $("#select_course option[value='"+ latestCourseId +"']").text($("#select_course option[value='"+ latestCourseId + "']").text()+" ✔");
-
+const loaiHocShortCut = {HOC_MOI: 'Học mới', HOC_LAI: 'Học lại', HOC_CAI_THIEN: 'Học cải thiện'};
 function changeTimeTableIdListener(maThoiKhoaBieu, loaiThoiKhoaBieu) {
     selected_ma_thoi_khoa_bieu = maThoiKhoaBieu;
     selected_thoi_khoa_bieu_con = loaiThoiKhoaBieu;
@@ -507,7 +507,7 @@ $(document).ready(function(){
                         '<td class="d-table-cell align-middle">'+ sv_lhps[i].lopHocPhan.monHoc.hocPhi.toLocaleString('es-US') +' vnđ</td>'+
                         '<td class="d-table-cell align-middle">'+ sv_lhps[i].lopHocPhan.ngayBatDau +'</td>'+
                         '<td class="d-table-cell align-middle">'+ whatIcon +'</td>'+
-                        '<td class="d-table-cell align-middle">'+ sv_lhps[i].lopHocPhan.loaiHoc +'</td>'+
+                        '<td class="d-table-cell align-middle">'+ loaiHocShortCut[sv_lhps[i].lopHocPhan.loaiHoc] +'</td>'+
                         '<td class="d-table-cell align-middle">'+ sv_lhps[i].ngayDangKy +'</td>'+
                         '<td class="d-table-cell align-middle">'+ trangThaiBeLike +'</td>'+
                     '</tr>';

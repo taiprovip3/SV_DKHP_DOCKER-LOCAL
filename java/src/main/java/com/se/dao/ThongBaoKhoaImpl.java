@@ -64,5 +64,4 @@ public class ThongBaoKhoaImpl implements ThongBaoKhoaService {
 	public ThongBaoKhoa getNotificationById(long notificationId) {
 		return thongBaoKhoaRepository.findById(notificationId).orElse(null);
 	}
-
 }

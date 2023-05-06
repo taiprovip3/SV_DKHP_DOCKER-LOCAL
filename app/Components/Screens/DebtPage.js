@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 import { AuthContext } from '../Providers/AuthProvider';
 import publicIP from 'react-native-public-ip';
 import axios from 'axios';
-import { AppState } from 'react-native';
+import { Alert, AppState } from 'react-native';
 import { LOCAL_JAVA_API_URL } from '@env';
 import { SO_TIEN_1_TIN_CHI } from '@env';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -112,34 +112,51 @@ const DebtPage = ({navigation}) => {
           text2: 'Vui lòng chọn hình thức thanh toán'
         });
     } else {
-        // Redirect qua webview
-        // item đã đc format phù hợp vs render
-        if(service === "PAYPAL") {
-          // Implement paypal here...
-          const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
-          const debtData = {service, maCongNo:item.maCongNo, maSinhVien:currentUser.maSinhVien, loaiThanhToan:service, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data}
-          navigation.navigate("PaymentPage", {debtData: debtData});
-        } else {
-          if(service === "MOMO_QR" || service === "MOMO_ATM") {
-            // Implement momo here...
-            const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
-            const debtData = {service, maCongNo: item.maCongNo, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data, maSinhVien:currentUser.maSinhVien, loaiMomo: service};
-            navigation.navigate("PaymentPage", {debtData: debtData});
-          } else {
-            if(service === "VNPAY") {
-              // implement vnpay here..
-              const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
-              const debtData = {service, maCongNo: item.maCongNo, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data, maSinhVien:currentUser.maSinhVien, soTien: item.soTien};
-              navigation.navigate("PaymentPage", {debtData: debtData});
-            }
-            if(service === "STUDENT_WALLET") {
-              // implement student_wallet here...
-              const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
-              const debtData = {service, maCongNo: item.maCongNo, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data, maSinhVien:currentUser.maSinhVien};
-              navigation.navigate("PaymentPage", {debtData: debtData});
-            }
+      Alert.alert(
+        'Xác nhận',
+        'Đồng ý thanh toán với số tiền là: ' + formatCurrency(item.soTien) + '?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {console.log('Cancel Pressed')},
+            style: 'cancel'
+          },
+          { 
+            text: 'Xác nhận', 
+            onPress: async () => {
+              console.log('OK Pressed');
+              // Redirect qua webview
+              // item đã đc format phù hợp vs render
+              if(service === "PAYPAL") {
+                // Implement paypal here...
+                const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
+                const debtData = {service, maCongNo:item.maCongNo, maSinhVien:currentUser.maSinhVien, loaiThanhToan:service, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data}
+                navigation.navigate("PaymentPage", {debtData: debtData});
+              } else {
+                if(service === "MOMO_QR" || service === "MOMO_ATM") {
+                  // Implement momo here...
+                  const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
+                  const debtData = {service, maCongNo: item.maCongNo, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data, maSinhVien:currentUser.maSinhVien, loaiMomo: service};
+                  navigation.navigate("PaymentPage", {debtData: debtData});
+                } else {
+                  if(service === "VNPAY") {
+                    // implement vnpay here..
+                    const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
+                    const debtData = {service, maCongNo: item.maCongNo, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data, maSinhVien:currentUser.maSinhVien, soTien: item.soTien};
+                    navigation.navigate("PaymentPage", {debtData: debtData});
+                  }
+                  if(service === "STUDENT_WALLET") {
+                    // implement student_wallet here...
+                    const maThanhToanGiaoDichReponse = await axios.get(LOCAL_JAVA_API_URL+"/api/payment/createTransaction/"+currentUser.maSinhVien+"/"+0+"/"+item.maCongNo+"/EMPTY", {headers: {"Authorization": token}});
+                    const debtData = {service, maCongNo: item.maCongNo, maThanhToanGiaoDich: maThanhToanGiaoDichReponse.data, maSinhVien:currentUser.maSinhVien};
+                    navigation.navigate("PaymentPage", {debtData: debtData});
+                  }
+                }
+              }
+            },
           }
-        }
+        ]
+      );
     }
   }
 

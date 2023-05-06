@@ -91,20 +91,25 @@ public class SinhVien_LopHocPhanImpl implements SinhVien_LopHocPhanService {
 
 	@Override
 	public boolean isStudentRegisThisUnitClass(long maLopHocPhan, long maMonHoc, long maKhoaHoc, long maSinhVien) {
-		SinhVien_LopHocPhan svlhp = sinhVien_LopHocPhanRepository.isStudentRegisThisUnitClass(maLopHocPhan);
+		SinhVien_LopHocPhan svlhp = sinhVien_LopHocPhanRepository.isStudentRegisThisUnitClass(maLopHocPhan, maSinhVien);
 		//false :: ko có giá trị, cho đăng ký ; true:: có giá trị, ko ko cho
-		if(svlhp != null)
-			return true;
+		if(svlhp != null) {
+			System.out.println("return trueeee");
+			return true;	
+		}
 		//Xem coi có Lhp có maMonHoc & maKhoaHoc này mà sv đăng ký ko.
 		LopHocPhan lhp = lopHocPhanRepository.getUnitClassBySubjectIdAndCourseId(maMonHoc, maKhoaHoc, maSinhVien);
-		if(lhp != null)
+		if(lhp != null) {
+			System.out.println("return trueeeeeeeee");
 			return true;
+		}
+		System.out.println("return falseeee");
 		return false;
 	}
 
 	@Override
-	public SinhVien_LopHocPhan getSVLHPByMaLopHocPhanId(long id) {
-		return sinhVien_LopHocPhanRepository.getSVLHPByMaLopHocPhanId(id);
+	public SinhVien_LopHocPhan getSVLHPByMaLopHocPhanId(long unitClassId, long studentId) {
+		return sinhVien_LopHocPhanRepository.getSVLHPByMaLopHocPhanId(unitClassId, studentId);
 	}
 
 	@Override

@@ -231,6 +231,17 @@ employeeFeatureRouter.get("/employee-crud-department_announcement", async (req, 
     }
     return res.redirect("/employee");
 });
+employeeFeatureRouter.post("/employee-crud-add-department_announcement", upload.fields([]), async (req, res) => {
+    if(req.session.employee) {
+        const thongBaoKhoaDTO = req.body;
+        const response = await axios.post(javaUrl+"/api/department_announcement", thongBaoKhoaDTO, {headers: {"Authorization": req.session.employee_token}});
+        const LIST_ANNOUNCEMENT = await getListAnnouncement();
+        if(response.data)
+            return res.render("employee-crud-department_announcement", {LIST_ANNOUNCEMENT, signal: "INSERT_SUCCESS"});
+        return res.render("employee-crud-department_announcement", {LIST_ANNOUNCEMENT, signal: "INTERNAL_SERVER_ERROR"});
+    }
+    return res.redirect("/employee");
+});
     //----- pattern routers -----\\
 employeeFeatureRouter.get("/employee-crud-pattern", (req, res) => {
     return res.render("employee-crud-pattern", {signal: null});

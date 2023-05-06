@@ -254,7 +254,7 @@ app.post("/student-report", async (req, res) => {
             nguoiBaoLoi: req.body.reporter,
             loaiLoi: req.body.objectErrorType,
             mucDoNghiemTrong: req.body.severity,
-            noiDung: req.body.text,
+            noiDung: req.body.noiDung,
         }
         const response = await axios.post(javaUrl+"/api/report", baoLoiDTO, {headers: {"Authorization": token}});
         if(response.data) {
@@ -522,7 +522,8 @@ app.post("/student/dkhp/getSVLHPByMaLopHocPhanId", async (req, res) => {
         return res.render("student-login", {LIST_ANNOUNCEMENT, error: null});
     } else {
         const maLopHocPhan = req.body.maLopHocPhan;
-        const response = await axios.get(javaUrl+"/api/sv_lhp/getSVLHPByMaLopHocPhanId/"+maLopHocPhan, {headers: {"Authorization": req.session.jwt_token}});
+        const maSinhVien = req.session.student;
+        const response = await axios.get(javaUrl+"/api/sv_lhp/getSVLHPByMaLopHocPhanId/"+maLopHocPhan+"/"+maSinhVien, {headers: {"Authorization": req.session.jwt_token}});
         if(response.data)
             return res.send(response.data)
         return res.send({});

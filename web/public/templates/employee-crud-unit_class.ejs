@@ -18,7 +18,18 @@
 <body>
     <% if(signal) { %>
         <% if(signal == "INSERT_SUCCESS") { %>
-            <script>swal({title: "Goob jobs!", text: "Thao tác dữ liệu thành công", icon: "success"});</script>
+            <script>
+                swal({
+                    title: "Thao tác thành công!",
+                    text: "Bạn có muốn tạo thông báo đến sinh viên không?", 
+                    icon: "success", 
+                    buttons: true
+                }).then((value) => {
+                    if(value) {
+                        window.location.href = "./employee-crud-department_announcement";
+                    }
+                });
+            </script>
         <% } else {
             if(signal == "INTERNAL_SERVER_ERROR") { %>
                 <script>swal({title: "Internal Server Error",text: "Undefined resolution!", icon: "warning", dangerMode: true});</script>
