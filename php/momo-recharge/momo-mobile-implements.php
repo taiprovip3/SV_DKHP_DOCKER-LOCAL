@@ -46,7 +46,7 @@
     $balanceGiaoDich = $_GET["balanceGiaoDich"];
     $momo_method = $_GET["momoMethod"];
 
-    $url = "http://java:8080/api/payment/getTokenByPaymentAndStudentId/".$maThanhToanGiaoDich."/".$maSinhVien;
+    $url = "http://localhost:8080/api/payment/getTokenByPaymentAndStudentId/".$maThanhToanGiaoDich."/".$maSinhVien;
     $response = file_get_contents($url);
     if ($response === false) {
         // xảy ra lỗi kết nối đến API
@@ -62,7 +62,7 @@
                 'header' => "Authorization: $token\r\n"
             )
         );
-        $url = "http://java:8080/api/payment/getPaymentById/".$maThanhToanGiaoDich;
+        $url = "http://localhost:8080/api/payment/getPaymentById/".$maThanhToanGiaoDich;
         $context = stream_context_create($options);
         $response = file_get_contents($url, false, $context);
         $response_parse = json_decode($response);
@@ -79,13 +79,36 @@
                 $orderInfo = "Thanh toán qua MoMo QR (Quét mã app momo)";
                 $amount = $balanceGiaoDich;
                 $orderId = time() ."";
-                $redirectUrl = "https://erukalearn.ddns.net/student/payment/callback";
-                $ipnUrl = "http://php:8000/momo/momo-ipn.php";
+                $redirectUrl = "http://192.168.1.2:4000/student/recharge/callback";
+                $ipnUrl = "http://localhost:8000/momo/momo-ipn.php";
                 $extraData = $maThanhToanGiaoDich;
 
                 $requestId = time() . "";
                 $requestType = ($momo_method == "MOMO_QR") ? "captureWallet" : "payWithATM";
                 $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+
+                $rawHashIPN = "accessKey=" . $accessKey . "&orderId=" . $orderId . "&partnerCode=" . $partnerCode . "&requestId=" . $requestId;
+                $signatureIPN = hash_hmac("sha256", $rawHashIPN, $secretKey);
+                $ipnJsonData = (object) [
+                    'paymentId' => $maThanhToanGiaoDich,
+                    'requestId' => $requestId,
+                    'orderId' => $orderId,
+                    'signature' => $signatureIPN,
+                    'lang' => 'vi'
+                ];
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/api/payment/updateMomoIpn');
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ipnJsonData));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                if ($response == false) {
+                    $curlError = curl_error($ch);
+                    exit();
+                }
+
                 $signature = hash_hmac("sha256", $rawHash, $secretKey);
                 $data = array('partnerCode' => $partnerCode,
                     'partnerName' => "Test",
