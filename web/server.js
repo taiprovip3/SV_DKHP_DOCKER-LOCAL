@@ -2266,16 +2266,20 @@ app.get("/paypal/topup/cancel", async (req, res) => {
 ****        ****    ****                ****               ****     ****        ************
  */
 // const options = {
-//     key: fs.readFileSync('./ssl/privkey.pem'),
-//     cert: fs.readFileSync('./ssl/fullchain.pem'),
+//     key: fs.readFileSync('./ssl/certbot/privkey.pem'),
+//     cert: fs.readFileSync('./ssl/certbot/fullchain.pem'),
 // };
-// const server = https.createServer(options, app);
+const options = {
+    key: fs.readFileSync('./ssl/zerossl_domain_erukalearn/private.key'),
+    cert: fs.readFileSync('./ssl/zerossl_domain_erukalearn/certificate.crt'),
+};
+const server = https.createServer(options, app);
 // const filePath = path.join(__dirname, 'E00D77F973FB6974C6ACC2B78EA9CC4F.txt');
 // console.log('filePath=',filePath);
 // app.get('/.well-known/pki-validation/E00D77F973FB6974C6ACC2B78EA9CC4F.txt', (req, res) => {
 //     return res.sendFile(filePath);
 // });
-const server = app.listen(process.env.APP_PORT, () => {
+server.listen(process.env.APP_PORT, () => {
     console.log(`Server is running in ${process.env.APP_PORT}....`);
 });
 const io = socket(server);
