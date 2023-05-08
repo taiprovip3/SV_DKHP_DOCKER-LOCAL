@@ -12,10 +12,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { formatCurrency } from '../Utilities/formatCurrency';
 import { formatDate } from '../Utilities/formatDate';
-import { Foundation } from '@expo/vector-icons';
 
 const DebtPage = ({navigation}) => {
-  console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
+  console.log('LOCAL_JAVA_API_URL=', LOCAL_JAVA_API_URL);
 
   const appStateSubscriptionRef = React.useRef(null);
   const appStateRef = React.useRef(AppState.currentState);

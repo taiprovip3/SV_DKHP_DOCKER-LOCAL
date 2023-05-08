@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `chuong_trinh_khung` (
   KEY `FK3wm9ly0g4i8nn5dhn51ue1n0j` (`ma_sinh_vien`),
   CONSTRAINT `FK3wm9ly0g4i8nn5dhn51ue1n0j` FOREIGN KEY (`ma_sinh_vien`) REFERENCES `sinh_vien` (`ma_sinh_vien`),
   CONSTRAINT `FKg03funaw6lm3b5tsmkl24weei` FOREIGN KEY (`ma_mon_hoc`) REFERENCES `mon_hoc` (`ma_mon_hoc`)
-) ENGINE = InnoDB AUTO_INCREMENT = 7 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: cong_no
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `cong_no` (
   CONSTRAINT `FKg8i8ji845ka67ejnoid4oqr2u` FOREIGN KEY (`ma_sinh_vien`) REFERENCES `sinh_vien` (`ma_sinh_vien`),
   CONSTRAINT `FKkxl1i4597wqhq1lcsxe80k9pi` FOREIGN KEY (`ma_lop_hoc_phan`) REFERENCES `lop_hoc_phan` (`ma_lop_hoc_phan`),
   CONSTRAINT `FKqgvb2b1v3buwnf79biq25v41p` FOREIGN KEY (`ma_mon_hoc`) REFERENCES `mon_hoc` (`ma_mon_hoc`)
-) ENGINE = InnoDB AUTO_INCREMENT = 63 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 68 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: diem
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `diem` (
   KEY `FK8fjjyfymvjg93mbsth73q4r85` (`ma_sinh_vien`),
   CONSTRAINT `FK8fjjyfymvjg93mbsth73q4r85` FOREIGN KEY (`ma_sinh_vien`) REFERENCES `sinh_vien` (`ma_sinh_vien`),
   CONSTRAINT `FKa4mk5ny0xtsxf1vgaxo8g49yu` FOREIGN KEY (`ma_lop_hoc_phan`) REFERENCES `lop_hoc_phan` (`ma_lop_hoc_phan`)
-) ENGINE = InnoDB AUTO_INCREMENT = 5 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: giao_vien
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `lop_hoc_phan` (
   CONSTRAINT `FK3ry1unxhxp6x73pthyt762uup` FOREIGN KEY (`ma_giao_vien`) REFERENCES `giao_vien` (`ma_giao_vien`),
   CONSTRAINT `FKk6be4r8ym9mph9tn7h3s209cn` FOREIGN KEY (`ma_khoa_hoc`) REFERENCES `khoa_hoc` (`ma_khoa_hoc`),
   CONSTRAINT `FKsin0ppsx8ftjbqkngy4ohy1pi` FOREIGN KEY (`ma_mon_hoc`) REFERENCES `mon_hoc` (`ma_mon_hoc`)
-) ENGINE = InnoDB AUTO_INCREMENT = 24 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: mon_hoc
@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `phieu_thu` (
   KEY `FK7toy90p9ejciwkoisey01vlhr` (`ma_giao_dich`),
   CONSTRAINT `FK7toy90p9ejciwkoisey01vlhr` FOREIGN KEY (`ma_giao_dich`) REFERENCES `thanh_toan_giao_dich` (`ma_giao_dich`),
   CONSTRAINT `FKq5fea4js9jw4ndu38fdl8p35c` FOREIGN KEY (`ma_sinh_vien`) REFERENCES `sinh_vien` (`ma_sinh_vien`)
-) ENGINE = InnoDB AUTO_INCREMENT = 48 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 52 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: role
@@ -355,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `sinh_vien_lop_hoc_phan` (
   CONSTRAINT `FK7dxegu5yiurf47k1yrgn5a8n2` FOREIGN KEY (`ma_thoi_khoa_bieu`) REFERENCES `thoi_khoa_bieu` (`ma_thoi_khoa_bieu`),
   CONSTRAINT `FKmd0chdv7c7i5bwqt0xxqcm8e` FOREIGN KEY (`ma_sinh_vien`) REFERENCES `sinh_vien` (`ma_sinh_vien`),
   CONSTRAINT `FKt446j3gsdfn36isyny7glolnm` FOREIGN KEY (`ma_thoi_khoa_bieu_con`) REFERENCES `thoi_khoa_bieu_con` (`ma_thoi_khoa_bieu_con`)
-) ENGINE = InnoDB AUTO_INCREMENT = 62 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 67 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: tai_khoan
@@ -458,7 +458,7 @@ CREATE TABLE IF NOT EXISTS `thong_bao` (
   PRIMARY KEY (`id`),
   KEY `FKc9wew8egsdia4kif8ikm62g44` (`ma_sinh_vien`),
   CONSTRAINT `FKc9wew8egsdia4kif8ikm62g44` FOREIGN KEY (`ma_sinh_vien`) REFERENCES `sinh_vien` (`ma_sinh_vien`)
-) ENGINE = InnoDB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: thong_bao_khoa
@@ -473,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `thong_bao_khoa` (
   PRIMARY KEY (`ma_thong_bao`),
   KEY `FKbqgh4gmlh31n757e70nnh6pww` (`ma_khoa`),
   CONSTRAINT `FKbqgh4gmlh31n757e70nnh6pww` FOREIGN KEY (`ma_khoa`) REFERENCES `khoa` (`ma_khoa`)
-) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 # ------------------------------------------------------------
 # SCHEMA DUMP FOR TABLE: token
@@ -872,6 +872,10 @@ INSERT INTO
   `chuong_trinh_khung` (`id`, `done`, `ma_mon_hoc`, `ma_sinh_vien`)
 VALUES
   (6, b'1', 1000082, 19524791);
+INSERT INTO
+  `chuong_trinh_khung` (`id`, `done`, `ma_mon_hoc`, `ma_sinh_vien`)
+VALUES
+  (7, b'1', 1000081, 19524794);
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: cong_no
@@ -952,51 +956,26 @@ INSERT INTO
   )
 VALUES
   (62, 0, 0, 0, 0, 0, 'CHUA_NOP', 23, 1000004, 19524792);
+INSERT INTO
+  `cong_no` (
+    `id`,
+    `cong_no`,
+    `da_nop`,
+    `khau_tru`,
+    `mien_giam`,
+    `so_tien`,
+    `trang_thai`,
+    `ma_lop_hoc_phan`,
+    `ma_mon_hoc`,
+    `ma_sinh_vien`
+  )
+VALUES
+  (67, 0, 1700000, 0, 0, 0, 'DA_NOP', 23, 1000004, 19524791);
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: diem
 # ------------------------------------------------------------
 
-INSERT INTO
-  `diem` (
-    `ma_diem`,
-    `diem4`,
-    `diemck`,
-    `diem_chu`,
-    `diemgk`,
-    `diemlt1`,
-    `diemlt2`,
-    `diemlt3`,
-    `diemth1`,
-    `diemth2`,
-    `diemth3`,
-    `diem_tong_ket`,
-    `ghi_chu`,
-    `pass`,
-    `xep_loai`,
-    `ma_lop_hoc_phan`,
-    `ma_sinh_vien`
-  )
-VALUES
-  (
-    2,
-    2.6,
-    7.2,
-    'B',
-    5,
-    6,
-    7,
-    8,
-    0,
-    0,
-    0,
-    6.5,
-    'Đạt',
-    b'1',
-    'TRUNG_BINH_KHA',
-    1,
-    19524791
-  );
 INSERT INTO
   `diem` (
     `ma_diem`,
@@ -1036,6 +1015,126 @@ VALUES
     'YEU',
     2,
     19524791
+  );
+INSERT INTO
+  `diem` (
+    `ma_diem`,
+    `diem4`,
+    `diemck`,
+    `diem_chu`,
+    `diemgk`,
+    `diemlt1`,
+    `diemlt2`,
+    `diemlt3`,
+    `diemth1`,
+    `diemth2`,
+    `diemth3`,
+    `diem_tong_ket`,
+    `ghi_chu`,
+    `pass`,
+    `xep_loai`,
+    `ma_lop_hoc_phan`,
+    `ma_sinh_vien`
+  )
+VALUES
+  (
+    6,
+    0,
+    0,
+    'null',
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    9,
+    0,
+    NULL,
+    b'0',
+    NULL,
+    1,
+    19524792
+  );
+INSERT INTO
+  `diem` (
+    `ma_diem`,
+    `diem4`,
+    `diemck`,
+    `diem_chu`,
+    `diemgk`,
+    `diemlt1`,
+    `diemlt2`,
+    `diemlt3`,
+    `diemth1`,
+    `diemth2`,
+    `diemth3`,
+    `diem_tong_ket`,
+    `ghi_chu`,
+    `pass`,
+    `xep_loai`,
+    `ma_lop_hoc_phan`,
+    `ma_sinh_vien`
+  )
+VALUES
+  (
+    7,
+    0,
+    0,
+    'null',
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    9,
+    0,
+    NULL,
+    b'0',
+    NULL,
+    1,
+    19524793
+  );
+INSERT INTO
+  `diem` (
+    `ma_diem`,
+    `diem4`,
+    `diemck`,
+    `diem_chu`,
+    `diemgk`,
+    `diemlt1`,
+    `diemlt2`,
+    `diemlt3`,
+    `diemth1`,
+    `diemth2`,
+    `diemth3`,
+    `diem_tong_ket`,
+    `ghi_chu`,
+    `pass`,
+    `xep_loai`,
+    `ma_lop_hoc_phan`,
+    `ma_sinh_vien`
+  )
+VALUES
+  (
+    8,
+    3.73333,
+    10,
+    'A+',
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    9,
+    9.33333,
+    'Đạt',
+    b'1',
+    'GIOI',
+    1,
+    19524794
   );
 
 # ------------------------------------------------------------
@@ -1960,7 +2059,7 @@ VALUES
     '2023-05-05',
     'HOC_MOI',
     '2023-05-31',
-    '2023-05-31',
+    '2023-07-31',
     0,
     28,
     'DHKTPM19ATT',
@@ -1987,10 +2086,10 @@ INSERT INTO
 VALUES
   (
     22,
-    '2023-05-13',
+    '2023-05-12',
     'HOC_MOI',
-    '2023-05-31',
-    '2023-05-31',
+    '2023-05-12',
+    '2023-07-31',
     0,
     41,
     'DHKTPM15ATT',
@@ -2017,13 +2116,43 @@ INSERT INTO
 VALUES
   (
     23,
-    '2023-05-13',
+    '2023-05-15',
     'HOC_MOI',
-    '2023-05-13',
-    '2023-06-30',
-    1,
+    '2023-05-15',
+    '2023-07-31',
+    3,
     25,
     'DHKTPM15BTT',
+    'DANG_CHO_SINH_VIEN_DANG_KY',
+    315067680,
+    13,
+    1000004
+  );
+INSERT INTO
+  `lop_hoc_phan` (
+    `ma_lop_hoc_phan`,
+    `han_nop_hoc_phi`,
+    `loai_hoc`,
+    `ngay_bat_dau`,
+    `ngay_ket_thuc`,
+    `so_luong`,
+    `so_luong_max`,
+    `ten_lop_hoc_phan`,
+    `trang_thai`,
+    `ma_giao_vien`,
+    `ma_khoa_hoc`,
+    `ma_mon_hoc`
+  )
+VALUES
+  (
+    24,
+    '2023-05-20',
+    'HOC_MOI',
+    '2023-07-31',
+    '2023-07-31',
+    0,
+    25,
+    'DHKTPM15FTT',
     'DANG_CHO_SINH_VIEN_DANG_KY',
     315067680,
     13,
@@ -5398,6 +5527,78 @@ VALUES
     'BAiicXP3',
     'OUT'
   );
+INSERT INTO
+  `phieu_thu` (
+    `ma_phieu_thu`,
+    `don_vi_thu`,
+    `ghi_chu`,
+    `ngay_thu`,
+    `so_tien`,
+    `trang_thai`,
+    `ma_sinh_vien`,
+    `ma_giao_dich`,
+    `loai_phieu_thu`
+  )
+VALUES
+  (
+    48,
+    'momo_wallet',
+    'Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 200.000 ₫. Số tiến đã thanh toán thành công: 200.000 ₫. Số tiền dư thanh toán còn lại: 200.000 ₫',
+    '2023-05-06',
+    200000,
+    'DA_XU_LY',
+    19524791,
+    'Rj3lYstT',
+    'IN'
+  );
+INSERT INTO
+  `phieu_thu` (
+    `ma_phieu_thu`,
+    `don_vi_thu`,
+    `ghi_chu`,
+    `ngay_thu`,
+    `so_tien`,
+    `trang_thai`,
+    `ma_sinh_vien`,
+    `ma_giao_dich`,
+    `loai_phieu_thu`
+  )
+VALUES
+  (
+    50,
+    'STUDENT - WALLET',
+    'Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 1.700.000 ₫. Số tiến đã thanh toán thành công: 1.700.000 ₫. Số tiền dư thanh toán còn lại: 300.000 ₫',
+    '2023-05-06',
+    1700000,
+    'DA_XU_LY',
+    19524791,
+    'nWSGOnXU',
+    'OUT'
+  );
+INSERT INTO
+  `phieu_thu` (
+    `ma_phieu_thu`,
+    `don_vi_thu`,
+    `ghi_chu`,
+    `ngay_thu`,
+    `so_tien`,
+    `trang_thai`,
+    `ma_sinh_vien`,
+    `ma_giao_dich`,
+    `loai_phieu_thu`
+  )
+VALUES
+  (
+    51,
+    'momo_wallet',
+    'Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 5.000.000 ₫. Số tiến đã thanh toán thành công: 5.000.000 ₫. Số tiền dư thanh toán còn lại: 5.300.000 ₫',
+    '2023-05-06',
+    5000000,
+    'DA_XU_LY',
+    19524791,
+    'gWVVl5ew',
+    'IN'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: role
@@ -6200,6 +6401,26 @@ VALUES
     23,
     19524792,
     16,
+    NULL
+  );
+INSERT INTO
+  `sinh_vien_lop_hoc_phan` (
+    `id`,
+    `da_thu_hoc_phi`,
+    `ngay_dang_ky`,
+    `ma_lop_hoc_phan`,
+    `ma_sinh_vien`,
+    `ma_thoi_khoa_bieu`,
+    `ma_thoi_khoa_bieu_con`
+  )
+VALUES
+  (
+    66,
+    b'1',
+    '2023-05-06',
+    23,
+    19524791,
+    17,
     NULL
   );
 
@@ -7303,6 +7524,30 @@ VALUES
     19524791,
     '',
     '2023-05-03 11:18:13'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
+    'bM4mFlA0',
+    0,
+    '2023-05-06 10:19:01',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'bM4mFlA0',
+    '2023-05-06 10:09:01'
   );
 INSERT INTO
   `thanh_toan_giao_dich` (
@@ -8446,6 +8691,30 @@ INSERT INTO
   )
 VALUES
   (
+    'gWVVl5ew',
+    5000000,
+    '2023-05-06 12:36:03',
+    'Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 5.000.000 ₫. Số tiến đã thanh toán thành công: 5.000.000 ₫. Số tiền dư thanh toán còn lại: 5.300.000 ₫',
+    b'1',
+    'Array',
+    19524791,
+    '{\"partnerCode\":\"MOMOBKUN20180529\",\"orderId\":\"1683350764\",\"signature\":\"f46830e08a9c25543aff23dafd345360b3de0d2b704bb056b0e09f04f85ef152\",\"requestId\":\"1683350764\",\"lang\":\"vi\"}',
+    '2023-05-06 12:26:03'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
     'hCwiZqaZ',
     0,
     '2023-05-03 16:59:35',
@@ -8830,6 +9099,30 @@ INSERT INTO
   )
 VALUES
   (
+    'Jfo6kmIq',
+    0,
+    '2023-05-06 11:20:49',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'Jfo6kmIq',
+    '2023-05-06 11:10:49'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
     'jhukeoSA',
     50000,
     '2023-05-04 08:57:46',
@@ -9079,6 +9372,30 @@ VALUES
     19524791,
     '',
     '2023-05-03 11:18:13'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
+    'l7f3bF5D',
+    0,
+    '2023-05-06 11:22:45',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'l7f3bF5D',
+    '2023-05-06 11:12:45'
   );
 INSERT INTO
   `thanh_toan_giao_dich` (
@@ -9502,6 +9819,30 @@ INSERT INTO
   )
 VALUES
   (
+    'mlQAjrbY',
+    0,
+    '2023-05-06 11:18:42',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'mlQAjrbY',
+    '2023-05-06 11:08:42'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
     'myI8jhT2',
     50000,
     '2023-05-03 16:18:34',
@@ -9670,6 +10011,30 @@ INSERT INTO
   )
 VALUES
   (
+    'nmG9dcQP',
+    0,
+    '2023-05-06 11:32:01',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'nmG9dcQP',
+    '2023-05-06 11:22:01'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
     'NogsSxBU',
     1700000,
     '2023-05-04 11:59:31',
@@ -9727,6 +10092,30 @@ VALUES
     19524791,
     'nTyAzDYU',
     '2023-05-03 21:44:45'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
+    'nWSGOnXU',
+    1700000,
+    '2023-05-06 12:33:28',
+    'Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 1.700.000 ₫. Số tiến đã thanh toán thành công: 1.700.000 ₫. Số tiền dư thanh toán còn lại: 300.000 ₫',
+    b'1',
+    '67',
+    19524791,
+    'nWSGOnXU',
+    '2023-05-06 12:23:28'
   );
 INSERT INTO
   `thanh_toan_giao_dich` (
@@ -10174,6 +10563,30 @@ INSERT INTO
   )
 VALUES
   (
+    'Rj3lYstT',
+    200000,
+    '2023-05-06 11:33:12',
+    'Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 200.000 ₫. Số tiến đã thanh toán thành công: 200.000 ₫. Số tiền dư thanh toán còn lại: 200.000 ₫',
+    b'1',
+    'Array',
+    19524791,
+    '{\"partnerCode\":\"MOMOBKUN20180529\",\"orderId\":\"1683346993\",\"signature\":\"f92bd0331e4f3d64903cf1a56d13d1afdb1d0af47762abcb5739841f61fcae67\",\"requestId\":\"1683346993\",\"lang\":\"vi\"}',
+    '2023-05-06 11:23:12'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
     'rKP2uTBC',
     50000,
     '2023-05-03 15:40:59',
@@ -10183,6 +10596,30 @@ VALUES
     19524791,
     'rKP2uTBC',
     '2023-05-03 15:40:59'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
+    'rlSbg4bl',
+    0,
+    '2023-05-06 10:56:36',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'PAYID-MRK43IA1RS152188M452934A',
+    '2023-05-06 10:46:36'
   );
 INSERT INTO
   `thanh_toan_giao_dich` (
@@ -10798,6 +11235,30 @@ INSERT INTO
   )
 VALUES
   (
+    'w4d0SGVs',
+    0,
+    '2023-05-06 10:58:12',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'w4d0SGVs',
+    '2023-05-06 10:48:12'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
     'W8pYKGo3',
     50000,
     '2023-05-04 08:58:15',
@@ -10903,6 +11364,30 @@ VALUES
     19524791,
     '',
     '2023-05-03 11:18:13'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
+    'x9jV3JdY',
+    0,
+    '2023-05-06 11:12:35',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'x9jV3JdY',
+    '2023-05-06 11:02:35'
   );
 INSERT INTO
   `thanh_toan_giao_dich` (
@@ -11167,6 +11652,30 @@ VALUES
     19524791,
     'yt4vUIt9',
     '2023-05-03 22:21:34'
+  );
+INSERT INTO
+  `thanh_toan_giao_dich` (
+    `ma_giao_dich`,
+    `balance`,
+    `expired_time`,
+    `ghi_chu`,
+    `status`,
+    `un_debt_ids`,
+    `ma_sinh_vien`,
+    `maipn`,
+    `created_time`
+  )
+VALUES
+  (
+    'YtmFG9kj',
+    0,
+    '2023-05-06 11:01:54',
+    '',
+    b'0',
+    'Array',
+    19524791,
+    'YtmFG9kj',
+    '2023-05-06 10:51:54'
   );
 INSERT INTO
   `thanh_toan_giao_dich` (
@@ -11756,7 +12265,7 @@ VALUES
     'T3',
     'T1',
     23,
-    0,
+    2,
     315067680
   );
 
@@ -12301,26 +12810,6 @@ VALUES
     'Giao dịch diện tử',
     19524791
   );
-INSERT INTO
-  `thong_bao` (
-    `id`,
-    `create_at`,
-    `is_read`,
-    `linking`,
-    `message`,
-    `title`,
-    `ma_sinh_vien`
-  )
-VALUES
-  (
-    14,
-    '2023-05-04 13:07:54',
-    b'0',
-    'https://erukalearn.ddns.net',
-    'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 1.700.000 ₫. Số tiến đã thanh toán thành công: 1.700.000 ₫. Số tiền dư thanh toán còn lại: 0 ₫ ',
-    'Giao dịch diện tử',
-    19524791
-  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: thong_bao_khoa
@@ -12368,11 +12857,11 @@ INSERT INTO
   )
 VALUES
   (
-    3,
+    4,
     '2023-05-05',
-    'Đã mở LHP cho HK3 2022 - 2023. Các em hãy nhanh tay đăng ký đi nhé!',
-    'Mở lớp học phần 2023',
-    2
+    'Đã mở lớp học phần hè Các em mau đăng ký',
+    'Mở lớp học phần hè',
+    1
   );
 
 # ------------------------------------------------------------
@@ -12384,7 +12873,7 @@ INSERT INTO
 VALUES
   (
     1,
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdjE5NTI0NzkxIiwiZXhwIjoxNjgzMzU0MzYzLCJpYXQiOjE2ODMzMzYzNjN9.V4_LKBkDpHDjGKlJJujo2xP_sdPmWqcD2pqvAG0GPLV_WXesFE3TTra7-ShGthai-gQwnoQGmUuopVtnvdXzGA',
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdjE5NTI0NzkxIiwiZXhwIjoxNjgzNDQ2MDc3LCJpYXQiOjE2ODM0MjgwNzd9.0H0E3cOAEQ31d3aw1_jSjHM4ulgBJixcWw3Dakt6ITVDF1lLbAJihcyT7zaxVaRiqQ84A-z3Pv9s7NEvA0dBUg',
     '2023-03-05 14:46:52',
     4
   );
@@ -12393,7 +12882,7 @@ INSERT INTO
 VALUES
   (
     2,
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndjMxNTA2NzY4MCIsImV4cCI6MTY4MzE5OTA2MywiaWF0IjoxNjgzMTgxMDYzfQ.iDqrmL4Dk3EbX4A9DXjTw_48nX7broOUHromqg2GQq1PvlBojnf6KbW5TPVWXSoDBimoz0kDgaBDtTEZZ2J7lw',
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndjMxNTA2NzY4MCIsImV4cCI6MTY4MzUzNTYzMiwiaWF0IjoxNjgzNTE3NjMyfQ.v-jNFnZrLEUnGgDUutIMqOOnIzsS4vzlmnUnfWz4Uf5POKfKEqfR1UQfFMYrn0vPfMVZYuCkO5oimLtBGfpcaw',
     '2023-02-04 20:15:46',
     1
   );
@@ -12402,7 +12891,7 @@ INSERT INTO
 VALUES
   (
     3,
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJudjIxMDUyMDAyIiwiZXhwIjoxNjgzMzU0ODE4LCJpYXQiOjE2ODMzMzY4MTh9.6QdWmiMriQapENSWQzkkbw0zLCxxZcW-ejNUSSRzdpr8mob7p7-w2tpfTXAeoE15optTCt-ay6gUP31UF2xjxw',
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJudjIxMDUyMDAyIiwiZXhwIjoxNjgzNTM3Nzk1LCJpYXQiOjE2ODM1MTk3OTV9.cDPlalmq2gKDhg3qD7qcBo1ko5Nw0Yi_bcmP3wtYwwhPKSCbTND7AOnwSP8glYTF1rSAuwa3ZuZDvPCSY2UREQ',
     '2023-02-05 01:08:03',
     2
   );
@@ -12458,7 +12947,7 @@ INSERT INTO
 VALUES
   (
     4,
-    '$2a$10$EPjLUCwWFx2ZpwYiDbtVn./sW0iseYNlLpk2wb/vgkWolgjDs3FqO',
+    '$2a$10$hAF2lsC06CK3MRaSgrEXdOAAL7/44yrLqQw4w3R4J3PrhiEjSd2J2',
     'sv19524791'
   );
 INSERT INTO

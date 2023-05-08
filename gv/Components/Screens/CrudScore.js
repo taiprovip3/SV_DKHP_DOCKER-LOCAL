@@ -12,7 +12,7 @@ const CrudScore = ({ navigation }) => {
     React.useEffect(() => {
         const getScores = async () => {
             const javaIp = await publicIP();
-            const response = await axios.get("http://"+ javaIp +":8080/api/score/getScores", {headers: {"Authorization": token}});
+            const response = await axios.get("http://erukalearn.me:8080/api/score/getScores", {headers: {"Authorization": token}});
             if(response.data)
                 setScores(response.data);
         }

@@ -23,7 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 
 const Homepage = ({ navigation }) => {
-  console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
+  console.log('LOCAL_JAVA_API_URL=', LOCAL_JAVA_API_URL);
   
   const { token, setToken, currentUser, setCurrentUser } = React.useContext(AuthContext);
   const { width, height } = useWindowDimensions();

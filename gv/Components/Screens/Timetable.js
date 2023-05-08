@@ -69,7 +69,7 @@ const Timetable = ({ navigation }) => {
     //         console.log('isConnected=',isConnected);
     //         if(isConnected) {
     //             const javaIp = await publicIP();
-    //             const response = await axios.get("http://"+ javaIp +":8080/api/time_table/getTeacherTimeTableByDay/"+ currentUser.maGiaoVien + "/" + formatDate(selectedNow), {headers: {"Authorization": token}});
+    //             const response = await axios.get("http://erukalearn.me:8080/api/time_table/getTeacherTimeTableByDay/"+ currentUser.maGiaoVien + "/" + formatDate(selectedNow), {headers: {"Authorization": token}});
     //             if(response.data) {
     //                 setTKBsInSelected(response.data);
     //             }
@@ -87,7 +87,7 @@ const Timetable = ({ navigation }) => {
             // Gọi render tkb dưới local
             console.log('Connection was good, let"s call!');
             const javaIp = await publicIP();
-            const response = await axios.get("http://"+ javaIp +":8080/api/time_table/getTeacherTimeTableByDay/"+ currentUser.maGiaoVien + "/" + formatDate(theDate), {headers: {"Authorization": token}});
+            const response = await axios.get("http://erukalearn.me:8080/api/time_table/getTeacherTimeTableByDay/"+ currentUser.maGiaoVien + "/" + formatDate(theDate), {headers: {"Authorization": token}});
             if(response.data) {
                 setTKBsInSelected(response.data);
             }
@@ -226,7 +226,7 @@ const Timetable = ({ navigation }) => {
             
             const javaIp = await publicIP();
             const thoiKhoaBieu2DTO = {currentDate: cDate, datePrev1: d1, datePrev2: d2, datePrev3: d3, datePrev4: d4, datePrev5: d5, datePrev6: d6, filterLoaiLich: 'lich_all', maSinhVien: currentUser.maSinhVien};
-            const response = await axios.post("http://"+ javaIp +":8080/api/time_table/getTimeTablesBy7Days", thoiKhoaBieu2DTO, {headers: {"Authorization": token}});
+            const response = await axios.post("http://erukalearn.me:8080/api/time_table/getTimeTablesBy7Days", thoiKhoaBieu2DTO, {headers: {"Authorization": token}});
             if(response.data) {
                 insertDataSQLite(response.data);
             }

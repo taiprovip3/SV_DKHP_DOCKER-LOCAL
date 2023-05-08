@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { NativeBaseProvider, Select, ScrollView, Box, CheckIcon, Radio, HStack, Text, Center, Divider, Modal, Button, Pressable, Checkbox, useToast } from 'native-base';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { Entypo } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ import { Alert } from 'react-native';
 import { LOCAL_JAVA_API_URL } from '@env';
 
 const DkhpPage = () => {
-  console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
+  console.log('LOCAL_JAVA_API_URL=', LOCAL_JAVA_API_URL);
 
   const { token, currentUser } = React.useContext(AuthContext);
   const [hocKySelected, setHocKySelected] = React.useState(0); //maKhoaHoc nè

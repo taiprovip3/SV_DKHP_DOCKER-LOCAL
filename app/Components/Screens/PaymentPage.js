@@ -7,10 +7,9 @@ import { LOCAL_EJS_API_URL, LOCAL_PHP_API_URL } from '@env';
 
 
 const PaymentPage = ({ navigation, route }) => {
-  console.log('LOCAL_EJS_API_URL=',LOCAL_EJS_API_URL + LOCAL_PHP_API_URL);
+  console.log('LOCAL_EJS_API_URL=', LOCAL_EJS_API_URL + LOCAL_PHP_API_URL);
 
   const { debtData } = route.params;
-  console.log("debtData=",debtData);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   let url = "";

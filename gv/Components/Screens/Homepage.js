@@ -84,7 +84,7 @@ const Homepage = ({ navigation }) => {
       newPassword: reNewPassword,
     }
     try {
-      const response = await axios.post(LOCAL_JAVA_API_URL+"/api/change-password", ChangePasswordRequestDTO, {headers: {"Authorization": token}});
+      const response = await axios.post("http://erukalearn.me:8080/api/change-password", ChangePasswordRequestDTO, {headers: {"Authorization": token}});
       if(response.data) {
         Toast.show({
           type: 'success',

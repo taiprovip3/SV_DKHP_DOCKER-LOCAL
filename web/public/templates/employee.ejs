@@ -25,35 +25,126 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <!-- Modal body -->
-            <div class="modal-body position-relative" style="max-height: 20vh;">
+            <div class="modal-body position-relative p-4" style="max-height: 50vh;">
                 <div class="position-absolute top-0 end-0">
                     <button type="button" data-bs-dismiss="modal" class="bg-primary text-white px-2 border-0"><i class="fas fa-times"></i></button>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 border-start border-end">
-                        <ul class="nav flex-column sticky-top">
-                            <li class="nav-item border-bottom">
-                                <button id="backup-btn" onclick="highlight('backup-btn')" class="settingMenuBtn teal-button">Backup data <i class="fas fa-database"></i></button>
-                            </li>
-                            <li class="nav-item border-bottom">
-                                <button id="changepassword-btn" onclick="highlight('changepassword-btn')" class="settingMenuBtn teal-button">Đổi mật khẩu <i class="fas fa-unlock-alt"></i></button>
-                            </li>
-                            <li class="nav-item border-bottom">
-                                <button id="theme-btn" onclick="highlight('theme-btn')" class="settingMenuBtn teal-button">Đổi theme <i class="fas fa-desktop"></i></button>
-                            </li>
-                            <li class="nav-item border-bottom">
-                                <button id="help-btn" onclick="highlight('help-btn')" class="settingMenuBtn teal-button">Trợ giúp <i class="fas fa-question"></i></button>
-                            </li>
-                        </ul>
+                <div id="accordion">
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+                                Thông tin sản phẩm
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                            <div class="card-body">
+                                <ul>
+                                    <li>Product version: v1.0</li>
+                                    <li>Latest release: 9:18 PM, 22/04/2023</li>
+                                    <li>Nocopyright: Industrial of University Of Ho Chi Minh (IUH)</li>
+                                    <li>Supports: browser.*</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-6" id="settingModalColContent">
-                        <div class="small">
-                            <ul>
-                                <li>Product version: v1.0</li>
-                                <li>Release: 9:18 PM, 22/04/2023</li>
-                                <li>Nocopyright: Industrial of University Of Ho Chi Minh (IUH)</li>
-                                <li>Supports: browser.*</li>
-                            </ul>
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
+                                Backup dữ liệu
+                            </a>
+                        </div>
+                        <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                            <div class="card-body" id="collapseTwoContent">
+                                <!-- embeded ajax data here.. -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
+                                Đổi mật khẩu
+                            </a>
+                        </div>
+                        <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                            <div class="card-body">
+                                <form action="./employee-changepassword" method="post" id="changePasswordForm">
+                                    <div class="py-1">
+                                        <label for="oldPasswrod" class="form-label">Mật khẩu cũ: <span class="text-danger">(*)</span></label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control password-input" placeholder="Nhập mật khẩu cũ" id="oldPassword" name="oldPassword" minlength="8" maxlength="255" required />
+                                            <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="py-1">
+                                        <label for="newPasswrod" class="form-label">Mật khẩu mới: <span class="text-danger">(*)</span></label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control password-input" placeholder="Nhập mật khẩu mới" id="newPassword" name="newPassword" minlength="8" maxlength="255" required />
+                                            <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="py-1">
+                                        <label for="reNewPasswrod" class="form-label">Mật khẩu mới: <span class="text-danger">(*)</span></label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control password-input" placeholder="Nhập lại mật khẩu mới" id="reNewPasswrod" name="reNewPassword" minlength="8" maxlength="255" required />
+                                            <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end py-2">
+                                        <button type="button" onclick="handleChangePassword(this);" class="bg-primary text-white p-2 px-3 border-0">Lưu</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFour">
+                                Thay đổi theme
+                            </a>
+                        </div>
+                        <div id="collapseFour" class="collapse" data-bs-parent="#accordion">
+                            <div class="card-body">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="darkMode" name="themeType" value="DARK" onchange="onThemeChange(this);">
+                                    <label class="form-check-label" for="darkMode">Dark mode <i class="text-success fas fa-tablet-alt"></i></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseFour">
+                                Trợ giúp
+                            </a>
+                        </div>
+                        <div id="collapseFour" class="collapse" data-bs-parent="#accordion">
+                            <div class="card-body">
+                                <div>
+                                    <h6>1. Giới thiệu <i class="text-success fas fa-question-circle"></i></h6>
+                                    <p>Trang quản lý sinh viên (ErukaLearn) dành cho nhân viên sử dụng tại nhà trường IUH. Nhằm mục địch hỗ trợ, đào tạo và quản lý sinh viên trong nhiều mảng chức năng đang theo học tại nhà trường. Hệ thống cung cấp khả năng quản lý tiện ích nhiều chức năng để giúp nhân viên không còn sử dụng thủ công các tài liệu quản lý mà thay vào đó là công nghệ phần mềm, data, điện tính!</p>
+                                </div>
+                                <div>
+                                    <h6>2. Hệ thống quản lý <i class="text-success fab fa-ubuntu"></i></h6>
+                                    <ul>
+                                        <li>Chức năng quản lý Sinh Viên</li>
+                                        <li>Chức năng quản lý Lớp học</li>
+                                        <li>Chức năng quản lý Lớp học phần</li>
+                                        <li>Chức năng quản lý Công nợ</li>
+                                        <li>...</li>
+                                    </ul>
+                                    <span>Website giúp nhà quản lý có thể lưu trữ, quản lý các đối tượng tồn tại trong hệ thống giáo dục hiện tại của IUH, giúp công việc vận hành suốn sẽ hơn.</span>
+                                </div>
+                                <div>
+                                    <h6>2. Auto backup data <i class="text-success fas fa-database"></i></h6>
+                                    <span>Hệ thống cho phép tự động backup data bằng 2 hình thức</span>
+                                    <ul>
+                                        <li>Thủ công</li>
+                                            <i>Thông báo nhắc nhở định kì khi nhà quản lý khởi động.</i>
+                                        <li>Tự động</li>
+                                            <i>Tự sao lưu system các đối tượng thông qua cài đặt</i>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -190,24 +281,6 @@
         </div>
     </div>
 </div>
-<div class="d-none" id="hide2">
-    <div class="small">
-        <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="darkMode" name="themeType" value="DARK" onchange="onThemeChange(this);">
-            <label class="form-check-label" for="darkMode">Dark mode <i class="text-success fas fa-tablet-alt"></i></label>
-        </div>
-    </div>
-</div>
-<div class="d-none" id="hide3">
-    <div class="small">
-        <ul>
-            <li>Product version: v1.0</li>
-            <li>Release: 9:18 PM, 22/04/2023</li>
-            <li>Nocopyright: Industrial of University Of Ho Chi Minh (IUH)</li>
-            <li>Supports: browser.*</li>
-        </ul>
-    </div>
-</div>
 <div class="d-none" id="hide4">
     <div class="small">
         <div class="form-check form-switch">
@@ -225,64 +298,8 @@
         </div>
     </div>
 </div>
-<div class="d-none" id="hide5">
-    <div class="small">
-        <div>
-            <h6>1. Giới thiệu <i class="text-success fas fa-question-circle"></i></h6>
-            <p>Trang quản lý sinh viên (ErukaLearn) dành cho nhân viên sử dụng tại nhà trường IUH. Nhằm mục địch hỗ trợ, đào tạo và quản lý sinh viên trong nhiều mảng chức năng đang theo học tại nhà trường. Hệ thống cung cấp khả năng quản lý tiện ích nhiều chức năng để giúp nhân viên không còn sử dụng thủ công các tài liệu quản lý mà thay vào đó là công nghệ phần mềm, data, điện tính!</p>
-        </div>
-        <div>
-            <h6>2. Hệ thống quản lý <i class="text-success fab fa-ubuntu"></i></h6>
-            <ul>
-                <li>Chức năng quản lý Sinh Viên</li>
-                <li>Chức năng quản lý Lớp học</li>
-                <li>Chức năng quản lý Lớp học phần</li>
-                <li>Chức năng quản lý Công nợ</li>
-                <li>...</li>
-            </ul>
-            <span>Website giúp nhà quản lý có thể lưu trữ, quản lý các đối tượng tồn tại trong hệ thống giáo dục hiện tại của IUH, giúp công việc vận hành suốn sẽ hơn.</span>
-        </div>
-        <div>
-            <h6>2. Auto backup data <i class="text-success fas fa-database"></i></h6>
-            <span>Hệ thống cho phép tự động backup data bằng 2 hình thức</span>
-            <ul>
-                <li>Thủ công</li>
-                    <i>Thông báo nhắc nhở định kì khi nhà quản lý khởi động.</i>
-                <li>Tự động</li>
-                    <i>Tự sao lưu system các đối tượng thông qua cài đặt</i>
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="d-none" id="hide6">
-    <form action="./employee-changepassword" method="post" id="changePasswordForm">
-        <div class="py-1">
-            <label for="oldPasswrod" class="form-label">Mật khẩu cũ: <span class="text-danger">(*)</span></label>
-            <div class="input-group">
-                <input type="password" class="form-control password-input" placeholder="Nhập mật khẩu cũ" id="oldPassword" name="oldPassword" minlength="8" maxlength="255" required />
-                <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
-            </div>
-        </div>
-        <div class="py-1">
-            <label for="newPasswrod" class="form-label">Mật khẩu mới: <span class="text-danger">(*)</span></label>
-            <div class="input-group">
-                <input type="password" class="form-control password-input" placeholder="Nhập mật khẩu mới" id="newPassword" name="newPassword" minlength="8" maxlength="255" required />
-                <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
-            </div>
-        </div>
-        <div class="py-1">
-            <label for="reNewPasswrod" class="form-label">Mật khẩu mới: <span class="text-danger">(*)</span></label>
-            <div class="input-group">
-                <input type="password" class="form-control password-input" placeholder="Nhập lại mật khẩu mới" id="reNewPasswrod" name="reNewPassword" minlength="8" maxlength="255" required />
-                <span class="input-group-text"><i class="fas fa-eye-slash crs" onmouseenter="showPassword();" onmouseleave="hidePassword();"></i></span>
-            </div>
-        </div>
-        <div class="text-end py-2">
-            <button type="button" onclick="handleChangePassword(this);" class="bg-primary text-white p-2 px-3 border-0">Lưu</button>
-        </div>
-    </form>
-</div>
 <script>
+    // initial variables..
     const pathNodejs = '<%= process.env.EJS_API_URL %>';
     let selectedBackupFileType = 'sql';
     function onChangeSelectedBackupFileType(event) {
@@ -290,43 +307,10 @@
         selectedBackupFileType = selectedValue;
     }
     toastr.options.onclick = function() { 
-        $("#settingModal").modal('toggle');s
-    }
-    function handleChangePassword(buttonObject) {
-        const oldPassword = $("input[name='oldPassword'").val().replace(/\s/g, "");
-        const newPassword = $("input[name='newPassword'").val().replace(/\s/g, "");
-        const reNewPassword = $("input[name='reNewPassword'").val().replace(/\s/g, "");
-        if(newPassword !== reNewPassword) {
-            $("input[name='newPassword']").val("");
-            $("input[name='reNewPassword']").val("");
-            toastr.error('Mật khẩu mới không trùng khớp với nhau', 'Sai mật khẩu mới');
-            return;
-        }
-        $.ajax({
-            type: "POST",
-            url: pathNodejs+"/employee-changepassword",
-            data: JSON.stringify({oldPassword, newPassword}),
-            contentType: 'application/json',
-            success: (data) => {
-                $(':input','#changePasswordForm')
-                .not(':button, :submit, :reset, :hidden')
-                .val('')
-                .prop('checked', false)
-                .prop('selected', false);
-                $("#ChangePasswordModal").modal('toggle');
-                toastr.success('Mật khẩu của bạn đã được cập nhật!', 'Đổi thành công');
-            }, error: (error) => {
-                $("input[name='oldPassword']").val("");
-                toastr.error('Mật khẩu cũ không chính xác!', 'Sai mật khẩu cũ');
-            }
-        });
+        $("#settingModal").modal('toggle');
     }
 
-
-
-
-
-
+    // inital calls..
     var inputChartData;
     var registerChartData;
     var classifyChartData;
@@ -335,8 +319,10 @@
     renderRegisterChart();
     renderClassifyChart();
 
-
     ringRemindBackup();
+
+    setSliderBackup();
+
     function ringRemindBackup() {
         const remindBackup = getRemindBackupKey();
         if(remindBackup && remindBackup === 'true') {
@@ -380,7 +366,7 @@
                 } else {
                     backupContent = $("#hide4").html(); // 4 là uncheck
                 }
-                $("#settingModalColContent").html(backupContent);
+                $("#collapseTwoContent").html(backupContent);
                 break;
             case "changepassword-btn":
                 const changePasswordContent = $("#hide6").html();
@@ -576,6 +562,45 @@
     }
     function hidePassword() {
         $('.password-input').attr('type', 'password');
+    }
+    function handleChangePassword(buttonObject) {
+        const oldPassword = $("input[name='oldPassword'").val().replace(/\s/g, "");
+        const newPassword = $("input[name='newPassword'").val().replace(/\s/g, "");
+        const reNewPassword = $("input[name='reNewPassword'").val().replace(/\s/g, "");
+        if(newPassword !== reNewPassword) {
+            $("input[name='newPassword']").val("");
+            $("input[name='reNewPassword']").val("");
+            toastr.error('Mật khẩu mới không trùng khớp với nhau', 'Sai mật khẩu mới');
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: pathNodejs+"/employee-changepassword",
+            data: JSON.stringify({oldPassword, newPassword}),
+            contentType: 'application/json',
+            success: (data) => {
+                $(':input','#changePasswordForm')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .prop('checked', false)
+                .prop('selected', false);
+                $("#ChangePasswordModal").modal('toggle');
+                toastr.success('Mật khẩu của bạn đã được cập nhật!', 'Đổi thành công');
+            }, error: (error) => {
+                $("input[name='oldPassword']").val("");
+                toastr.error('Mật khẩu cũ không chính xác!', 'Sai mật khẩu cũ');
+            }
+        });
+    }
+    function setSliderBackup() {
+        const remindBackup = getRemindBackupKey();
+        let backupContent = null;
+        if(remindBackup === 'false' || !remindBackup) {
+            backupContent = $("#hide1").html(); // 1 là check
+        } else {
+            backupContent = $("#hide4").html(); // 4 là uncheck
+        }
+        $("#collapseTwoContent").html(backupContent);
     }
 </script>
 </body>

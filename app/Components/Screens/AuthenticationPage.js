@@ -10,7 +10,7 @@ import NetInfo from "@react-native-community/netinfo";
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const AuthenticationPage = ({ navigation }) => {
-  console.log('LOCAL_JAVA_API_URL=',LOCAL_JAVA_API_URL);
+  console.log('LOCAL_JAVA_API_URL=', LOCAL_JAVA_API_URL);
 
   const { setToken, currentUser, setCurrentUser } = React.useContext(AuthContext);
   const [showModal, setShowModal] = React.useState(false);

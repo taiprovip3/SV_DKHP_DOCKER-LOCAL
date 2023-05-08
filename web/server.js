@@ -917,7 +917,7 @@ app.get("/student/payment/callback", async (req, res) => {
                     const thongBaoDTO = {
                         title: 'Giao dịch diện tử',
                         message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                        linking: 'https://erukalearn.ddns.net',
+                        linking: 'https://erukalearn.me',
                         isRead: false,
                         studentId: maSinhVien,
                     }
@@ -1026,7 +1026,7 @@ app.get("/student/recharge/callback", async (req, res) => {
                     const thongBaoDTO = {
                         title: 'Giao dịch diện tử',
                         message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                        linking: 'https://erukalearn.ddns.net',
+                        linking: 'https://erukalearn.me',
                         isRead: false,
                         studentId: maSinhVien,
                     }
@@ -1142,7 +1142,7 @@ app.post("/student/payment/resolvePaymentStudentWallet", async (req, res) => {
             const thongBaoDTO = {
                 title: 'Giao dịch diện tử',
                 message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                linking: 'https://erukalearn.ddns.net',
+                linking: 'https://erukalearn.me',
                 isRead: false,
                 studentId: studentId,
             }
@@ -1287,7 +1287,7 @@ app.put("/student/payment/recheckPayment/:paymentId", async (req, res) => {
                         const thongBaoDTO = {
                             title: 'Giao dịch diện tử',
                             message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                            linking: 'https://erukalearn.ddns.net',
+                            linking: 'https://erukalearn.me',
                             isRead: false,
                             studentId: maSinhVien,
                         }
@@ -1399,7 +1399,7 @@ app.put("/student/payment/recheckPayment/:paymentId", async (req, res) => {
                             const thongBaoDTO = {
                                 title: 'Giao dịch diện tử',
                                 message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                                linking: 'https://erukalearn.ddns.net',
+                                linking: 'https://erukalearn.me',
                                 isRead: false,
                                 studentId: maSinhVien,
                             }
@@ -1578,7 +1578,7 @@ app.put("/student/wallet/recheckPayment/:paymentId", async (req, res) => {
                         const thongBaoDTO = {
                             title: 'Giao dịch diện tử',
                             message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                            linking: 'https://erukalearn.ddns.net',
+                            linking: 'https://erukalearn.me',
                             isRead: false,
                             studentId: maSinhVien,
                         }
@@ -1661,7 +1661,7 @@ app.put("/student/wallet/recheckPayment/:paymentId", async (req, res) => {
                             const thongBaoDTO = {
                                 title: 'Giao dịch diện tử',
                                 message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                                linking: 'https://erukalearn.ddns.net',
+                                linking: 'https://erukalearn.me',
                                 isRead: false,
                                 studentId: maSinhVien,
                             }
@@ -1875,7 +1875,7 @@ app.get("/paypal/payment/success", async (req, res) => {// HÀm này vô dụng 
                                 const thongBaoDTO = {
                                     title: 'Giao dịch diện tử',
                                     message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                                    linking: 'https://erukalearn.ddns.net',
+                                    linking: 'https://erukalearn.me',
                                     isRead: false,
                                     studentId: maSinhVien,
                                 }
@@ -2081,7 +2081,7 @@ app.get("/paypal/topup/success", async (req, res) => {// Xác thực thanh toán
                                 const thongBaoDTO = {
                                     title: 'Giao dịch diện tử',
                                     message: `Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                                    linking: 'https://erukalearn.ddns.net',
+                                    linking: 'https://erukalearn.me',
                                     isRead: false,
                                     studentId: maSinhVien,
                                 }
@@ -2229,7 +2229,7 @@ app.get("/paypal/topup/cancel", async (req, res) => {
                         const thongBaoDTO = {
                             title: 'Giao dịch diện tử',
                             message: `Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: ${ghiChu} `,
-                            linking: 'https://erukalearn.ddns.net',
+                            linking: 'https://erukalearn.me',
                             isRead: false,
                             studentId: maSinhVien,
                         }
@@ -2270,13 +2270,13 @@ app.get("/paypal/topup/cancel", async (req, res) => {
 //     cert: fs.readFileSync('./ssl/certbot/fullchain.pem'),
 // };
 const options = {
-    key: fs.readFileSync('./ssl/zerossl_domain_erukalearn/private.key'),
-    cert: fs.readFileSync('./ssl/zerossl_domain_erukalearn/certificate.crt'),
+    key: fs.readFileSync('./ssl/zerossl_erukalearn.me/private.key'),
+    cert: fs.readFileSync('./ssl/zerossl_erukalearn.me/certificate.crt'),
 };
 const server = https.createServer(options, app);
-// const filePath = path.join(__dirname, 'E00D77F973FB6974C6ACC2B78EA9CC4F.txt');
+// const filePath = path.join(__dirname, '706407F8110B764CF249AF0D8261194B.txt');
 // console.log('filePath=',filePath);
-// app.get('/.well-known/pki-validation/E00D77F973FB6974C6ACC2B78EA9CC4F.txt', (req, res) => {
+// app.get('/.well-known/pki-validation/706407F8110B764CF249AF0D8261194B.txt', (req, res) => {
 //     return res.sendFile(filePath);
 // });
 server.listen(process.env.APP_PORT, () => {

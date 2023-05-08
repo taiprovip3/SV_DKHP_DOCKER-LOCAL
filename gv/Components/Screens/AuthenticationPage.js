@@ -36,7 +36,7 @@ const AuthenticationPage = ({ navigation }) => {
       const maGiaoVien = await AsyncStorage.getItem('maGiaoVien');
       if (teacherToken && maGiaoVien) {
         const javaIp = await publicIP();
-        const response = await axios.get("http://"+ javaIp +":8080/api/teacher/getTeacherById/"+maGiaoVien, {headers: {"Authorization": teacherToken}});
+        const response = await axios.get("http://erukalearn.me:8080/api/teacher/getTeacherById/"+maGiaoVien, {headers: {"Authorization": teacherToken}});
         if(response.data) {//Nếu có dataStudent trả về là token còn dùng dcs
           setToken(teacherToken);
           setCurrentUser(response.data);
@@ -78,11 +78,11 @@ const AuthenticationPage = ({ navigation }) => {
         if(maGiaoVien != "" && password !== "") {
           const userDTO = {username: "gv"+maGiaoVien, password};
           const javaIp = await publicIP();
-          const response = await axios.post("http://"+ javaIp +":8080/api/login", userDTO);
+          const response = await axios.post("http://erukalearn.me:8080/api/login", userDTO);
           if(response.data) {
               const token = response.data;
               setToken(token);
-              const response2 = await axios.get("http://"+ javaIp +":8080/api/teacher/getTeacherById/"+maGiaoVien, {headers: {"Authorization": token}});
+              const response2 = await axios.get("http://erukalearn.me:8080/api/teacher/getTeacherById/"+maGiaoVien, {headers: {"Authorization": token}});
               if(response2.data) {
                 const teacherData = response2.data;
                 setCurrentUser(teacherData);
