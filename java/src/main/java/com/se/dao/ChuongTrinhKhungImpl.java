@@ -40,11 +40,11 @@ public class ChuongTrinhKhungImpl implements ChuongTrinhKhungService {
 	}
 
 	@Override
-	public int getSoTinChiDoneByStudentId(long id) {
+	public int getSoTinChiDoneByStudentId(long studentId) {
 		try {
-			return chuongTrinhKhungRepository.getSoTinChiDoneByStudentId(id);
+			return chuongTrinhKhungRepository.getSoTinChiDoneByStudentId(studentId);
 		} catch (Exception e) {
-			System.out.println("getSoTinChiDoneByStudentId Exception id: " + id);
+			System.out.println("getSoTinChiDoneByStudentId Exception id: " + studentId);
 			return 0;
 		}
 	}

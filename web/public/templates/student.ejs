@@ -42,6 +42,16 @@
                 return Number(namBatDau) + 3;
             return namBatDau;
         }
+        function calDayAgoMessage(createAt) {
+            const d = new Date(createAt);
+            const d2 = new Date();
+            const diff = Math.abs(d2 - d);
+            const one_day=1000*60*60*24;
+            let result = Math.round(diff/one_day);
+            if(result < 10)
+                result = "0" + result;
+            return result;
+        }
     %>
     <div>
         <% if(signal) {
@@ -137,49 +147,46 @@
 <div class="modal" id="GioiThieuModal">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header">
-            <p class="modal-title">Trang sinh viên | ErukaLearn</p>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <!-- Modal body -->
-        <div class="modal-body">
-            <span class="d-block">Chương trình đào tạo sinh viên của trường đại học IUH xây dựng hệ thống website mở dành cho 3 đối tượng như sau và 3 website tương dương:</span>
-            <ul>
-                <li>Nhân viên (Trang nv.el.com)</li>
-                <li>Giảng viên (Trang gv.el.com)</li>
-                <li>Sinh viên (Trang <span class="text-decoration-underline">sv.el.com</span>)</li>
-            </ul>
-            <span class="d-block">
-                Trang sinh viên nhằm giúp đỡ sinh viên trong việc hoàn thành tốt hơn chương trình đào tạo tại trường đại học IUH với các tính năng như: xem lịch học, kết quả học tập, chương trình khung, tra cứu công nợ, tổng hợp biên lai, cập nhật tin tức, thông báo mới nhất từ nhà trường và đặc biệt là tiện ích giúp <span class="teal-color">Đăng ký học phần</span>...vv
-            </span>
-            <span class="d-block">Dưới đây là một vài thuật ngữ/chi tiết nếu bạn là tân sinh viên cần biết đến:</span>
-            <span class="teal-color d-block">1. Học phần</span>
-            <span>Hay còn gọi là môn học. Mỗi môn học được quy định trong chương trình khung tương ứng với khoa, ngành mà sinh viên đã chọn theo học ở trường. Mỗi môn học được đăng ký trong tính năng `Đăng ký học phần` được gọi là một học phần. Mỗi học phần có mã riêng, ví dụ: học phần `Nhập môn tin học` - 10000001</span>
-            <span class="teal-color d-block">2. Tín chỉ</span>
-            <span>Mỗi học phần được đăng ký học bởi sinh viên sẽ có số tín chỉ quy định riêng. Hiểu đơn giản là nếu bạn muốn tăng thanh tiến độ học tập (progress bar) thì bạn phải học & thi môn học phần đó để nhận được điểm tín chỉ. Ví dụ: `Nhập môn tin học` có số tín chỉ quy định là 3 TC. 1 tín chỉ (TC) thì bằng 15 tiết học (Đối với môn học có LT & TH thì tín chỉ tính riêng).</span>
-            <span class="teal-color d-block">3. Tín chỉ</span>
-            <span>Mỗi học phần được đăng ký học bởi sinh viên sẽ có số tín chỉ quy định riêng. Hiểu đơn giản là nếu bạn muốn tăng thanh tiến độ học tập (progress bar) thì bạn phải học & thi môn học phần đó để nhận được điểm tín chỉ. Ví dụ: `Nhập môn tin học` có số tín chỉ quy định là 3 TC. 1 tín chỉ (TC) thì bằng 15 tiết học (Đối với môn học có LT & TH thì tín chỉ tính riêng).</span>
-            <span class="teal-color d-block">4. Tiến độ học tập</span>
-            <span>Progress bar. Là thanh tiến độ ghi nhận số tín chỉ và hiển thị % quãng đường học bạn đã hoàn thành. Sau khi học & thi. Khi một giáo viên của lớp học phần bạn học đánh dấu hoàn tất điểm của từng sinh viên lớp đó thì thanh tiến độ học tập của bạn sẽ được tăng lên (trường hợp bạn pass được chỉ tiêu điểm tổng kết).</span>
-            <span class="teal-color d-block">5. Chương trình khung</span>
-            <span>Mỗi sinh viên thuộc 1 ngành thuộc 1 khoa. Mỗi ngành sẽ có một bộ `Chương trình khung` riêng. Chương trình khung chứa nhiều học kỳ, mỗi học kỳ trong chương trình khung chứa nhiều môn học cần học trong học kỳ đó. Các môn học trong học kỳ có thể có nhiều tín chất nữa xem bên dưới. Tóm lại mỗi sinh viên sẽ có bộ chương trình khung gồm các môn học trong từng học kỳ bắt buộc sinh viên phải đăng ký, học, đóng tiền.</span>
-            <span class="teal-color d-block">6. Đăng ký học phần</span>
-            <span>Là chức năng giúp bạn đăng ký môn học theo lịch, thời gian, lớp học, giảng viên ưa thích theo ý bạn. 1 năm học được chia làm 3 học kỳ. Ví dụ năm 2022, sẽ có 3 học kỳ, HK1 là nữa năm, HK2 là nữa năm, HK3 là học hè. Qua năm 2023 cứ tiếp tục. Mỗi học kỳ sẽ được đội ngũ phòng đào tạo chuyên khoa mở ra trên trang sinh viên đợt đăng ký học phần online thông qua trang này. Thông báo đợt đăng ký mới đến ở trên trang chủ trường học, trang khoa hoặc thông báo đến tin nhắn trang sinh viên. Sinh viên phải lập tức vào tính năng đăng ký học phần và lựa chọn lớp học phần có lịch học ưng ý dựa theo chương trình khung năm học hoặc niên giám quy định các môn dành cho sinh viên khoa đó phải học trong học kỳ đó.</span>
-            <span class="teal-color d-block">7. Đăng ký học phần học nhảy</span>
-            <span>Đăng ký học phần cho phép bạn học vượt (học nhảy) các môn trước học kỳ với điều kiện cho phép đó là môn tự chọn và không có ràng buộc học phần khác. Nên bạn sẽ thường thấy tình trạng lớp học có nhiều anh/chị hoặc các em khác khoá học.</span>
-            <span class="teal-color d-block">8. Học phần ràng buộc</span>
-            <span>Các môn học trong đăng ký học phần được chia làm 2 loại theo chương trình khung của từng sinh viên. Học phần bắt buộc và học phần tự chọn. Học phần bắt buộc là học phần cần thiệt để đào tạo một sinh viên theo đúng tiêu chuẩn của ngành sinh viên chọn và học phần đó bắt buộc sinh viên phải đăng ký trong đăng ký học phần dù học đúng hay trễ hay muộn. Học phần tự chọn cũng là học phần bắt buộc nhưng khác ở điểm có nhiều sự lựa chọn. Ví dụ ở HK1 có 4 môn bắt buộc, và 5 môn tự chọn bắt buộc 1. Nghĩa là trong 5 môn tự chọn có thể lựa chọn 1 trong 5 nhưng bắt buộc phải chọn chứ không thể không chọn. Một vài môn học có yêu cầu học môn trước nhằm mục đích giúp bạn đi đúng tiến độ tránh học nhảy để lũng cũng kiến thức gọi là học phần `tiên quyết`. `Song hành` nghĩa là 2 môn này bắt buộc phải đăng ký học song song trong 1 học kỳ.</span>
-            <span class="teal-color d-block">9. Trễ tiến độ học</span>
-            <span>Rất nhiều tân sinh viên ngơ ngác chưa hiểu các thuật ngữ học phần & đăng ký học phần. Dẫn đến việc học hết năm 1 và bị trễ một vài môn do chưa hiểu đăng ký học phần. Giả dụ trong HK1 2022 mới nhập học bạn phải đăng ký học phần môn `Nhập môn tin học` đã quy định trong chương trình khung mà sinh viên không chịu đăng ký dẫn đến việc bị trễ môn, mà môn học đó lại khó mở lớp thì sẽ rất tệ khiến việc học sẽ ở lại nhiều năm để đợi mở lớp học dồn về sau bị trùng lịch ở môn học ở học kỳ sau dẫn đến việc tốt nghiệp của bạn bị delay!</span>
-            <span class="teal-color d-block">10. Mở lớp học phần</span>
-            <span>Lớp học phần không mở tự động mà được tạo bằng tay do nhân viên nhà trường vì vậy LHP có thể được tạo thêm nếu có giấy tờ ghi đủ danh sách sinh viên muốn học học phần này trong học kỳ này. Việc tìm bạn, tạo form, tạo giấy xin mở lớp là việc của sinh viên. Khoa sẽ nhận danh sách và cảm thấy hợp lệ sẽ mở thêm LHP lên trang sinh viên.</span>
-        </div>
-        <!-- Modal footer -->
-        <div class="modal-footer">
-            <button type="button" class="teal-button" data-bs-dismiss="modal">Đóng</button>
-        </div>
-
+            <div class="modal-header">
+                <p class="modal-title">Trang sinh viên | ErukaLearn</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <span class="d-block">Chương trình đào tạo sinh viên của trường đại học IUH xây dựng hệ thống website mở dành cho 3 đối tượng như sau và 3 website tương dương:</span>
+                <ul>
+                    <li>Nhân viên (Trang nv.el.com)</li>
+                    <li>Giảng viên (Trang gv.el.com)</li>
+                    <li>Sinh viên (Trang <span class="text-decoration-underline">sv.el.com</span>)</li>
+                </ul>
+                <span class="d-block">
+                    Trang sinh viên nhằm giúp đỡ sinh viên trong việc hoàn thành tốt hơn chương trình đào tạo tại trường đại học IUH với các tính năng như: xem lịch học, kết quả học tập, chương trình khung, tra cứu công nợ, tổng hợp biên lai, cập nhật tin tức, thông báo mới nhất từ nhà trường và đặc biệt là tiện ích giúp <span class="teal-color">Đăng ký học phần</span>...vv
+                </span>
+                <span class="d-block">Dưới đây là một vài thuật ngữ/chi tiết nếu bạn là tân sinh viên cần biết đến:</span>
+                <span class="teal-color d-block">1. Học phần</span>
+                <span>Hay còn gọi là môn học. Mỗi môn học được quy định trong chương trình khung tương ứng với khoa, ngành mà sinh viên đã chọn theo học ở trường. Mỗi môn học được đăng ký trong tính năng `Đăng ký học phần` được gọi là một học phần. Mỗi học phần có mã riêng, ví dụ: học phần `Nhập môn tin học` - 10000001</span>
+                <span class="teal-color d-block">2. Tín chỉ</span>
+                <span>Mỗi học phần được đăng ký học bởi sinh viên sẽ có số tín chỉ quy định riêng. Hiểu đơn giản là nếu bạn muốn tăng thanh tiến độ học tập (progress bar) thì bạn phải học & thi môn học phần đó để nhận được điểm tín chỉ. Ví dụ: `Nhập môn tin học` có số tín chỉ quy định là 3 TC. 1 tín chỉ (TC) thì bằng 15 tiết học (Đối với môn học có LT & TH thì tín chỉ tính riêng).</span>
+                <span class="teal-color d-block">3. Tín chỉ</span>
+                <span>Mỗi học phần được đăng ký học bởi sinh viên sẽ có số tín chỉ quy định riêng. Hiểu đơn giản là nếu bạn muốn tăng thanh tiến độ học tập (progress bar) thì bạn phải học & thi môn học phần đó để nhận được điểm tín chỉ. Ví dụ: `Nhập môn tin học` có số tín chỉ quy định là 3 TC. 1 tín chỉ (TC) thì bằng 15 tiết học (Đối với môn học có LT & TH thì tín chỉ tính riêng).</span>
+                <span class="teal-color d-block">4. Tiến độ học tập</span>
+                <span>Progress bar. Là thanh tiến độ ghi nhận số tín chỉ và hiển thị % quãng đường học bạn đã hoàn thành. Sau khi học & thi. Khi một giáo viên của lớp học phần bạn học đánh dấu hoàn tất điểm của từng sinh viên lớp đó thì thanh tiến độ học tập của bạn sẽ được tăng lên (trường hợp bạn pass được chỉ tiêu điểm tổng kết).</span>
+                <span class="teal-color d-block">5. Chương trình khung</span>
+                <span>Mỗi sinh viên thuộc 1 ngành thuộc 1 khoa. Mỗi ngành sẽ có một bộ `Chương trình khung` riêng. Chương trình khung chứa nhiều học kỳ, mỗi học kỳ trong chương trình khung chứa nhiều môn học cần học trong học kỳ đó. Các môn học trong học kỳ có thể có nhiều tín chất nữa xem bên dưới. Tóm lại mỗi sinh viên sẽ có bộ chương trình khung gồm các môn học trong từng học kỳ bắt buộc sinh viên phải đăng ký, học, đóng tiền.</span>
+                <span class="teal-color d-block">6. Đăng ký học phần</span>
+                <span>Là chức năng giúp bạn đăng ký môn học theo lịch, thời gian, lớp học, giảng viên ưa thích theo ý bạn. 1 năm học được chia làm 3 học kỳ. Ví dụ năm 2022, sẽ có 3 học kỳ, HK1 là nữa năm, HK2 là nữa năm, HK3 là học hè. Qua năm 2023 cứ tiếp tục. Mỗi học kỳ sẽ được đội ngũ phòng đào tạo chuyên khoa mở ra trên trang sinh viên đợt đăng ký học phần online thông qua trang này. Thông báo đợt đăng ký mới đến ở trên trang chủ trường học, trang khoa hoặc thông báo đến tin nhắn trang sinh viên. Sinh viên phải lập tức vào tính năng đăng ký học phần và lựa chọn lớp học phần có lịch học ưng ý dựa theo chương trình khung năm học hoặc niên giám quy định các môn dành cho sinh viên khoa đó phải học trong học kỳ đó.</span>
+                <span class="teal-color d-block">7. Đăng ký học phần học nhảy</span>
+                <span>Đăng ký học phần cho phép bạn học vượt (học nhảy) các môn trước học kỳ với điều kiện cho phép đó là môn tự chọn và không có ràng buộc học phần khác. Nên bạn sẽ thường thấy tình trạng lớp học có nhiều anh/chị hoặc các em khác khoá học.</span>
+                <span class="teal-color d-block">8. Học phần ràng buộc</span>
+                <span>Các môn học trong đăng ký học phần được chia làm 2 loại theo chương trình khung của từng sinh viên. Học phần bắt buộc và học phần tự chọn. Học phần bắt buộc là học phần cần thiệt để đào tạo một sinh viên theo đúng tiêu chuẩn của ngành sinh viên chọn và học phần đó bắt buộc sinh viên phải đăng ký trong đăng ký học phần dù học đúng hay trễ hay muộn. Học phần tự chọn cũng là học phần bắt buộc nhưng khác ở điểm có nhiều sự lựa chọn. Ví dụ ở HK1 có 4 môn bắt buộc, và 5 môn tự chọn bắt buộc 1. Nghĩa là trong 5 môn tự chọn có thể lựa chọn 1 trong 5 nhưng bắt buộc phải chọn chứ không thể không chọn. Một vài môn học có yêu cầu học môn trước nhằm mục đích giúp bạn đi đúng tiến độ tránh học nhảy để lũng cũng kiến thức gọi là học phần `tiên quyết`. `Song hành` nghĩa là 2 môn này bắt buộc phải đăng ký học song song trong 1 học kỳ.</span>
+                <span class="teal-color d-block">9. Trễ tiến độ học</span>
+                <span>Rất nhiều tân sinh viên ngơ ngác chưa hiểu các thuật ngữ học phần & đăng ký học phần. Dẫn đến việc học hết năm 1 và bị trễ một vài môn do chưa hiểu đăng ký học phần. Giả dụ trong HK1 2022 mới nhập học bạn phải đăng ký học phần môn `Nhập môn tin học` đã quy định trong chương trình khung mà sinh viên không chịu đăng ký dẫn đến việc bị trễ môn, mà môn học đó lại khó mở lớp thì sẽ rất tệ khiến việc học sẽ ở lại nhiều năm để đợi mở lớp học dồn về sau bị trùng lịch ở môn học ở học kỳ sau dẫn đến việc tốt nghiệp của bạn bị delay!</span>
+                <span class="teal-color d-block">10. Mở lớp học phần</span>
+                <span>Lớp học phần không mở tự động mà được tạo bằng tay do nhân viên nhà trường vì vậy LHP có thể được tạo thêm nếu có giấy tờ ghi đủ danh sách sinh viên muốn học học phần này trong học kỳ này. Việc tìm bạn, tạo form, tạo giấy xin mở lớp là việc của sinh viên. Khoa sẽ nhận danh sách và cảm thấy hợp lệ sẽ mở thêm LHP lên trang sinh viên.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="teal-button" data-bs-dismiss="modal">Đóng</button>
+            </div>
         </div>
     </div>
 </div>
@@ -312,6 +319,7 @@
 </div>
 <div class="container-fluid bg-light">
     <div class="row small" style="height: 50vh; overflow: auto;">
+        <!-- nữa trái -->
         <div class="col-lg-6 p-3">
             <div class="d-flex justify-content-center align-items-center border h-100 bg-white">
                 <div class="card bs">
@@ -339,6 +347,7 @@
                 </div>
             </div>
         </div>
+        <!-- nữa phải -->
         <div class="col-lg-6 p-3">
             <div class="d-flex justify-content-center align-items-center border h-100 bg-white position-relative">
                 <div class="d-flex justify-content-evenly align-items-center w-100">
@@ -367,41 +376,55 @@
                     </div>
                 </div>
                 <div class="position-absolute end-0 top-0 d-flex">
-                    <div class="me-3 position-relative" onclick="audio.play();">
-                        <i class="far fa-bell pt-1 dropdown-toggle crs" data-bs-toggle="dropdown" style="font-size: larger; font-weight: 900;"></i>
-                        <div class="dropdown-menu mw-100 text-truncate">
-                            <ul class="list-unstyled" style="max-height: 50vh;">
-                                <li class="bg-light"><a class="dropdown-item disabled text-dark fw-bold" href="javascript:void(0);">Thông báo:</a></li>
-                                <% for(let i=0; i<LIST_ANNOUNCEMENT.length; i++) { %>
-                                    <li onclick="audio.play();">
-                                        <a class="dropdown-item border text-secondary small" href="javascript:void(0);" id="<%= LIST_ANNOUNCEMENT[i].id %>" onclick="ShowDetailSelfNotification(this.id);"><%= LIST_ANNOUNCEMENT[i].title %></a>
+                    <div class="me-3 position-relative dropdown dropstart" onclick="audio.play();">
+                        <div data-bs-toggle="dropdown">
+                            <i class="fas fa-bell pt-1 crs" style="font-size: larger; font-weight: 900;"></i>
+                        </div>
+                        <div class="dropdown-menu rounded-0 mw-100 text-truncate">
+                            <ul class="list-unstyled overflow-auto" style="max-height: 20vh;">
+                                <li class="bg-light"><a class="dropdown-item disabled text-dark" href="javascript:void(0);" style="font-weight: 900;">Thông báo:</a></li>
+                                <% for(let i=0; i<LIST_ANNOUNCEMENT.length; i++) {
+                                    let isReadBelike = 'line-height: 1.0rem;';
+                                    if(LIST_ANNOUNCEMENT[i].read) {
+                                        isReadBelike = 'line-height: 1.0rem; color: #e0e0e0;';
+                                    }
+                                %>
+                                    <li onclick="audio.play();" class="position-relative border text-center">
+                                        <div class="dropdown-item crs small" id="<%= LIST_ANNOUNCEMENT[i].id %>" onclick="ShowDetailSelfNotification(this.id);" style='<%= isReadBelike %>'>
+                                            <span><%= LIST_ANNOUNCEMENT[i].title %></span>
+                                            <br>
+                                            <span class="small">(<%= calDayAgoMessage(LIST_ANNOUNCEMENT[i].createAt) %> ngày trước)</span>
+                                        </div>
+                                        <% if(!LIST_ANNOUNCEMENT[i].read) { %>
+                                            <div class="position-absolute top-0 end-0 text-danger small fw-bold px-1">*</div>
+                                        <% } %>
                                     </li>
                                 <% } %>
                             </ul>
-                            <ul class="list-unstyled" style="max-height: 50vh;">
+                            <ul class="list-unstyled" style="max-height: 20vh; overflow-y: auto; overflow-x: hidden;">
                                 <li class="bg-light"><a class="dropdown-item disabled text-dark fw-bold" href="javascript:void(0);">Thông báo khoa:</a></li>
                                 <% for(let i=0; i<LIST_DEPARTMENT_ANNOUNCEMENT.length; i++) { %>
                                     <li onclick="audio.play();">
                                         <a class="dropdown-item border text-secondary small" href="javascript:void(0);" id="<%= LIST_DEPARTMENT_ANNOUNCEMENT[i].maThongBao %>" onclick="ShowDetailDepartmentNotification(this.id);"><%= LIST_DEPARTMENT_ANNOUNCEMENT[i].tieuDe %></a>
                                     </li>
                                 <% } %>
-                                <li class="bg-light"><a class="dropdown-item text-danger" href="/student/clear-notifications">Xoá tất cả</a></li>
+                                <li class="bg-light text-center"><a class="dropdown-item text-primary text-decoration-underline" href="/student/clear-notifications">Xem tất cả</a></li>
                             </ul>
                         </div>
                         <div class="position-absolute fw-bold end-0 small"><%= LIST_ANNOUNCEMENT.length + LIST_DEPARTMENT_ANNOUNCEMENT.length %></div>
                     </div>
-                    <div class="px-2" onclick="audio.play();">
+                    <div class="px-2 dropdown" onclick="audio.play();">
                         <div class="d-flex align-items-center crs" data-bs-toggle="dropdown">
                             <img src="<%= STUDENT_DATA.avatar %>" alt="sv-iuh" width="32px" height="32px" class="rounded-circle">
                             <span class="mx-1">Phan Tấn Tài </span>
                             <i class="fas fa-angle-down"></i>
                         </div>
                         <!-- <i class="fas fa-caret-down dropdown-toggle crs" data-bs-toggle="dropdown" style="font-size: x-large;"></i> -->
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu rounded-0">
                             <li id="BtnChangePassword" onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">Đổi mật khẩu</a></li>
                             <li id="BtnChangeTheme" onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);">Giao diện</a></li>
                             <li onclick="audio.play();"><a class="dropdown-item border-bottom" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#FeatureSelectorModal">Trợ giúp</a></li>
-                            <li class="bg-light"><a class="dropdown-item text-danger" href="/student-logout" onclick="delete_cookie('session');">Đăng xuất</a></li>
+                            <li class="bg-light"><a class="dropdown-item text-info" href="/student-logout" onclick="delete_cookie('session');">Đăng xuất</a></li>
                         </ul>
                     </div>
                 </div>
@@ -510,242 +533,245 @@
 </body>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0" nonce="5ID3Xyn5"></script>
 <script>
-var myChartData;
-const audio = new Audio();
-audio.src = "../audio/click.mp3";
-const pathNodejs = '<%= process.env.EJS_API_URL %>';
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl){
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-});
 
-/*
-    Giải thuật renderCircle:
+    // Init variables...
+    var myChartData;
+    const audio = new Audio();
+    audio.src = "../audio/click.mp3";
+    const pathNodejs = '<%= process.env.EJS_API_URL %>';
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl){
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    renderCircleProgress();
+    /*
+        Giải thuật renderCircle:
+    */
+    function renderCircleProgress() {
+        let parentCircle = document.querySelector(".progress-parent");
+        let childCircle = document.querySelector(".progress-child");
+        let spanValue = document.querySelector(".progress-value");
 
-*/
-let parentCircle = document.querySelector(".progress-parent");
-let childCircle = document.querySelector(".progress-child");
-let spanValue = document.querySelector(".progress-value");
+        let startValue = 0;
+        let endValue = 100;
+        let speed = 10;
 
-let startValue = 0;
-let endValue = 100;
-let speed = 10;
-
-let circleName = "parentCircle";
-let myprogress = setInterval(() => {
-    startValue++;
-    if(circleName == "parentCircle") {
-        parentCircle.style.background = `conic-gradient(rgb(70, 121, 231) ${startValue*3.6}deg, #ededed 0deg)`;
+        let circleName = "parentCircle";
+        let myprogress = setInterval(() => {
+            startValue++;
+            if(circleName == "parentCircle") {
+                parentCircle.style.background = `conic-gradient(rgb(70, 121, 231) ${startValue*3.6}deg, #ededed 0deg)`;
+            }
+            else {//nếu circleName là childCircle
+                if(startValue >= endValue) {//Nếu startValue +1 lên > 3.16% render bg phát cuối r dừng luôn
+                    spanValue.textContent = `${endValue.toFixed(1)}%`;
+                    childCircle.style.background = `conic-gradient(#20fa4c ${endValue*3.6}deg, #ededed 0deg)`;
+                    clearInterval(myprogress);
+                    return;
+                } else {
+                    spanValue.textContent = `${startValue}%`;
+                    childCircle.style.background = `conic-gradient(#20fa4c ${startValue*3.6}deg, #ededed 0deg)`;
+                }
+            }
+            if(startValue == endValue) {
+                startValue = 0;
+                endValue = <%= currentTinChi * 100/requireTinChi %>;
+                circleName = "childCircle";
+            }
+        }, speed);
     }
-    else {//nếu circleName là childCircle
-        if(startValue >= endValue) {//Nếu startValue +1 lên > 3.16% render bg phát cuối r dừng luôn
-            spanValue.textContent = `${endValue.toFixed(1)}%`;
-            childCircle.style.background = `conic-gradient(#20fa4c ${endValue*3.6}deg, #ededed 0deg)`;
-            clearInterval(myprogress);
-            return;
-        } else {
-            spanValue.textContent = `${startValue}%`;
-            childCircle.style.background = `conic-gradient(#20fa4c ${startValue*3.6}deg, #ededed 0deg)`;
+    $(document).ready(function(){
+        renderChartScore([], []);
+        var LIST_COURSE = '<%= LIST_COURSE.length %>';
+        var theme = 'light';
+        if(LIST_COURSE == 0 || LIST_COURSE == '0') {
+            const embedEmpty = '<tr><td>Bạn chưa có học phần nào cả.<br>Hãy chuyển đến trang</td><td><a href="/student/dkhp">Đăng ký<br>Học phần!</a></td></tr>'
+            $("#tBodySubjectCourseSelected").html(embedEmpty);
         }
-    }
-    if(startValue == endValue) {
-        startValue = 0;
-        endValue = <%= currentTinChi * 100/requireTinChi %>;
-        circleName = "childCircle";
-    }
-}, speed);
-$(document).ready(function(){
-    renderChartScore([], []);
-    var LIST_COURSE = '<%= LIST_COURSE.length %>';
-    var theme = 'light';
-    if(LIST_COURSE == 0 || LIST_COURSE == '0') {
-        const embedEmpty = '<tr><td>Bạn chưa có học phần nào cả.<br>Hãy chuyển đến trang</td><td><a href="/student/dkhp">Đăng ký<br>Học phần!</a></td></tr>'
-        $("#tBodySubjectCourseSelected").html(embedEmpty);
-    }
-    $("#select_course").change(function(){
-        const maSinhVien= "<%= STUDENT_DATA.maSinhVien %>";
-        const maKhoaHoc= $(this).val();
-        const data = { maSinhVien, maKhoaHoc };
+        $("#select_course").change(function(){
+            const maSinhVien= "<%= STUDENT_DATA.maSinhVien %>";
+            const maKhoaHoc= $(this).val();
+            const data = { maSinhVien, maKhoaHoc };
+            $.ajax({
+                type: "POST",
+                url: pathNodejs+"/student/getSubjectByStudentIdAndCourseId",
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function(data) {
+                    const arrays_id_subject = [];
+                    const arrays_name_subject = [];
+                    var myLoop = "";
+                    if(data.length > 0) {
+                        for (let i = 0; i < data.length; i++) {
+                            myLoop += "<tr><td><span>"+data[i].maMonHoc+"</span><br><span>"+data[i].tenMonHoc+"</span></td><td>"+data[i].soTinChi+"</td></tr>";
+                            arrays_id_subject.push(data[i].maMonHoc);
+                            arrays_name_subject.push(data[i].tenMonHoc);
+                        }
+                    }
+                    $("#tBodySubjectCourseSelected").html(myLoop);
+                    renderChartScore(arrays_id_subject, arrays_name_subject);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+        $("#BtnChangeTheme").click(function() {
+            let themeWill = theme == 'light' ? 'Tối' : 'Sáng';
+            swal({
+            title: "Đổi sang giao diện "+themeWill,
+            text: "Toggle hiện tại chỉ có 2 theme màu Sáng / Tối",
+            buttons: true,
+            })
+            .then((willDelete) => {
+            if (willDelete) {
+                if(theme == 'light') {
+                    $(".container-fluid").addClass("bg-dark");
+                    $(".container-fluid").removeClass("bg-light");
+                    theme = "dark";
+                } else {
+                    $(".container-fluid").addClass("bg-light");
+                    $(".container-fluid").removeClass("bg-dark");
+                    theme = "light";
+                }
+            }
+            });
+        });
+        $("#changePasswordForm").submit(function(e){
+            e.preventDefault();
+            const oldPassword = $("input[name='oldPassword']",this).val().replace(/\s/g, "");
+            const newPassword = $("input[name='newPassword']",this).val().replace(/\s/g, "");
+            const reNewPassword = $("input[name='reNewPassword']",this).val().replace(/\s/g, "");
+            if(newPassword !== reNewPassword) {
+                $("input[name='newPassword']").val("");
+                $("input[name='reNewPassword']").val("");
+                toastr.error('Mật khẩu mới không trùng khớp với nhau', 'Sai mật khẩu mới');
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: pathNodejs+"/student-changepassword",
+                data: JSON.stringify({oldPassword, newPassword}),
+                contentType: 'application/json',
+                success: (data) => {
+                    $(':input','#changePasswordForm')
+                        .not(':button, :submit, :reset, :hidden')
+                        .val('')
+                        .prop('checked', false)
+                        .prop('selected', false);
+                    $("#ChangePasswordModal").modal('toggle');
+                    toastr.success('Mật khẩu của bạn đã được cập nhật!', 'Đổi thành công');
+                }, error: (error) => {
+                    $("input[name='oldPassword']").val("");
+                    toastr.error('Mật khẩu cũ không chính xác!', 'Sai mật khẩu cũ');
+                }
+            });
+        });
+        $('.fa-eye-slash').mouseenter(function() {
+            $('.password-input').attr('type', 'text');
+        });
+        $('.fa-eye-slash').mouseleave(function() {
+            $('.password-input').attr('type', 'password');
+        });
+        $('#reportBugForm').submit(function(event) {
+            event.preventDefault();
+            let formDataObject = {reporter: '<%= STUDENT_DATA.hoTen %>'};
+            const inputArray = $(this).serializeArray();
+            $.each(inputArray, function(i, field) {
+                formDataObject[field.name] = field.value;
+            });
+            $.ajax({
+                type: "POST",
+                url: pathNodejs+"/student-report",
+                data: JSON.stringify(formDataObject),
+                contentType: "application/json",
+                success: (data) => {
+                    toastr.success('Cám ơn bạn đã dành thời gian report cho chúng tôi. Chúng tôi sẽ cố gắng giải quyết và phản hồi lại bạn trong thời gian sớm nhất', 'Báo lỗi thành công');
+                    $('input[name="objectErrorType"]').val('');
+                    $('textarea[name="noiDung"]').val('');
+                    $('input[name="severity"]').prop('checked', false);
+                    swal({
+                        title: 'Thành công',
+                        text: 'Cám ơn bạn đã dành thời gian report cho chúng\ntôi. Chúng tôi sẽ cố gắng giải quyết và phản\nhồi lại bạn trong thời gian sớm nhất',
+                        icon: 'success',
+                    });
+                    $('#ReportBugModal').modal('toggle');
+                    $('#FeatureSelectorModal').modal('toggle');
+                }, error: (error) => {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    function ShowDetailDepartmentNotification(notificationId) {
         $.ajax({
             type: "POST",
-            url: pathNodejs+"/student/getSubjectByStudentIdAndCourseId",
-            data: JSON.stringify(data),
+            url: pathNodejs+"/student/getDepartmentNotificationById",
+            data: JSON.stringify({maThongBao: notificationId}),
             contentType: 'application/json',
             success: function(data) {
-                const arrays_id_subject = [];
-                const arrays_name_subject = [];
-                var myLoop = "";
-                if(data.length > 0) {
-                    for (let i = 0; i < data.length; i++) {
-                        myLoop += "<tr><td><span>"+data[i].maMonHoc+"</span><br><span>"+data[i].tenMonHoc+"</span></td><td>"+data[i].soTinChi+"</td></tr>";
-                        arrays_id_subject.push(data[i].maMonHoc);
-                        arrays_name_subject.push(data[i].tenMonHoc);
-                    }
-                }
-                $("#tBodySubjectCourseSelected").html(myLoop);
-                renderChartScore(arrays_id_subject, arrays_name_subject);
-            },
-            error: function(error) {
-                console.error(error);
+                const d = new Date(data.ngayXuatBan);
+                const d2 = new Date();
+                const diff = Math.abs(d2 - d);
+                const one_day=1000*60*60*24;
+                let result = Math.round(diff/one_day);
+                if(result < 10)
+                    result = "0" + result;
+                $("#DetailsNotificationSpanContent").text(data.noiDung);
+                $("#DetailsNotificationSpanDaysAgo").text("(" + result + " ngày trước)");
+                $("#DetailsNotificationModal").modal('toggle');     
             }
         });
-    });
-    $("#BtnChangeTheme").click(function() {
-        let themeWill = theme == 'light' ? 'Tối' : 'Sáng';
-        swal({
-        title: "Đổi sang giao diện "+themeWill,
-        text: "Toggle hiện tại chỉ có 2 theme màu Sáng / Tối",
-        buttons: true,
-        })
-        .then((willDelete) => {
-        if (willDelete) {
-            if(theme == 'light') {
-                $(".container-fluid").addClass("bg-dark");
-                $(".container-fluid").removeClass("bg-light");
-                theme = "dark";
-            } else {
-                $(".container-fluid").addClass("bg-light");
-                $(".container-fluid").removeClass("bg-dark");
-                theme = "light";
-            }
-        }
-        });
-    });
-    $("#changePasswordForm").submit(function(e){
-        e.preventDefault();
-        const oldPassword = $("input[name='oldPassword']",this).val().replace(/\s/g, "");
-        const newPassword = $("input[name='newPassword']",this).val().replace(/\s/g, "");
-        const reNewPassword = $("input[name='reNewPassword']",this).val().replace(/\s/g, "");
-        if(newPassword !== reNewPassword) {
-            $("input[name='newPassword']").val("");
-            $("input[name='reNewPassword']").val("");
-            toastr.error('Mật khẩu mới không trùng khớp với nhau', 'Sai mật khẩu mới');
-            return;
-        }
-        $.ajax({
-            type: "POST",
-            url: pathNodejs+"/student-changepassword",
-            data: JSON.stringify({oldPassword, newPassword}),
-            contentType: 'application/json',
-            success: (data) => {
-                $(':input','#changePasswordForm')
-                    .not(':button, :submit, :reset, :hidden')
-                    .val('')
-                    .prop('checked', false)
-                    .prop('selected', false);
-                $("#ChangePasswordModal").modal('toggle');
-                toastr.success('Mật khẩu của bạn đã được cập nhật!', 'Đổi thành công');
-            }, error: (error) => {
-                $("input[name='oldPassword']").val("");
-                toastr.error('Mật khẩu cũ không chính xác!', 'Sai mật khẩu cũ');
-            }
-        });
-    });
-    $('.fa-eye-slash').mouseenter(function() {
-        $('.password-input').attr('type', 'text');
-    });
-    $('.fa-eye-slash').mouseleave(function() {
-        $('.password-input').attr('type', 'password');
-    });
-    $('#reportBugForm').submit(function(event) {
-        event.preventDefault();
-        let formDataObject = {reporter: '<%= STUDENT_DATA.hoTen %>'};
-        const inputArray = $(this).serializeArray();
-        $.each(inputArray, function(i, field) {
-            formDataObject[field.name] = field.value;
-        });
-        $.ajax({
-            type: "POST",
-            url: pathNodejs+"/student-report",
-            data: JSON.stringify(formDataObject),
-            contentType: "application/json",
-            success: (data) => {
-                toastr.success('Cám ơn bạn đã dành thời gian report cho chúng tôi. Chúng tôi sẽ cố gắng giải quyết và phản hồi lại bạn trong thời gian sớm nhất', 'Báo lỗi thành công');
-                $('input[name="objectErrorType"]').val('');
-                $('textarea[name="noiDung"]').val('');
-                $('input[name="severity"]').prop('checked', false);
-                swal({
-                    title: 'Thành công',
-                    text: 'Cám ơn bạn đã dành thời gian report cho chúng\ntôi. Chúng tôi sẽ cố gắng giải quyết và phản\nhồi lại bạn trong thời gian sớm nhất',
-                    icon: 'success',
-                });
-                $('#ReportBugModal').modal('toggle');
-                $('#FeatureSelectorModal').modal('toggle');
-            }, error: (error) => {
-                console.error(error);
-            }
-        });
-    });
-});
-function ShowDetailDepartmentNotification(notificationId) {
-    $.ajax({
-        type: "POST",
-        url: pathNodejs+"/student/getDepartmentNotificationById",
-        data: JSON.stringify({maThongBao: notificationId}),
-        contentType: 'application/json',
-        success: function(data) {
-            const d = new Date(data.ngayXuatBan);
-            const d2 = new Date();
-            const diff = Math.abs(d2 - d);
-            const one_day=1000*60*60*24;
-            let result = Math.round(diff/one_day);
-            if(result < 10)
-                result = "0" + result;
-            $("#DetailsNotificationSpanContent").text(data.noiDung);
-            $("#DetailsNotificationSpanDaysAgo").text("(" + result + " ngày trước)");
-            $("#DetailsNotificationModal").modal('toggle');     
-        }
-    });
-}
-function ShowDetailSelfNotification(notificationId) {
-    $.ajax({
-        type: "POST",
-        url: pathNodejs+"/student/getSelfNotificationById",
-        data: JSON.stringify({id: notificationId}),
-        contentType: 'application/json',
-        success: function(data) {
-            const d = new Date(data.createAt);
-            const d2 = new Date();
-            const diff = Math.abs(d2 - d);
-            const one_day=1000*60*60*24;
-            let result = Math.round(diff/one_day);
-            if(result < 10)
-                result = "0" + result;
-            $("#DetailsNotificationSpanContent").text(data.message);
-            $("#DetailsNotificationSpanDaysAgo").text("(" + result + " ngày trước)");
-            $("#DetailsNotificationModal").modal('toggle');     
-        }
-    });
-}
-function delete_cookie(name) {
-  document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
-async function getScoreByStudentIdAndSubjectId(subjectId) {
-    return $.ajax({
-        type: "POST",
-        url: pathNodejs+"/student/score/getScoreByStudentIdAndSubjectId",
-        data: JSON.stringify({subjectId}),
-        contentType: 'application/json',
-    }).then(data => data);
-}
-function diemTongKetCal(obj) {
-    let diemTongKet = 0;
-    if(obj.lopHocPhan.monHoc.soTietTH == 0) { //Nếu môn chỉ có LT
-        lt = ((obj.diemLT1 + obj.diemLT2 + obj.diemLT3)/3)*0.2;
-        gk = obj.diemGK*0.3;
-        ck = obj.diemCK*0.5;
-        diemTongKet = parseFloat(lt + gk +ck);
-    } else {
-        lt = ((obj.diemLT1 + obj.diemLT2 + obj.diemLT3)/3)*0.2;
-        gk = obj.diemGK*0.3;
-        ck = obj.diemCK*0.5;
-        let diemTongKetLT = parseFloat(lt + gk +ck);
-        soTC_LT = obj.lopHocPhan.monHoc.soTietLT / 15;
-        TBC_TH = (obj.diemTH1 + obj.diemTH2 + obj.diemTH3)/3;
-        soTC_TH = obj.lopHocPhan.monHoc.soTietTH / 15;
-        diemTongKet = ( (diemTongKetLT*soTC_LT) + (TBC_TH*soTC_TH) ) / (soTC_LT + soTC_TH);
     }
-    return diemTongKet;
+    function ShowDetailSelfNotification(notificationId) {
+        $.ajax({
+            type: "POST",
+            url: pathNodejs+"/student/getSelfNotificationById",
+            data: JSON.stringify({id: notificationId}),
+            contentType: 'application/json',
+            success: function(data) {
+                const d = new Date(data.createAt);
+                const d2 = new Date();
+                const diff = Math.abs(d2 - d);
+                const one_day=1000*60*60*24;
+                let result = Math.round(diff/one_day);
+                if(result < 10)
+                    result = "0" + result;
+                $("#DetailsNotificationSpanContent").text(data.message);
+                $("#DetailsNotificationSpanDaysAgo").text("(" + result + " ngày trước)");
+                $("#DetailsNotificationModal").modal('toggle');     
+            }
+        });
+    }
+    function delete_cookie(name) {
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+    async function getScoreByStudentIdAndSubjectId(subjectId) {
+        return $.ajax({
+            type: "POST",
+            url: pathNodejs+"/student/score/getScoreByStudentIdAndSubjectId",
+            data: JSON.stringify({subjectId}),
+            contentType: 'application/json',
+        }).then(data => data);
+    }
+    function diemTongKetCal(obj) {
+        let diemTongKet = 0;
+        if(obj.lopHocPhan.monHoc.soTietTH == 0) { //Nếu môn chỉ có LT
+            lt = ((obj.diemLT1 + obj.diemLT2 + obj.diemLT3)/3)*0.2;
+            gk = obj.diemGK*0.3;
+            ck = obj.diemCK*0.5;
+            diemTongKet = parseFloat(lt + gk +ck);
+        } else {
+            lt = ((obj.diemLT1 + obj.diemLT2 + obj.diemLT3)/3)*0.2;
+            gk = obj.diemGK*0.3;
+            ck = obj.diemCK*0.5;
+            let diemTongKetLT = parseFloat(lt + gk +ck);
+            soTC_LT = obj.lopHocPhan.monHoc.soTietLT / 15;
+            TBC_TH = (obj.diemTH1 + obj.diemTH2 + obj.diemTH3)/3;
+            soTC_TH = obj.lopHocPhan.monHoc.soTietTH / 15;
+            diemTongKet = ( (diemTongKetLT*soTC_LT) + (TBC_TH*soTC_TH) ) / (soTC_LT + soTC_TH);
+        }
+        return diemTongKet;
 }
 </script>
 <script>

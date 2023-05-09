@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2023 at 10:54 AM
+-- Generation Time: May 08, 2023 at 10:35 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -292,29 +292,29 @@ CREATE TABLE `lop_hoc_danh_nghia` (
 INSERT INTO `lop_hoc_danh_nghia` (`ma_lop`, `so_luong`, `ten_lop`, `ma_giao_vien`, `ma_khoa_hoc`, `ma_nganh`) VALUES
 (1, 50, 'DHKTPM11ATT', 315067680, 1, 2),
 (2, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(3, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(4, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(5, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(6, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(7, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(8, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(9, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(10, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(11, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(12, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(13, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(14, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(15, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(16, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(17, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(18, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(19, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(20, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(21, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(22, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(23, 32, 'DHKTPM2ATT', 315067680, 1, 1),
-(24, 31, 'DHKTPM1ATT', 315067680, 1, 1),
-(25, 32, 'DHKTPM2ATT', 315067680, 1, 1);
+(3, 32, 'DHKTPM2ATT', 315067680, 1, 2),
+(4, 31, 'DHKTPM3ATT', 315067680, 1, 3),
+(5, 32, 'DHKTPM4ATT', 315067680, 1, 4),
+(6, 31, 'DHKTPM5ATT', 315067680, 1, 5),
+(7, 32, 'DHKTPM6ATT', 315067680, 1, 6),
+(8, 31, 'DHKTPM7ATT', 315067680, 1, 7),
+(9, 32, 'DHKTPM8ATT', 315067680, 1, 8),
+(10, 31, 'DHKTPM9ATT', 315067680, 1, 9),
+(11, 32, 'DHKTPM10ATT', 315067680, 1, 10),
+(12, 31, 'DHKTPM11ATT', 315067680, 1, 11),
+(13, 32, 'DHKTPM12ATT', 315067680, 1, 12),
+(14, 31, 'DHKTPM13ATT', 315067680, 1, 13),
+(15, 32, 'DHKTPM14ATT', 315067680, 1, 14),
+(16, 31, 'DHKTPM15ATT', 315067680, 1, 15),
+(17, 32, 'DHKTPM16ATT', 315067680, 1, 16),
+(18, 31, 'DHKTPM17ATT', 315067680, 1, 17),
+(19, 32, 'DHKTPM18ATT', 315067680, 1, 18),
+(20, 31, 'DHKTPM19ATT', 315067680, 1, 19),
+(21, 32, 'DHKTPM20ATT', 315067680, 1, 20),
+(22, 31, 'DHKTPM21ATT', 315067680, 1, 21),
+(23, 32, 'DHKTPM22ATT', 315067680, 1, 22),
+(24, 31, 'DHKTPM23ATT', 315067680, 1, 23),
+(25, 32, 'DHKTPM24ATT', 315067680, 1, 24);
 
 -- --------------------------------------------------------
 
@@ -355,7 +355,8 @@ INSERT INTO `lop_hoc_phan` (`ma_lop_hoc_phan`, `han_nop_hoc_phi`, `loai_hoc`, `n
 (20, '2023-05-13', 'HOC_MOI', '2023-05-13', '2023-05-31', 1, 24, 'DHKTPM15ETT', 'DANG_CHO_SINH_VIEN_DANG_KY', 315067680, 13, 1000007),
 (21, '2023-05-05', 'HOC_MOI', '2023-05-31', '2023-07-31', 0, 28, 'DHKTPM19ATT', 'DANG_CHO_SINH_VIEN_DANG_KY', 315067680, 13, 1000004),
 (22, '2023-05-12', 'HOC_MOI', '2023-05-12', '2023-07-31', 0, 41, 'DHKTPM15ATT', 'DANG_CHO_SINH_VIEN_DANG_KY', 315067680, 13, 1000004),
-(23, '2023-05-15', 'HOC_MOI', '2023-05-15', '2023-07-31', 3, 25, 'DHKTPM15BTT', 'DANG_CHO_SINH_VIEN_DANG_KY', 315067680, 13, 1000004);
+(23, '2023-05-15', 'HOC_MOI', '2023-05-15', '2023-07-31', 3, 25, 'DHKTPM15BTT', 'DANG_CHO_SINH_VIEN_DANG_KY', 315067680, 13, 1000004),
+(24, '2023-05-20', 'HOC_MOI', '2023-07-31', '2023-07-31', 0, 25, 'DHKTPM15FTT', 'DANG_CHO_SINH_VIEN_DANG_KY', 315067680, 13, 1000004);
 
 -- --------------------------------------------------------
 
@@ -710,22 +711,22 @@ CREATE TABLE `sinh_vien` (
 --
 
 INSERT INTO `sinh_vien` (`ma_sinh_vien`, `avatar`, `cccd`, `bac_dao_tao`, `co_so`, `loai_hinh_dao_tao`, `dia_chi`, `gioi_tinh`, `ho_ten`, `ngay_sinh`, `ngay_vao_truong`, `noi_sinh`, `sdt`, `so_du`, `tot_nghiep`, `ma_lop_danh_nghia`, `ma_tai_khoan`) VALUES
-(2, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh B', '2020-01-01', '2013-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 5),
-(3, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh C', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 6),
-(4, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh D', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 7),
-(5, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh E', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 8),
-(6, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh F', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 9),
-(7, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh G', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 10),
-(8, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh H', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 11),
-(9, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh I', '2020-01-01', '2000-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 12),
-(10, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv-iuh-avatar-pattern_oyubmc.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh J', '2020-01-01', '1999-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 13),
-(11, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv-iuh-avatar-pattern_oyubmc.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh K', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 14),
-(19524791, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv_dkhp/sv-iuh-avatar-pattern_oyubmc.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Phan Tấn Tài', '2001-05-25', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 5300000, b'0', 1, 4),
+(2, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Bình', '2020-01-01', '2013-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 5),
+(3, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Châu', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 6),
+(4, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Dinh', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 7),
+(5, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Én', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 8),
+(6, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Fault', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 9),
+(7, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Giàu', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 10),
+(8, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Hạnh', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 11),
+(9, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Ím', '2020-01-01', '2000-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 12),
+(10, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv-iuh-avatar-pattern_oyubmc.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Jake', '2020-01-01', '1999-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 13),
+(11, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv-iuh-avatar-pattern_oyubmc.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Khoa', '2020-01-01', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 24610447, b'0', 1, 14),
+(19524791, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1672644566/sv_dkhp/sv-iuh-avatar-pattern_oyubmc.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Phan Tấn Tài', '2001-05-25', '2019-01-01', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 4),
 (19524792, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1683263146/nclly17jj4dwmoux0eej.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Lê Văn Tùng', '2019-12-31', '2012-12-31', 'Dak Lak', '0338188506', 0, b'0', 1, 15),
-(19524793, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh B', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 16),
-(19524794, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh B', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 17),
-(19524795, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh B', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 19),
-(19524796, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Học Sinh B', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 21);
+(19524793, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Bích', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 16),
+(19524794, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Bảo', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 17),
+(19524795, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Bảnh', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 19),
+(19524796, 'https://res.cloudinary.com/dopzctbyo/image/upload/v1649587847/sample.jpg', '079201030774', 'DAI_HOC', 'HA_NOI', 'CHAT_LUONG_CAO', '60/122 KP8 Phường TCH Quận 12 HCM', 'NAM', 'Nguyễn Văn Bé', '2019-12-31', '2012-12-31', 'HỒ CHÍ MINH', '0338188506', 0, b'0', 1, 21);
 
 -- --------------------------------------------------------
 
@@ -1138,23 +1139,19 @@ CREATE TABLE `thong_bao` (
 --
 
 INSERT INTO `thong_bao` (`id`, `create_at`, `is_read`, `linking`, `message`, `title`, `ma_sinh_vien`) VALUES
-(1, '2023-05-27 17:25:37', b'0', 'https://erukalearn.me/student-dkhp', 'Đã mở LHP đăng ký đợt HK 2 2023. Các em nhanh chóng đăng ký để dành chỗ lớp tốt!', 'Lớp học hè', 19524791),
-(2, '2023-05-02 18:56:55', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống.', 'Giao dịch diện tử', 19524791),
-(3, '2023-05-03 16:02:51', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 100.000 ₫ ', 'Giao dịch diện tử', 19524791),
-(4, '2023-05-03 19:26:40', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 49.949 ₫. Số tiến đã thanh toán thành công: 49.949 ₫. Số tiền dư thanh toán còn lại: 149.949 ₫ ', 'Giao dịch diện tử', 19524791),
-(5, '2023-05-03 22:21:56', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 199.949 ₫ ', 'Giao dịch diện tử', 19524791),
-(6, '2023-05-03 22:25:51', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 249.949 ₫ ', 'Giao dịch diện tử', 19524791),
-(7, '2023-05-03 22:28:34', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 299.949 ₫ ', 'Giao dịch diện tử', 19524791),
-(8, '2023-05-03 22:35:28', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 349.949 ₫ ', 'Giao dịch diện tử', 19524791),
-(9, '2023-05-04 09:56:15', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 49.949 ₫. Số tiến đã thanh toán thành công: 49.949 ₫. Số tiền dư thanh toán còn lại: 399.897 ₫ ', 'Giao dịch diện tử', 19524791),
-(10, '2023-05-04 12:13:05', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 0/1 mục. Tổng tiền đã thanh toán: NaN ₫. Số tiến đã thanh toán thành công: 0 ₫. Số tiền dư thanh toán còn lại: 1.699.890 ₫ ', 'Giao dịch diện tử', 19524791),
-(11, '2023-05-04 12:20:45', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 2.345.000.000 ₫. Số tiến đã thanh toán thành công: 2.345.000.000 ₫. Số tiền dư thanh toán còn lại: 2.346.699.891 ₫ ', 'Giao dịch diện tử', 19524791),
-(12, '2023-05-04 12:36:28', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.183 ₫. Số tiến đã thanh toán thành công: 50.183 ₫. Số tiền dư thanh toán còn lại: 2.346.750.074 ₫ ', 'Giao dịch diện tử', 19524791),
-(13, '2023-05-04 13:02:27', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 1.700.000 ₫. Số tiến đã thanh toán thành công: 1.700.000 ₫. Số tiền dư thanh toán còn lại: 0 ₫ ', 'Giao dịch diện tử', 19524791),
-(14, '2023-05-04 13:07:54', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 1.700.000 ₫. Số tiến đã thanh toán thành công: 1.700.000 ₫. Số tiền dư thanh toán còn lại: 0 ₫ ', 'Giao dịch diện tử', 19524791),
-(15, '2023-05-06 11:24:18', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 200.000 ₫. Số tiến đã thanh toán thành công: 200.000 ₫. Số tiền dư thanh toán còn lại: 200.000 ₫ ', 'Giao dịch diện tử', 19524791),
-(17, '2023-05-06 12:23:30', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 1.700.000 ₫. Số tiến đã thanh toán thành công: 1.700.000 ₫. Số tiền dư thanh toán còn lại: 300.000 ₫ ', 'Giao dịch diện tử', 19524791),
-(18, '2023-05-06 12:27:13', b'0', 'https://erukalearn.me', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 5.000.000 ₫. Số tiến đã thanh toán thành công: 5.000.000 ₫. Số tiền dư thanh toán còn lại: 5.300.000 ₫ ', 'Giao dịch diện tử', 19524791);
+(1, '2023-05-27 17:25:37', b'0', 'https://erukalearn.ddns.net/student-dkhp', 'Đã mở LHP đăng ký đợt HK 2 2023. Các em nhanh chóng đăng ký để dành chỗ lớp tốt!', 'Lớp học hè', 19524791),
+(2, '2023-05-02 18:56:55', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống.', 'Giao dịch diện tử', 19524791),
+(3, '2023-05-03 16:02:51', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 100.000 ₫ ', 'Giao dịch diện tử', 19524791),
+(4, '2023-05-03 19:26:40', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 49.949 ₫. Số tiến đã thanh toán thành công: 49.949 ₫. Số tiền dư thanh toán còn lại: 149.949 ₫ ', 'Giao dịch diện tử', 19524791),
+(5, '2023-05-03 22:21:56', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 199.949 ₫ ', 'Giao dịch diện tử', 19524791),
+(6, '2023-05-03 22:25:51', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 249.949 ₫ ', 'Giao dịch diện tử', 19524791),
+(7, '2023-05-03 22:28:34', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 299.949 ₫ ', 'Giao dịch diện tử', 19524791),
+(8, '2023-05-03 22:35:28', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.000 ₫. Số tiến đã thanh toán thành công: 50.000 ₫. Số tiền dư thanh toán còn lại: 349.949 ₫ ', 'Giao dịch diện tử', 19524791),
+(9, '2023-05-04 09:56:15', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 49.949 ₫. Số tiến đã thanh toán thành công: 49.949 ₫. Số tiền dư thanh toán còn lại: 399.897 ₫ ', 'Giao dịch diện tử', 19524791),
+(10, '2023-05-04 12:13:05', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 0/1 mục. Tổng tiền đã thanh toán: NaN ₫. Số tiến đã thanh toán thành công: 0 ₫. Số tiền dư thanh toán còn lại: 1.699.890 ₫ ', 'Giao dịch diện tử', 19524791),
+(11, '2023-05-04 12:20:45', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 2.345.000.000 ₫. Số tiến đã thanh toán thành công: 2.345.000.000 ₫. Số tiền dư thanh toán còn lại: 2.346.699.891 ₫ ', 'Giao dịch diện tử', 19524791),
+(12, '2023-05-04 12:36:28', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán nạp tiền vào ví online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 50.183 ₫. Số tiến đã thanh toán thành công: 50.183 ₫. Số tiền dư thanh toán còn lại: 2.346.750.074 ₫ ', 'Giao dịch diện tử', 19524791),
+(13, '2023-05-04 13:02:27', b'0', 'https://erukalearn.ddns.net', 'Bạn vừa thực hiện một thanh toán học phí online trên hệ thống. Giao dịch đã được thanh toán thành công. Chi tiết như sau: Thanh toán thành công: 1/1 mục. Tổng tiền đã thanh toán: 1.700.000 ₫. Số tiến đã thanh toán thành công: 1.700.000 ₫. Số tiền dư thanh toán còn lại: 0 ₫ ', 'Giao dịch diện tử', 19524791);
 
 -- --------------------------------------------------------
 
@@ -1177,7 +1174,7 @@ CREATE TABLE `thong_bao_khoa` (
 INSERT INTO `thong_bao_khoa` (`ma_thong_bao`, `ngay_xuat_ban`, `noi_dung`, `tieu_de`, `ma_khoa`) VALUES
 (1, '2021-01-01', 'Gửi tới các em sinh viên hệ CLC / Đại trà. Cũng đã sắp đến tết cận kề, nhà nhà đã mang không khí nôn nao của lễ hội tết truyền thống. Nhằm mục đích hỗ trợ cho việc các sinh viên có thể bắt xe trở về quê ăn tết thuận tiện với gia đình tốt nhất. Nhà trường quyết định sẽ tổ chức các buổi học cận kề ngày nghĩ tết thành lịch học online (có thể). Một vài trường hợp môn học bắt buộc học offline như thực hành sẽ vẫn tiếp tục.', 'THÔNG BÁO LỊCH NGHĨ TẾT DƯƠNG LỊCH CHO TOÀN BỘ SINH VIÊN TRƯỜNG ĐẠI HỌC CÔNG NGHIỆP IV (IUH)', 1),
 (2, '2023-05-05', 'Đã mở LHP cho HK3 2022 - 2023. Các em hãy nhanh tay đăng ký đi nhé!', 'Mở lớp học phần 2022', 1),
-(3, '2023-05-05', 'Đã mở LHP cho HK3 2022 - 2023. Các em hãy nhanh tay đăng ký đi nhé!', 'Mở lớp học phần 2023', 2);
+(4, '2023-05-05', 'Đã mở lớp học phần hè Các em mau đăng ký', 'Mở lớp học phần hè', 1);
 
 -- --------------------------------------------------------
 
@@ -1197,9 +1194,9 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`id`, `token`, `token_exp_date`, `created_by`) VALUES
-(1, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdjE5NTI0NzkxIiwiZXhwIjoxNjgzMzY3Mzk3LCJpYXQiOjE2ODMzNDkzOTd9.Sgl6DHhc3IumnEdV47W1Cwi-cW5AlistXSlAEvh1KMhSsQTswYER50EIGH-HjAAFA55j7XlllltLbjikR92OGw', '2023-03-05 14:46:52', 4),
-(2, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndjMxNTA2NzY4MCIsImV4cCI6MTY4MzM1NDk1MywiaWF0IjoxNjgzMzM2OTUzfQ.dp9Lg4UG1w3NaC8cvMTAUaBy_eAqWI1MXm0-9Ga9aBbMv98UmhMRMaJYfL9V9wIbtnrj7rPy5GFOzXQzMLhOQA', '2023-02-04 20:15:46', 1),
-(3, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJudjIxMDUyMDAyIiwiZXhwIjoxNjgzMzU0OTIyLCJpYXQiOjE2ODMzMzY5MjJ9.PTq36fY-xTPw2bQ80Ni2e41Y37jm0KHcLT2f7GWzgEvOAFwoPl3LR50dQ8c1H_wtVbU1imPuc7HmO-UUgw2zEw', '2023-02-05 01:08:03', 2),
+(1, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdjE5NTI0NzkxIiwiZXhwIjoxNjgzNDQ2MDc3LCJpYXQiOjE2ODM0MjgwNzd9.0H0E3cOAEQ31d3aw1_jSjHM4ulgBJixcWw3Dakt6ITVDF1lLbAJihcyT7zaxVaRiqQ84A-z3Pv9s7NEvA0dBUg', '2023-03-05 14:46:52', 4),
+(2, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndjMxNTA2NzY4MCIsImV4cCI6MTY4MzUzNTYzMiwiaWF0IjoxNjgzNTE3NjMyfQ.v-jNFnZrLEUnGgDUutIMqOOnIzsS4vzlmnUnfWz4Uf5POKfKEqfR1UQfFMYrn0vPfMVZYuCkO5oimLtBGfpcaw', '2023-02-04 20:15:46', 1),
+(3, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJudjIxMDUyMDAyIiwiZXhwIjoxNjgzNTM3Nzk1LCJpYXQiOjE2ODM1MTk3OTV9.cDPlalmq2gKDhg3qD7qcBo1ko5Nw0Yi_bcmP3wtYwwhPKSCbTND7AOnwSP8glYTF1rSAuwa3ZuZDvPCSY2UREQ', '2023-02-05 01:08:03', 2),
 (4, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzYSIsImV4cCI6MTY4MTUwNTU5MCwiaWF0IjoxNjgxNDg3NTkwfQ.jalt9_rCs1v0vKueIzSjDviMNHbze3HvtL15AOJJxPNF0nFJ3gILyLS4JwoRN4BhTknWRNjAIaSaqfd8nSqvpg', '2023-04-15 03:53:10', 3),
 (5, 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdjE5NTI0NzkyIiwiZXhwIjoxNjgzMjgxMDk0LCJpYXQiOjE2ODMyNjMwOTR9.RO1ejJZ_yCHDYcGJVJ3ILE3KkT2EVvk81aFPDAymTvUfIO0wVg84Y7aVm2g_PCF1SKiOxFxWXBZMtcgogqQuDw', '2023-05-05 17:04:54', 15);
 
@@ -1543,7 +1540,7 @@ ALTER TABLE `lop_hoc_danh_nghia`
 -- AUTO_INCREMENT for table `lop_hoc_phan`
 --
 ALTER TABLE `lop_hoc_phan`
-  MODIFY `ma_lop_hoc_phan` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `ma_lop_hoc_phan` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `nganh`
@@ -1615,7 +1612,7 @@ ALTER TABLE `thong_bao`
 -- AUTO_INCREMENT for table `thong_bao_khoa`
 --
 ALTER TABLE `thong_bao_khoa`
-  MODIFY `ma_thong_bao` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ma_thong_bao` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `token`

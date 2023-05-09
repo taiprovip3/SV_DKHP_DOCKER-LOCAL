@@ -5,5 +5,5 @@ import com.se.entity.ChuongTrinhKhung;
 
 public interface ChuongTrinhKhungService {
 	public ChuongTrinhKhung addPattern(ChuongTrinhKhungDTO chuongTrinhKhung);
-	public int getSoTinChiDoneByStudentId(long id);
+	public int getSoTinChiDoneByStudentId(long studentId);
 }

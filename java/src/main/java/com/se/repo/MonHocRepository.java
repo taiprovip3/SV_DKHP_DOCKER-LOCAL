@@ -22,6 +22,6 @@ public interface MonHocRepository extends CrudRepository<MonHoc, Long> {
 	@Query(value = "SELECT mh.* FROM diem d JOIN lop_hoc_phan lhp ON d.ma_lop_hoc_phan = lhp.ma_lop_hoc_phan JOIN mon_hoc mh ON lhp.ma_mon_hoc = mh.ma_mon_hoc WHERE d.pass = 1 AND d.ma_sinh_vien = ?1", nativeQuery = true)
 	public List<MonHoc> getSubjectsPassed(long studentId);
 
-	@Query(value = "SELECT mh.* FROM lop_hoc_phan lhp JOIN mon_hoc mh ON lhp.ma_mon_hoc = mh.ma_mon_hoc WHERE lhp.ma_khoa_hoc = ?1 AND mh.ma_nganh = ?2", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT mh.* FROM lop_hoc_phan lhp JOIN mon_hoc mh ON lhp.ma_mon_hoc = mh.ma_mon_hoc WHERE lhp.ma_khoa_hoc = ?1 AND mh.ma_nganh = ?2", nativeQuery = true)
     public List<MonHoc> getSubjectsUnitClassOpen(long courseId, long majorId);
 }

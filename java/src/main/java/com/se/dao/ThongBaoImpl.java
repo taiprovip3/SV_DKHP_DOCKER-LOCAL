@@ -47,7 +47,9 @@ public class ThongBaoImpl implements ThongBaoService {
 
 	@Override
 	public ThongBao getNotificationById(long notificationId) {
-		return thongBaoRepository.findById(notificationId).orElse(null);
+		ThongBao thongBao = thongBaoRepository.findById(notificationId).orElse(null);
+		thongBao.setRead(true);
+		return thongBaoRepository.save(thongBao);
 	}
 
 }

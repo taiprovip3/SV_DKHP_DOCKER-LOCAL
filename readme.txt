@@ -9,3 +9,6 @@ sudo apt-get update
 sudo apt-get install docker.io
 sudo apt-get install docker-compose
 sudo usermod -aG docker ${USER}
+
+1. Làm clickable chuông
+    Thông báo hóa đơn điện tử -> chuyển trang phiếu thu

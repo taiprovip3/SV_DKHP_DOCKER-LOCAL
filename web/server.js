@@ -458,7 +458,7 @@ app.post("/student/dkhp/sv_lhp", async (req, res) => {
             }
             const response2 = await axios.get(javaUrl+"/api/sv_lhp/isStudentRegisThisUnitClass/"+response.data.lopHocPhan.maLopHocPhan+"/"+maMonHoc+"/"+maKhoaHoc+"/"+req.session.student, {headers: {"Authorization": req.session.jwt_token}});
             if(response2.data == true) {
-                const data = {title: "Thất bại", text: "Bạn đã đăng ký LHP này rồi!", icon: "warning", dangerMode: true};
+                const data = {title: "Thất bại", text: "Bạn đã đăng ký LHP này hoặc chưa đạt\nhọc phần tiên quyết (bắt buộc)!", icon: "warning", dangerMode: true};
                 return res.send(data);
             }
             const data = {maThoiKhoaBieu, maThoiKhoaBieuCon, maSinhVien: req.session.student};
@@ -893,7 +893,7 @@ app.get("/student/payment/callback", async (req, res) => {
                             "due-date": new Date().toLocaleDateString('en-GB'),
                         },
                         "products": products,
-                        "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                        "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                         "settings": {
                             "currency": "VND",
                         },
@@ -1002,7 +1002,7 @@ app.get("/student/recharge/callback", async (req, res) => {
                         "products": [
                             product,
                         ],
-                        "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                        "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                         "settings": {
                             "currency": "VND",
                         },
@@ -1119,7 +1119,7 @@ app.post("/student/payment/resolvePaymentStudentWallet", async (req, res) => {
                     "due-date": new Date().toLocaleDateString('en-GB'),
                 },
                 "products": products,
-                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                 "settings": {
                     "currency": "VND",
                 },
@@ -1263,7 +1263,7 @@ app.put("/student/payment/recheckPayment/:paymentId", async (req, res) => {
                                 "due-date": new Date().toLocaleDateString('en-GB'),
                             },
                             "products": products,
-                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                             "settings": {
                                 "currency": "VND",
                             },
@@ -1375,7 +1375,7 @@ app.put("/student/payment/recheckPayment/:paymentId", async (req, res) => {
                                     "due-date": new Date().toLocaleDateString('en-GB'),
                                 },
                                 "products": products,
-                                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                                 "settings": {
                                     "currency": "VND",
                                 },
@@ -1556,7 +1556,7 @@ app.put("/student/wallet/recheckPayment/:paymentId", async (req, res) => {
                             "products": [
                                 product,
                             ],
-                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                             "settings": {
                                 "currency": "VND",
                             },
@@ -1639,7 +1639,7 @@ app.put("/student/wallet/recheckPayment/:paymentId", async (req, res) => {
                                 "products": [
                                     product,
                                 ],
-                                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                                "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                                 "settings": {
                                     "currency": "VND",
                                 },
@@ -1851,7 +1851,7 @@ app.get("/paypal/payment/success", async (req, res) => {// HÀm này vô dụng 
                                         "due-date": new Date().toLocaleDateString('en-GB'),
                                     },
                                     "products": products,
-                                    "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                                    "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                                     "settings": {
                                         "currency": "VND",
                                     },
@@ -2057,7 +2057,7 @@ app.get("/paypal/topup/success", async (req, res) => {// Xác thực thanh toán
                                     "products": [
                                         product,
                                     ],
-                                    "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                                    "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                                     "settings": {
                                         "currency": "VND",
                                     },
@@ -2205,7 +2205,7 @@ app.get("/paypal/topup/cancel", async (req, res) => {
                                 "due-date": new Date().toLocaleDateString('en-GB'),
                             },
                             "products": products,
-                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️.",
+                            "bottom-notice": "Đã được toà - Chi cục thế phường - Gò Vấp tỉnh đóng dấu chức thực bảo mật thông tin ✔️️.",
                             "settings": {
                                 "currency": "VND",
                             },

@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.se.dto.SinhVien_LopHocPhanDTO;
+import com.se.entity.ChuongTrinhKhung;
 import com.se.entity.CongNo;
 import com.se.entity.LopHocPhan;
+import com.se.entity.MonHoc;
 import com.se.entity.SinhVien;
 import com.se.entity.SinhVien_LopHocPhan;
 import com.se.entity.ThoiKhoaBieu;
@@ -18,8 +20,10 @@ import com.se.entity.ThoiKhoaBieuCon;
 import com.se.enums.TrangThai;
 import com.se.repo.SinhVien_LopHocPhanRepository;
 import com.se.repo.ThoiKhoaBieuConRepository;
+import com.se.repo.ChuongTrinhKhungRepository;
 import com.se.repo.CongNoRepository;
 import com.se.repo.LopHocPhanRepository;
+import com.se.repo.MonHocRepository;
 import com.se.repo.SinhVienRepository;
 import com.se.repo.ThoiKhoaBieuRepository;
 import com.se.service.SinhVien_LopHocPhanService;
@@ -39,6 +43,10 @@ public class SinhVien_LopHocPhanImpl implements SinhVien_LopHocPhanService {
 	private CongNoRepository congNoRepository;
 	@Autowired
 	private ThoiKhoaBieuConRepository thoiKhoaBieuConRepository;
+	@Autowired
+	private ChuongTrinhKhungRepository chuongTrinhKhungRepository;
+	@Autowired
+	private MonHocRepository monHocRepository;
 	
 	@Override
 	public SinhVien_LopHocPhan saveUnitSubject(SinhVien_LopHocPhanDTO sinhVien_LopHocPhanDTO) {
@@ -89,22 +97,41 @@ public class SinhVien_LopHocPhanImpl implements SinhVien_LopHocPhanService {
 		return sinhVien_LopHocPhanRepository.save(sv_lhp);
 	}
 
+	// 
+	/*
+	 * Method này sẽ validate 2 thứ:
+	 * 1. Sinh viên đã đăng ký LHP chưa
+	 * 2. Môn học đăng ký có thỏa điều kiện tiên quyết?
+	 * false :: ko có giá trị, cho đăng ký ; true:: có giá trị, ko ko cho. FALSE là hợp lệ, TRUE là invalid
+	 */
 	@Override
 	public boolean isStudentRegisThisUnitClass(long maLopHocPhan, long maMonHoc, long maKhoaHoc, long maSinhVien) {
-		SinhVien_LopHocPhan svlhp = sinhVien_LopHocPhanRepository.isStudentRegisThisUnitClass(maLopHocPhan, maSinhVien);
-		//false :: ko có giá trị, cho đăng ký ; true:: có giá trị, ko ko cho
-		if(svlhp != null) {
-			System.out.println("return trueeee");
-			return true;	
-		}
-		//Xem coi có Lhp có maMonHoc & maKhoaHoc này mà sv đăng ký ko.
-		LopHocPhan lhp = lopHocPhanRepository.getUnitClassBySubjectIdAndCourseId(maMonHoc, maKhoaHoc, maSinhVien);
-		if(lhp != null) {
-			System.out.println("return trueeeeeeeee");
+		try {
+			SinhVien_LopHocPhan svlhp = sinhVien_LopHocPhanRepository.isStudentRegisThisUnitClass(maLopHocPhan, maSinhVien);
+			if(svlhp != null) {
+				return true;	
+			}
+			// Xem coi có Lhp có maMonHoc & maKhoaHoc này mà sv đăng ký ko.
+			LopHocPhan lhp = lopHocPhanRepository.getUnitClassBySubjectIdAndCourseId(maMonHoc, maKhoaHoc, maSinhVien);
+			if(lhp != null) {
+				return true;
+			}
+
+			// Kiểm tra học phần tiên quyết
+			MonHoc monHoc = monHocRepository.findById(maMonHoc).orElse(null);
+			if(monHoc.getMaMonYeuCau() == 0) {// Không phụ thuộc -> thỏa
+				return false;
+			}
+			long dependSubjectId = monHoc.getMaMonYeuCau();
+			ChuongTrinhKhung chuongTrinhKhung = chuongTrinhKhungRepository.getStudentPatternByDependSubjectId(dependSubjectId, maSinhVien);
+			if(chuongTrinhKhung != null) {// Phụ thuộc và đã học
+				return false;
+			}
 			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		System.out.println("return falseeee");
-		return false;
 	}
 
 	@Override

@@ -48,7 +48,7 @@ const DkhpPage = () => {
         Toast.show({
           type: 'success',
           text1: 'Học kỳ vừa chọn đã quá hạn',
-          text2: 'Sẽ ko còn mở lớp, hãy chọn những khoá học có ✔️ xanh.'
+          text2: 'Sẽ ko còn mở lớp, hãy chọn những khoá học có ✔️️ xanh.'
         });
       }
       const javaIp = await publicIP();
@@ -753,7 +753,7 @@ const DkhpPage = () => {
                 courses.map((item) => {
                   let isLatestMaKhoaHoc = " ❌";
                   if(item.maKhoaHoc == latestCourseId.current)
-                    isLatestMaKhoaHoc = " ✔️";
+                    isLatestMaKhoaHoc = " ✔️️";
                   return <Select.Item label={item.alias + " (" + item.namBatDau + "-" + item.namKetThuc + ")" + isLatestMaKhoaHoc} value={item.maKhoaHoc} key={Math.random()} />
                 })
               }

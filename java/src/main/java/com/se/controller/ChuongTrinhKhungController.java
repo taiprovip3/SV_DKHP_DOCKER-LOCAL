@@ -25,8 +25,8 @@ public class ChuongTrinhKhungController {
 	public ChuongTrinhKhung addPattern(@RequestBody ChuongTrinhKhungDTO ctk) {
 		return chuongTrinhKhungService.addPattern(ctk);
 	}
-	@GetMapping("/pattern/getSoTinChiDoneByStudentId/{id}")
-	public int getSoTinChiDoneByStudentId(@PathVariable long id) {
-		return chuongTrinhKhungService.getSoTinChiDoneByStudentId(id);
+	@GetMapping("/pattern/getSoTinChiDoneByStudentId/{studentId}")
+	public int getSoTinChiDoneByStudentId(@PathVariable long studentId) {
+		return chuongTrinhKhungService.getSoTinChiDoneByStudentId(studentId);
 	}
 }

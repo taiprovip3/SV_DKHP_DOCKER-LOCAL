@@ -221,14 +221,15 @@
 <script>
     var socket = io.connect('wss://<%= process.env.EJS_API %>');
     socket.on('connect', function() {
-      console.log('Connected to server');
+        console.log('Connected to server');
     });
     socket.on('dataChange', function(data) {
-      const maMonHoc = data.monHoc.maMonHoc;
-      if(maMonHoc == selected_ma_mon_hoc) {
-        toastr.info(`Lớp học phần: LHP #${data.maLopHocPhan} - ${data.monHoc.maMonHoc} - ${data.monHoc.tenMonHoc.toUpperCase()} vừa được cập nhật`);
-        renderUnitClassBySujectId();
-      }
+        console.log('dataChange=',data);
+        const maMonHoc = data.monHoc.maMonHoc;
+        if(maMonHoc == selected_ma_mon_hoc) {
+            toastr.info(`Lớp học phần: LHP #${data.maLopHocPhan} - ${data.monHoc.maMonHoc} - ${data.monHoc.tenMonHoc.toUpperCase()} vừa được cập nhật`);
+            renderUnitClassBySujectId();
+        }
     });
 </script>
 <script src="../javascript/student-dkhp/change-timetables.js"></script>
@@ -255,7 +256,7 @@ var selected_ma_lop_hoc_phan = '';
 var selected_ma_mon_hoc = '';
 var selected_ma_khoa_hoc = 0;
 const latestCourseId = '<%= LIST_COURSE[LIST_COURSE.length-1].maKhoaHoc %>';
-$("#select_course option[value='"+ latestCourseId +"']").text($("#select_course option[value='"+ latestCourseId + "']").text()+" ✔");
+$("#select_course option[value='"+ latestCourseId +"']").text($("#select_course option[value='"+ latestCourseId + "']").text()+" ✔️");
 const loaiHocShortCut = {HOC_MOI: 'Học mới', HOC_LAI: 'Học lại', HOC_CAI_THIEN: 'Học cải thiện'};
 function changeTimeTableIdListener(maThoiKhoaBieu, loaiThoiKhoaBieu) {
     selected_ma_thoi_khoa_bieu = maThoiKhoaBieu;
@@ -439,21 +440,24 @@ $(document).ready(function(){
         }
         selected_ma_khoa_hoc = $(this).val();
         if(selected_ma_khoa_hoc != latestCourseId) {//Xử lý latest icon
-            swal({ title: "Học kỳ chọn quá hạn", text: "Khoá học bạn vừa chọn đã cũ và sẽ không còn lớp học phần nào được mở thêm. Chỉ có thể xem lại lịch sử. Vui lòng chọn những khoá học có tích xanh ✔.", icon: "warning", dangerMode: true });
+            swal({ title: "Học kỳ chọn quá hạn", text: "Khoá học bạn vừa chọn đã cũ và sẽ không còn lớp học phần nào được mở thêm. Chỉ có thể xem lại lịch sử. Vui lòng chọn những khoá học có tích xanh ✔️.", icon: "warning", dangerMode: true });
         }
         $.ajax({//Xử lý: lấy danh sách subject by courseId
             type: "POST",
             url: pathNodejs+"/student/dkhp/getSubjectsByCourseId",
             data: JSON.stringify({maKhoaHoc: selected_ma_khoa_hoc}),
             contentType: 'application/json',
-            success: function(data) {
+            success: function(subjects) {
+                if(subjects.length <= 0) {
+                    toastr.error('Học kỳ này sinh viên chưa được phép đăng ký. Vui lòng liên hệ trực tiếp giáo vụ khoa để được xin mở lớp!', 'Không có học phần');
+                }
                 var myLoop = "";
-                for (let i = 0; i < data.length; i++) {
+                for (let i = 0; i < subjects.length; i++) {
                     var loaiMonBeLike = "null";
-                    if(data[i].loaiMon === "TU_CHON")
+                    if(subjects[i].loaiMon === "TU_CHON")
                         loaiMonBeLike = '<i class="fas fa-times-circle text-danger" data-bs-toggle="tooltip" title="Bạn có thể tự do đăng ký môn này hoặc không hoặc các môn có tích đỏ khác để lấy đủ tín chỉ học phần TU_CHON yêu cầu!"></i>';
                     else loaiMonBeLike = '<i class="fas fa-check-circle text-success" data-bs-toggle="tooltip" title="Đây là môn bắt buộc phải học trong học kỳ này. Nếu không đăng ký sẽ bị trễ tiến độ học, hậu quả tệ về sau!"></i>';
-                    myLoop += '<tr><td><input type="radio" name="SelectedSubject" id="'+ data[i].maMonHoc +'" value="'+ data[i].maMonHoc +'" class="form-check-input" onclick="audio.play();" /></td><td>'+ i +'</td><td>'+ data[i].maMonHoc +'</td><td>'+ data[i].tenMonHoc +'</td><td>'+ data[i].soTinChi +'</td><td>'+ loaiMonBeLike +'</td><td>'+ data[i].maMonYeuCau +'</td></tr>';
+                    myLoop += '<tr><td><input type="radio" name="SelectedSubject" id="'+ subjects[i].maMonHoc +'" value="'+ subjects[i].maMonHoc +'" class="form-check-input" onclick="audio.play();" /></td><td>'+ i +'</td><td>'+ subjects[i].maMonHoc +'</td><td>'+ subjects[i].tenMonHoc +'</td><td>'+ subjects[i].soTinChi +'</td><td>'+ loaiMonBeLike +'</td><td>'+ subjects[i].maMonYeuCau +'</td></tr>';
                 }
                 $("#tBodySubjectCourseSelected").html(myLoop);
             }, error: function(error) {
@@ -465,10 +469,10 @@ $(document).ready(function(){
             url: pathNodejs+"/student/dkhp/getUnitClassesStudentRegisterByStudentIdAndMaKhoaHoc",
             data: JSON.stringify({maKhoaHoc: selected_ma_khoa_hoc}),
             contentType: 'application/json',
-            success: async function(data) {
+            success: async function(unitClasses) {
                 //Render tab list hoc phần sv đã đăng ký...
                 var sv_lhps= [];
-                for(LHP of data) {
+                for(LHP of unitClasses) {
                     const SVLHP = await getSVLHPByMaLopHocPhanId(LHP.maLopHocPhan);
                     sv_lhps.push(SVLHP);
                 }

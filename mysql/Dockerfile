@@ -7,6 +7,6 @@ ENV MYSQL_ROOT_USER=root \
     MYSQL_ALLOW_EMPTY_PASSWORD=true \
     MYSQL_ROOT_PASSWORD=""
 
-COPY ./init.sql /docker-entrypoint-initdb.d/
+COPY ./sv_dkhp.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 3306

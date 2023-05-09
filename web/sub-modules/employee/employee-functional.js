@@ -207,7 +207,8 @@ async function getListAnnouncement() {
 async function addLopHocPhan(newRecord) {
     try {
       const lop_hoc_phan_collection = firebaseDB.collection('lop_hoc_phan');
-      const docRef = await lop_hoc_phan_collection.add(newRecord);
+      const docRef = lop_hoc_phan_collection.doc('maLopHocPhan_' + newRecord.maLopHocPhan);
+      await docRef.set(newRecord);
       console.log('Thêm bản ghi mới thành công, ID của bản ghi:', docRef.id);
     } catch (error) {
       console.error('Lỗi khi thêm bản ghi mới:', error);
