@@ -307,11 +307,10 @@
 <div class="modal" id="editStudentWalletModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <p>Quản lý số dư ví</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
             <!-- Modal body -->
+            <div class="text-end">
+                <button type="button" data-bs-dismiss="modal" class="bg-primary text-white px-2 border-0"><i class="fas fa-times"></i></button>
+            </div>
             <div class="modal-body" id="EditStudentWalletBody">
                 <!-- Embeded element jquery here... -->
             </div>
@@ -387,7 +386,7 @@
             if(count == 0)
                 return;
             // Implements cho mỗi checkboxes
-            let elementForm = "";
+            let elementForm = '<form action="./employee-crud-wallet-student" method="post" enctype="multipart/form-data">';
             let promises = [];
             $(".myCheckBoxClass:checked").each(function(index, object) {
                 promises.push(getStudentBalance(object.id));
@@ -397,18 +396,25 @@
                 $(".myCheckBoxClass:checked").each(function(index, object) {
                     const studentBalance = balances[index];
                     elementForm += 
-                    '<form action="./employee-crud-wallet-student" method="post" enctype="multipart/form-data">'+
-                        '<div class="border p-2">'+
-                            `<label for="IPN_ID_${object.id}">Mã sinh viên <i class="fas fa-hand-holding-usd text-success"></i> Số dư ví hiện tại: <span class="fw-bold text-success">${formatCurrency(studentBalance)}</span></label>`+
+                    '<div class="border p-2 my-1">'+
+                        `<i class="fas fa-hand-holding-usd text-success"></i> Số dư ví hiện tại: <span class="text-success">${formatCurrency(studentBalance)}</span>`+
+                        '<div class="input-group">'+
+                            `<span class="input-group-text">Mã sinh viên</span>`+
                             `<input type="number" name="maSinhVien" id="IPN_ID_${object.id}" placeholder="Nhập mã sinh viên..." class="form-control" readonly value="${object.id}" required />`+
-                            `<label for="IPN_BAL_${object.id}">Số tiền thêm/trừ (+ -):</label>`+
-                            `<input type="number" name="balanceReduce" id="IPN_BAL_${object.id}" placeholder="Nhập số tiền số dư ví thao tác..." class="form-control" required />`+
-                            '<div class="text-end my-1">'+
-                                '<input type="submit" value="Save" class="bg-primary text-white p-1 border-0">'+
-                            '</div>'+
                         '</div>'+
-                    '</form>';
+                        '<div class="input-group">'+
+                            `<span class="input-group-text">Số tiền thêm/trừ (+ -):</span>`+
+                            `<input type="number" name="balanceReduce" id="IPN_BAL_${object.id}" placeholder="Nhập số tiền số dư ví thao tác..." class="form-control" required />`+
+                        '</div>'+
+                        `<label for="IPN_MSG_${object.id}">Lời nhắn:</label>`+
+                        `<textarea name="msgNotification" rows="3" id="IPN_MSG_${object.id}" placeholder="Nhập lời nhắn để thông báo..." class="form-control" required></textarea>`+
+                    '</div>';
                 });
+                elementForm += 
+                    '<div class="text-end my-1">'+
+                        '<input type="submit" value="Cập nhật" class="bg-primary text-white p-1 border-0">'+
+                    '</div>'+
+                '</form>';
                 $("#EditStudentWalletBody").html(elementForm);
                 $("#editStudentWalletModal").modal('toggle');
             }).catch((error) => {

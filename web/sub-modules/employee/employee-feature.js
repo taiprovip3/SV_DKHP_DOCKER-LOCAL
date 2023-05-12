@@ -68,6 +68,7 @@ const { getListTimeTableCon } = require('./employee-functional');
 const { getListDebt } = require('./employee-functional');
 const { getListOrderDetail } = require('./employee-functional');
 const { addLopHocPhan } = require('./employee-functional');
+const { formatCurrency } = require('../../utils/functional');
 
 
 
@@ -163,19 +164,56 @@ employeeFeatureRouter.post("/employee-crud-wallet-student", upload.fields([]), a
     if(req.session.employee) {
         const LIST_STUDENT = await getListStudent();
         try {
-            const maSinhVien = req.body.maSinhVien;
-            const balanceReduce = req.body.balanceReduce;
-            if(balanceReduce < 0) {
-                const response = await axios.get(javaUrl+"/api/student/reduceStudentBalance/"+maSinhVien+"/"+Math.abs(balanceReduce), {headers: {"Authorization": req.session.employee_token}});
-                return res.render("employee-crud-student", { LIST_STUDENT, signal: "INSERT_SUCCESS" });
-            } else {
-                const SinhVienAddBalanceDTO = {
-                    maSinhVien,
-                    soTienGiaoDich: balanceReduce,
+            const maSinhViens = req.body.maSinhVien;
+            const balanceReduces = req.body.balanceReduce;
+            const msgNotifications = req.body.msgNotification;
+            if(Array.isArray(maSinhViens)) {
+                for(let i=0; i<maSinhViens.length; i++) {
+                    const maSinhVien = maSinhViens[i];
+                    const balanceReduce = Math.abs(balanceReduces[i]);
+                    const msgNotification = msgNotifications[i];
+                    if(balanceReduces[i] == 0) {
+                        continue;
+                    }
+                    if(balanceReduces[i] < 0) {
+                        const response = await axios.get(javaUrl+"/api/student/reduceStudentBalance/"+maSinhVien+"/"+balanceReduce, {headers: {"Authorization": req.session.employee_token}});
+                    } else {
+                        const SinhVienAddBalanceDTO = {
+                            maSinhVien,
+                            soTienGiaoDich: balanceReduce,
+                        }
+                        const response = await axios.post(javaUrl+"/api/student/addStudentBalance", SinhVienAddBalanceDTO, {headers: {"Authorization": req.session.employee_token}});
+                    }
+                    const ThongBaoDTO = {
+                        title: `${balanceReduce > 0 ? "+" + formatCurrency(balanceReduce) : formatCurrency(balanceReduce)} số dư ví`,
+                        message: `${balanceReduce > 0 ? "+" + formatCurrency(balanceReduce) : formatCurrency(balanceReduce)} số dư ví. ${msgNotification}`,
+                        linking: 'https://erukalearn.me/student',
+                        isRead: false,
+                        studentId: maSinhVien
+                    }
+                    const response = await axios.post(javaUrl+"/api/announcement", ThongBaoDTO, {headers: {"Authorization": req.session.employee_token}});
                 }
-                const response = await axios.post(javaUrl+"/api/student/addStudentBalance", SinhVienAddBalanceDTO, {headers: {"Authorization": req.session.employee_token}});
-                return res.render("employee-crud-student", { LIST_STUDENT, signal: "INSERT_SUCCESS" });
+            } else {
+                if(balanceReduces > 0) {
+                    const SinhVienAddBalanceDTO = {
+                        maSinhVien: maSinhViens,
+                        soTienGiaoDich: balanceReduces,
+                    }
+                    const response = await axios.post(javaUrl+"/api/student/addStudentBalance", SinhVienAddBalanceDTO, {headers: {"Authorization": req.session.employee_token}});
+                }
+                if(balanceReduces < 0) {
+                    const response = await axios.get(javaUrl+"/api/student/reduceStudentBalance/"+maSinhViens+"/"+Math.abs(balanceReduces), {headers: {"Authorization": req.session.employee_token}});
+                }
+                const ThongBaoDTO = {
+                    title: `${balanceReduces > 0 ? "+" + formatCurrency(balanceReduces) : formatCurrency(balanceReduces)} số dư ví`,
+                    message: `${balanceReduces > 0 ? "+" + formatCurrency(balanceReduces) : formatCurrency(balanceReduces)} số dư ví. ${msgNotifications}`,
+                    linking: 'https://erukalearn.me/student',
+                    isRead: false,
+                    studentId: maSinhViens
+                }
+                const response = await axios.post(javaUrl+"/api/announcement", ThongBaoDTO, {headers: {"Authorization": req.session.employee_token}});
             }
+            return res.render("employee-crud-student", { LIST_STUDENT, signal: "INSERT_SUCCESS" });
         } catch (error) {
             console.log('error=',error.message);
             return res.render("employee-crud-student", { LIST_STUDENT, signal: "INTERNAL_SERVER_ERROR"});
