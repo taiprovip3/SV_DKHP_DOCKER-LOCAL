@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.se.dto.DiemDTO;
 import com.se.entity.Diem;
-import com.se.enums.XepLoai;
 
 public interface DiemService {
 	public Diem addScore(DiemDTO diemDTO);
@@ -13,4 +12,6 @@ public interface DiemService {
 	public Diem getScoreByStudentIdAndSubjectId(long studentId, long subjectId);
 	public String deleteScoreById(long maDiem);
 	public int getCounterByXepLoai(String xepLoai);
+    public List<Diem> getStudentSummarySubjects(long studentId);
+    public List<Diem> getStudentFailedSubjects(long studentId);
 }

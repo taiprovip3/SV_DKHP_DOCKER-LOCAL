@@ -146,6 +146,43 @@ employeeFeatureRouter.post("/employee-crud-delete-student", upload.fields([]), a
     }
     return res.redirect("/employee");
 });
+employeeFeatureRouter.get("/employee-crud-getStudentBalance-student/:studentId", async (req, res) => {
+    if(req.session.employee) {
+        try {
+            const studentId = req.params.studentId;
+            const response = await axios.get(javaUrl+"/api/student/getStudentBalance/"+studentId, {headers: {"Authorization": req.session.employee_token}});
+            return res.send(response.data.toString());
+        } catch (error) {
+            console.log('error=',error.message);
+            return res.send("0");
+        }
+    }
+    return res.redirect("/employee");
+});
+employeeFeatureRouter.post("/employee-crud-wallet-student", upload.fields([]), async (req, res) => {
+    if(req.session.employee) {
+        const LIST_STUDENT = await getListStudent();
+        try {
+            const maSinhVien = req.body.maSinhVien;
+            const balanceReduce = req.body.balanceReduce;
+            if(balanceReduce < 0) {
+                const response = await axios.get(javaUrl+"/api/student/reduceStudentBalance/"+maSinhVien+"/"+Math.abs(balanceReduce), {headers: {"Authorization": req.session.employee_token}});
+                return res.render("employee-crud-student", { LIST_STUDENT, signal: "INSERT_SUCCESS" });
+            } else {
+                const SinhVienAddBalanceDTO = {
+                    maSinhVien,
+                    soTienGiaoDich: balanceReduce,
+                }
+                const response = await axios.post(javaUrl+"/api/student/addStudentBalance", SinhVienAddBalanceDTO, {headers: {"Authorization": req.session.employee_token}});
+                return res.render("employee-crud-student", { LIST_STUDENT, signal: "INSERT_SUCCESS" });
+            }
+        } catch (error) {
+            console.log('error=',error.message);
+            return res.render("employee-crud-student", { LIST_STUDENT, signal: "INTERNAL_SERVER_ERROR"});
+        }
+    }
+    return res.redirect("/employee");
+});
     //----- class routers -----\\
 employeeFeatureRouter.get("/employee-crud-class", async (req, res) => {
     if(req.session.employee) {

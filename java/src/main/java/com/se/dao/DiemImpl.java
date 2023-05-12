@@ -248,4 +248,14 @@ public class DiemImpl implements DiemService {
 	public int getCounterByXepLoai(String xepLoai) {
 		return diemRepository.getCounterByXepLoai(xepLoai);
 	}
+
+	@Override
+	public List<Diem> getStudentSummarySubjects(long studentId) {
+		return diemRepository.getStudentSummarySubjects(studentId);
+	}
+
+	@Override
+	public List<Diem> getStudentFailedSubjects(long studentId) {
+		return diemRepository.getStudentFailedSubjects(studentId);
+	}
 }

@@ -15,4 +15,7 @@ public interface KhoaHocRepository extends CrudRepository<KhoaHoc, Long>{
 	
 	@Query(value = "SELECT COUNT(*) FROM sinh_vien_lop_hoc_phan svlhp JOIN lop_hoc_phan lhp ON svlhp.ma_lop_hoc_phan = lhp.ma_lop_hoc_phan WHERE lhp.ma_khoa_hoc = ?1", nativeQuery = true)
 	public int getCounterStudentsByCourseId(long courseId);
+
+	@Query(value = "SELECT * FROM khoa_hoc ORDER BY ma_khoa_hoc DESC LIMIT 1", nativeQuery = true)
+    public KhoaHoc getLatestCourse();
 }

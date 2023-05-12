@@ -558,7 +558,6 @@ app.get("/student/details", async (req,res) => {
     if(req.session.jwt_token) {
         try {
             const response = await axios.get(javaUrl+"/api/student/getStudentById/"+req.session.student, {headers: {"Authorization": req.session.jwt_token}});
-            // console.log(response.data);
             return res.render("student-details", {STUDENT_DATA: response.data, signal: null});
         } catch (error) {
             return res.render("student-details", {STUDENT_DATA: null, signal: "INTERNAL_SERVER_ERROR"});   
@@ -695,6 +694,30 @@ app.post("/student/pattern/getSubjectsPassed", async (req, res) => {
         return res.render("student-login", {LIST_ANNOUNCEMENT, error: null});
     } else {
         const response = await axios.get(javaUrl+"/api/subject/getSubjectsPassed/"+ req.session.student, {headers: {"Authorization": req.session.jwt_token}});
+        if(response.data) {
+            return res.send(response.data);
+        }
+        return res.send([]);
+    }
+});
+app.get("/student/pattern/getStudentSummarySubjects", async (req, res) => {
+    if(!req.session.jwt_token) {
+        const LIST_ANNOUNCEMENT = await getListAnnouncement();
+        return res.render("student-login", {LIST_ANNOUNCEMENT, error: null});
+    } else {
+        const response = await axios.get(javaUrl+"/api/pattern/getStudentSummarySubjects/"+ req.session.student, {headers: {"Authorization": req.session.jwt_token}});
+        if(response.data) {
+            return res.send(response.data);
+        }
+        return res.send([]);
+    }
+});
+app.get("/student/pattern/getStudentFailedSubjects", async (req, res) => {
+    if(!req.session.jwt_token) {
+        const LIST_ANNOUNCEMENT = await getListAnnouncement();
+        return res.render("student-login", {LIST_ANNOUNCEMENT, error: null});
+    } else {
+        const response = await axios.get(javaUrl+"/api/pattern/getStudentFailedSubjects/"+ req.session.student, {headers: {"Authorization": req.session.jwt_token}});
         if(response.data) {
             return res.send(response.data);
         }

@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.se.dto.DiemDTO;
 import com.se.entity.Diem;
-import com.se.enums.XepLoai;
 import com.se.service.DiemService;
 
 @RestController
@@ -59,5 +58,15 @@ public class DiemController {
 		} catch (IllegalArgumentException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xepLoai value", e);
 	    }
+	}
+
+	@GetMapping("/pattern/getStudentSummarySubjects/{studentId}")
+	public List<Diem> getStudentSummarySubjects(@PathVariable long studentId) {
+		return diemService.getStudentSummarySubjects(studentId);
+	}
+
+	@GetMapping("/pattern/getStudentFailedSubjects/{studentId}")
+	public List<Diem> getStudentFailedSubjects(@PathVariable long studentId) {
+		return diemService.getStudentFailedSubjects(studentId);
 	}
 }

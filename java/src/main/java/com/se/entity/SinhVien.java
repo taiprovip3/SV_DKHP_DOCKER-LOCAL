@@ -8,8 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.se.enums.GioiTinh;
 

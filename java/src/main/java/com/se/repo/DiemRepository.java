@@ -8,7 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.se.entity.Diem;
-import com.se.enums.XepLoai;
 
 @Repository
 public interface DiemRepository extends CrudRepository<Diem, Long> {
@@ -27,4 +26,10 @@ public interface DiemRepository extends CrudRepository<Diem, Long> {
 	
 	@Query(value = "SELECT COALESCE(COUNT(*), 0) FROM diem WHERE xep_loai = ?1", nativeQuery = true)
 	public int getCounterByXepLoai(String xepLoai);
+
+	@Query(value = "SELECT * FROM diem WHERE diem_tong_ket != 0 AND ma_sinh_vien = ?1", nativeQuery = true)
+    public List<Diem> getStudentSummarySubjects(long studentId);
+
+	@Query(value = "SELECT * FROM diem WHERE diem_tong_ket != 0 AND pass = 0 AND ma_sinh_vien = ?1", nativeQuery = true)
+    public List<Diem> getStudentFailedSubjects(long studentId);
 }

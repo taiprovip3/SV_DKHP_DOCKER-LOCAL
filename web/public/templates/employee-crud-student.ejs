@@ -89,6 +89,8 @@
                             <div>&emsp;</div>
                             <button class="d-none import-button" id="btn-import" type="submit">Import <i class="fas fa-cloud-upload"></i></button>
                             <button class="import-button" type="button" id="btn-export-excel">Export excel <i class="fas fa-file-export text-white"></i></button>
+                            <div>&emsp;</div>
+                            <button type="button" class="import-button" id="btn-add-balances">Cộng số dư ví <i class="fas fa-hand-holding-usd text-warning"></i></i></button>
                         </div>
                     </form>
                     <div id="right_action" style="position: absolute;">
@@ -301,6 +303,21 @@
         </div>
     </div>
 </div>
+<!-- Edit Student Wallet Modal -->
+<div class="modal" id="editStudentWalletModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p>Quản lý số dư ví</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" id="EditStudentWalletBody">
+                <!-- Embeded element jquery here... -->
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
     const pathNodejs = '<%= process.env.EJS_API_URL %>';
@@ -365,7 +382,51 @@
         $("#btn-export-excel").click(function() {
             window.location.href = pathNodejs+"/employee-crud-export?entityName=student";
         });
+        $("#btn-add-balances").click(function() {
+            const count = $(".myCheckBoxClass:checked").length;
+            if(count == 0)
+                return;
+            // Implements cho mỗi checkboxes
+            let elementForm = "";
+            let promises = [];
+            $(".myCheckBoxClass:checked").each(function(index, object) {
+                promises.push(getStudentBalance(object.id));
+            });
+
+            Promise.all(promises).then((balances) => {
+                $(".myCheckBoxClass:checked").each(function(index, object) {
+                    const studentBalance = balances[index];
+                    elementForm += 
+                    '<form action="./employee-crud-wallet-student" method="post" enctype="multipart/form-data">'+
+                        '<div class="border p-2">'+
+                            `<label for="IPN_ID_${object.id}">Mã sinh viên <i class="fas fa-hand-holding-usd text-success"></i> Số dư ví hiện tại: <span class="fw-bold text-success">${formatCurrency(studentBalance)}</span></label>`+
+                            `<input type="number" name="maSinhVien" id="IPN_ID_${object.id}" placeholder="Nhập mã sinh viên..." class="form-control" readonly value="${object.id}" required />`+
+                            `<label for="IPN_BAL_${object.id}">Số tiền thêm/trừ (+ -):</label>`+
+                            `<input type="number" name="balanceReduce" id="IPN_BAL_${object.id}" placeholder="Nhập số tiền số dư ví thao tác..." class="form-control" required />`+
+                            '<div class="text-end my-1">'+
+                                '<input type="submit" value="Save" class="bg-primary text-white p-1 border-0">'+
+                            '</div>'+
+                        '</div>'+
+                    '</form>';
+                });
+                $("#EditStudentWalletBody").html(elementForm);
+                $("#editStudentWalletModal").modal('toggle');
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
     });
+    async function getStudentBalance(maSinhVien) {
+        return $.ajax({
+            type: "GET",
+            url: pathNodejs+"/employee-crud-getStudentBalance-student/"+maSinhVien,
+            contentType: 'application/json',
+        })
+        .then(balance => balance);
+    }
+    function formatCurrency(number){
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+    }
     const btn_add_employee = document.getElementById("btn_add_employee");
     btn_add_employee.addEventListener('click', function(){
     const name_field = document.getElementById("ten_nhan_vien");

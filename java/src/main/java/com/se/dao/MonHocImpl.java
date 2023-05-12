@@ -37,12 +37,12 @@ public class MonHocImpl implements MonHocService {
 
 	@Override
 	public List<MonHoc> getSubjectsByCourseId(long courseId, long studentId) {
-		KhoaHoc khoaHoc = khoaHocRepository.findById(courseId).orElse(null);
-		if(khoaHoc.getTenKhoaHoc() == TenKhoaHoc.HOC_KY_III) {// Nếu mã khóa học là HK3 thì lấy những môn mà có mở LHP
-			long majorId = sinhVienRepository.getMaNganhByStudentId(studentId);
-			return monHocRepository.getSubjectsUnitClassOpen(courseId, majorId);
+		long majorId = sinhVienRepository.getMaNganhByStudentId(studentId);
+		KhoaHoc khoaHoc = khoaHocRepository.getLatestCourse();
+		if(khoaHoc.getMaKhoaHoc() == courseId) {// Nếu khóa học student chọn là mới nhất thì lọc chuong_trinh_khung-studentId
+			return monHocRepository.getSubjectsUnitClassOpen(courseId, majorId, studentId);
 		}
-		return monHocRepository.getSubjectsByCourseId(courseId);
+		return monHocRepository.getSubjectsByCourseId(courseId, majorId);
 	}
 
 	@Override
