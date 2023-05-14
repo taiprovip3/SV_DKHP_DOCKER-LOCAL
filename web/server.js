@@ -1113,7 +1113,7 @@ app.post("/student/payment/resolvePaymentStudentWallet", async (req, res) => {
             const thanhToanGiaoDich2DTO = {maSinhVien: studentId, balance: totalPayed, ghiChu, unDebtIds};
             const maGiaoDichResponse = await axios.post(javaUrl+"/api/payment/createTransaction", thanhToanGiaoDich2DTO, {headers: {"Authorization": token}});
             //Tạo phieuThu
-            const phieuThu2DTO = {donViThu: "SỐ DƯ VÍ", ghiChu, ngayThu: "", soTien: totalPayed, trangThai: "DA_XU_LY", maSinhVien: studentId, maGiaoDich: maGiaoDichResponse.data};
+            const phieuThu2DTO = {donViThu: "SỐ DƯ VÍ", ghiChu, ngayThu: "", soTien: totalPayed, trangThai: "DA_XU_LY", maSinhVien: studentId, maGiaoDich: maGiaoDichResponse.data, loaiPhieuThu: "OUT"};
             const order_detail = await axios.post(javaUrl+"/api/order_detail/createOrderDetailBy", phieuThu2DTO, {headers: {"Authorization": token}});
             const hddtData = {
                 "customize": {
@@ -2198,7 +2198,7 @@ app.get("/paypal/topup/cancel", async (req, res) => {
                         const thanhToanGiaoDichDTO = {maGiaoDich: maThanhToanGiaoDich, ghiChu, balance: soTienCongNo};
                         const newPayment = await axios.post(javaUrl+"/api/payment/updatePaymentToPassById", thanhToanGiaoDichDTO, {headers: {"Authorization": token}});
                         //Tạo phieuThu
-                        const phieuThu2DTO = {donViThu: "STUDENT - WALLET", ghiChu, ngayThu: "", soTien: soTienCongNo, trangThai: "DA_XU_LY", maSinhVien, maGiaoDich: maThanhToanGiaoDich, loaiPhieuThu: 'OUT'};
+                        const phieuThu2DTO = {donViThu: "STUDENT - WALLET", ghiChu, ngayThu: "", soTien: soTienCongNo, trangThai: "DA_XU_LY", maSinhVien, maGiaoDich: maThanhToanGiaoDich, loaiPhieuThu: "OUT"};
                         const order_detail = await axios.post(javaUrl+"/api/order_detail/createOrderDetailBy", phieuThu2DTO, {headers: {"Authorization": token}});
                         //Tạo hddt {hddt chứa nhiều products}
                         const hddtData = {
