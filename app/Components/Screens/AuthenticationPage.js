@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Box, NativeBaseProvider, Text, Image, Center, Input, Button, Modal, useColorMode, Switch, HStack } from 'native-base';
+import { Box, NativeBaseProvider, Text, Image, Center, Input, Button, Modal, useColorMode, Switch, HStack, Pressable, Icon } from 'native-base';
 import React from 'react';
 import { AuthContext } from '../Providers/AuthProvider';
 import Toast from 'react-native-toast-message';
@@ -7,7 +7,7 @@ import publicIP from 'react-native-public-ip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LOCAL_JAVA_API_URL } from '@env';
 import NetInfo from "@react-native-community/netinfo";
-import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 const AuthenticationPage = ({ navigation }) => {
   console.log('LOCAL_JAVA_API_URL=', LOCAL_JAVA_API_URL);
@@ -19,6 +19,7 @@ const AuthenticationPage = ({ navigation }) => {
   const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
   const [switchValue, setSwitchValue] = React.useState(true);
   const [network, setNetwork] = React.useState(true);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const checkInternetConnection = async () => {
     const netInfo = await NetInfo.fetch();
@@ -153,14 +154,37 @@ const AuthenticationPage = ({ navigation }) => {
       <Box flex="1" p="5">
           <Box margin="auto" w="100%">
               <Box>
-                  <Image source={ require(`../../images/student-logo-authen.png`) } alt="el-logo-gv" />
+                  <Center>
+                    <Image source={ require(`../../images/student-logo-authen.png`) } alt="el-logo-gv" />
+                  </Center>
               </Box>
               <Box borderWidth="1" borderColor="light.400" padding="5" borderRadius="2xl" mt={'1'}>
-                  <Text>Mã sinh viên:</Text>
-                  <Input placeholder='Mã xác định giáo viên được cấp' onChangeText={(e) => setmaSinhVien(e)} value={maSinhVien} />
-                  <Text>Mật khẩu:</Text>
-                  <Input placeholder='Vui lòng nhập vào mật khẩu...' type='password' onChangeText={(e) => setPassword(e)} value={password} />
-                  <Button disabled={isButtonDisabled} onPress={() => handleLogin()} bg="warning.500">Đăng nhập tài khoản</Button>
+                  <Text fontSize="lg">Mã sinh viên:</Text>
+                  <Input
+                    placeholder='Mã xác định giáo viên được cấp'
+                    onChangeText={(e) => setmaSinhVien(e)}
+                    value={maSinhVien}
+                    fontSize="lg"
+                  />
+                  <Text fontSize="lg" mt="2">Mật khẩu:</Text>
+                  <Input
+                    placeholder='Vui lòng nhập vào mật khẩu...'
+                    type={ showPassword ? 'text' : 'password'}
+                    onChangeText={(e) => setPassword(e)}
+                    value={password}
+                    fontSize="lg"
+                    InputRightElement={
+                      <Pressable onPress={() => setShowPassword(!showPassword)}>
+                        <Icon
+                          as={<MaterialIcons name={showPassword ? "visibility" : "visibility-off"} />}
+                          size={8}
+                          mr="2"
+                          color="muted.400"
+                        />
+                      </Pressable>
+                    }
+                  />
+                  <Button disabled={isButtonDisabled} onPress={() => handleLogin()} bg="warning.500" _text={{ fontSize: "lg" }} my="1" p="5">Đăng nhập tài khoản</Button>
                   {/* <Center><Text color="info.700" onPress={() => setShowModal(true)}>Quên mật khẩu?</Text></Center> */}
                   {" "}
                   <Box>
@@ -175,7 +199,7 @@ const AuthenticationPage = ({ navigation }) => {
                         <Text> Lưu mật khẩu</Text>
                       </HStack>
                       <Box>
-                        <Text color="info.700" onPress={() => setShowModal(true)}>Quên mật khẩu?</Text>
+                        <Text color="info.700" onPress={() => setShowModal(true)} underline>Quên mật khẩu?</Text>
                       </Box>
                     </HStack>
                   </Box>
