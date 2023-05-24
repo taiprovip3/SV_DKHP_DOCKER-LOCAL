@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "SVDKHP_TEACHER_APP",
-    "slug": "Shop_fruit",
+    "name": "ErukaLearn IUH Teacher",
+    "slug": "erukalearn-iuh-teacher",
     "version": "1.0.0",
+    "description": "Chương trình hỗ trợ học vụ tại trường đại học công nghiệp thành phố Hồ Chí Minh",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/el-logo_fqlmt3.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -12,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/56f7016d-5bc8-40e9-9910-404b634e7aed"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -28,6 +30,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "56f7016d-5bc8-40e9-9910-404b634e7aed"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

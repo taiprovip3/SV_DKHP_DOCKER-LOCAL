@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "SVDKHP_STUDENT_APP",
-    "slug": "Shop_fruit",
+    "name": "ErukaLearn IUH",
+    "slug": "eruka-learn-iuh",
     "version": "1.0.0",
+    "description": "Chương trình hỗ trợ học vụ tại trường đại học Công Nghiệp thành phố Hồ Chí Minh",
     "useStrictMode": false,
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/el-logo_fqlmt3.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -13,22 +14,33 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/6a437e51-2ad4-409e-8bb3-afd23ba1ea19"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.taiproduaxe.erukalearniuh"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.taiproduaxe.erukalearniuh"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6a437e51-2ad4-409e-8bb3-afd23ba1ea19"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
