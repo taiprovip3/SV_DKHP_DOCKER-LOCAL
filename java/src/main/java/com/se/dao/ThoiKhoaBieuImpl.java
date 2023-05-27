@@ -52,6 +52,7 @@ public class ThoiKhoaBieuImpl implements ThoiKhoaBieuService {
 			ngayKetThucSql = new Date(ngayKetThucUtil.getTime());
 		} catch (Exception e) {
 			System.out.println("addTimeTable Exception maybe parse " + e.getMessage());
+			return null;
 		}
 		LopHocPhan lhp = lopHocPhanRepository.findById(thoiKhoaBieuDTO.getMaLopHocPhan()).orElse(null);
 		boolean thi = false;
